@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import AuthContext from '../auth'
 
 const LogIn = props => {
-    const [usernameoremail, setUsernameoremail] = useState("dug@aol.com");
+    const [email, setEmail] = useState("dug@aol.com");
     const [password, setPassword] = useState("password");
     const [errors, setErrors] = useState([]);
     const { fetchWithCSRF, setCurrentUserId, setCurrentUser } = useContext(AuthContext);
@@ -14,7 +14,7 @@ const LogIn = props => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/session/`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({usernameoremail, password})
+                credentials: 'include', body: JSON.stringify({email, password})
             });
             const responseData = await response.json();
             if (!response.ok) {
@@ -29,13 +29,13 @@ const LogIn = props => {
     return (
         <form onSubmit={submitForm}>
             {errors.length ? errors.map((err) => <li key={err} color="red">{err}</li>) :''}
-            Username or email
+            Email
             <input
                 type="text"
-                placeholder="Username or email"
-                value={usernameoremail}
-                onChange={(e) => setUsernameoremail(e.target.value)}
-                name="usernameoremail" />
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                name="email" />
             Password
             <input
                 type="password"

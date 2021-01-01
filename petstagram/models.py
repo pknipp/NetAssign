@@ -36,15 +36,7 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     @classmethod
-    def authenticate1(cls, user_name, password):
-        user = cls.query.filter(User.user_name == user_name).scalar()
-        if user:
-            return check_password_hash(user.hashed_password, password), user
-        else:
-            return False, None
-
-    @classmethod
-    def authenticate2(cls, email, password):
+    def authenticate(cls, email, password):
         user = cls.query.filter(User.email == email).scalar()
         if user:
             return check_password_hash(user.hashed_password, password), user

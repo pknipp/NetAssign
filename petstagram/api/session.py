@@ -13,24 +13,13 @@ def index():
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
 
-        username_or_email = request.json.get('usernameoremail', None)
+        email = request.json.get('email', None)
         password = request.json.get('password', None)
 
-        if not username_or_email or not password:
+        if not email or not password:
             return {"errors": ["Missing required parameters"]}, 400
 
-        authenticated1, user1 = User.authenticate1(username_or_email, password)
-        authenticated2, user2 = User.authenticate2(username_or_email, password)
-
-        if authenticated1:
-            user = user1
-            authenticated = authenticated1
-        elif authenticated2:
-            user = user2
-            authenticated = authenticated2
-        else:
-            authenticated = False
-            user = None
+        authenticated, user = User.authenticate(email, password)
 
         if authenticated:
             login_user(user)
