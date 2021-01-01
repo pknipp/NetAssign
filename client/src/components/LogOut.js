@@ -7,8 +7,7 @@ const LogOut = props => {
 
     const submitForm = e => {
         e.preventDefault();
-        // Make the following an IIFE?
-        const logoutUser = async _ => {
+        (async _ => {
             const response = await fetchWithCSRF('/api/session/', {
                 method: 'DELETE',
                 credentials: 'include'
@@ -17,8 +16,7 @@ const LogOut = props => {
                 setCurrentUserId(null);
                 setCurrentUser(null);
             }
-        }
-        logoutUser();
+        })();
     }
 
     return (
