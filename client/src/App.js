@@ -13,25 +13,20 @@ import Success from './components/Success';
 
 const App = _ => {
     const [fetchWithCSRF, setFetchWithCSRF] = useState(() => fetch);
-    const [currentUserId, setCurrentUserId] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true)
     const authContextValue = {
         fetchWithCSRF,
-        currentUserId,
-        setCurrentUserId,
         currentUser,
         setCurrentUser
     };
 
     useEffect(() => {
         (async () => {
-            const response = await fetch('/restore')
-            const data = await response.json()
-            const { current_user_id, current_user } = data
-            setCurrentUserId(current_user_id)
-            setCurrentUser(current_user)
-            setLoading(false)
+            const response = await fetch('/restore');
+            const data = await response.json();
+            setCurrentUser(data.current_user);
+            setLoading(false);
         })()
     }, [])
 
@@ -41,13 +36,13 @@ const App = _ => {
                 <h1>Loading</h1>
             :
                 <BrowserRouter>
-                    <NavBar currentUserId={currentUserId} currentUser={currentUser} />
+                    <NavBar currentUser={currentUser} />
                     <Switch>
                         <AuthRoute exact path="/login" component={LogIn} />
                         <AuthRoute exact path="/signup" component={SignUp} />
-                        <ProtectedRoute exact path="/logout" component={LogOut} currentUserId={currentUserId} />
-                        <ProtectedRoute exact path="/edituser" component={EditUser} currentUser={currentUser} currentUserId={currentUserId} />
-                        <ProtectedRoute exact path="/" component={Success} currentUserId={currentUserId} />
+                        <ProtectedRoute exact path="/logout" component={LogOut} currentUser={currentUser} />
+                        <ProtectedRoute exact path="/edituser" component={EditUser} currentUser={currentUser} />
+                        <ProtectedRoute exact path="/" component={Success} />
                     </Switch>
                 </BrowserRouter>
             }

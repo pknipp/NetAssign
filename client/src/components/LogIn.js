@@ -6,7 +6,7 @@ const LogIn = props => {
     const [email, setEmail] = useState("demo@aol.com");
     const [password, setPassword] = useState("password");
     const [errors, setErrors] = useState([]);
-    const { fetchWithCSRF, setCurrentUserId, setCurrentUser } = useContext(AuthContext);
+    const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     let history = useHistory();
 
     const submitForm = e => {
@@ -20,7 +20,6 @@ const LogIn = props => {
             if (!response.ok) {
                 setErrors(responseData.errors);
             } else {
-                setCurrentUserId(responseData.current_user_id);
                 setCurrentUser(responseData.current_user);
                 history.push('/')
             }

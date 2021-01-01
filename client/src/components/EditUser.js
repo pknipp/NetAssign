@@ -4,7 +4,7 @@ import AuthContext from '../auth'
 
 
 const EditUser = props => {
-    const { fetchWithCSRF, currentUser, setCurrentUserId } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser, setCurrentUser } = useContext(AuthContext);
     const [email, setEmail] = useState(currentUser.email);
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('')
@@ -15,32 +15,26 @@ const EditUser = props => {
 
     const submitForm = e => {
         e.preventDefault();
-
-        // Make the following an IIFE?
-        async function editUser() {
+        (async _ => {
             const response = await fetchWithCSRF(`/api/users/${props.currentUserId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ email, password, password2 })
             });
-
             const responseData = await response.json();
             if (!response.ok) {
                 setErrors(responseData.errors);
             } else if (responseData.messages) {
                 setMessages(responseData.messages)
             } else {
-                // setCurrentUserId(responseData.current_user_id)
                 history.push('/')
             }
-        }
-        editUser();
+        })();
     }
-
     const deleteUser = e => {
         e.preventDefault();
 
         // Make the following an IIFE?
-        async function deleteUser() {
+        (async _ => {
             const response = await fetchWithCSRF(`/api/users/${props.currentUserId}`, {
                 method: 'DELETE',
                 headers: {
@@ -49,22 +43,15 @@ const EditUser = props => {
                 credentials: 'include',
                 body: JSON.stringify({})
             });
-
-            console.log(response);
             const responseData = await response.json();
             if (!response.ok) {
                 setErrors(responseData.errors);
             } else if (responseData.messages) {
                 setMessages(responseData.messages)
+            } else {
+                setCurrentUser(null);
             }
-            else {
-                // setCurrentUserId(responseData.current_user_id)
-                setCurrentUserId(null);
-                // history.push('/')
-
-            }
-        }
-        deleteUser();
+        })();
     }
 
     return (

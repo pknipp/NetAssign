@@ -3,7 +3,7 @@ import AuthContext from '../auth'
 
 const LogOut = props => {
     const [errors, setErrors] = useState("");
-    const { fetchWithCSRF, setCurrentUserId, setCurrentUser } = useContext(AuthContext);
+    const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
 
     const submitForm = e => {
         e.preventDefault();
@@ -13,7 +13,6 @@ const LogOut = props => {
                 credentials: 'include'
             });
             if (response.ok) {
-                setCurrentUserId(null);
                 setCurrentUser(null);
             }
         })();

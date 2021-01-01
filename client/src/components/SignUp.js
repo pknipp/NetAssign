@@ -5,7 +5,7 @@ const SignUp = props => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('')
-    const { fetchWithCSRF, setCurrentUserId, setCurrentUser } = useContext(AuthContext);
+    const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
 
     const submitForm = e => {
@@ -19,7 +19,6 @@ const SignUp = props => {
             if (!response.ok) {
                 setErrors(responseData.errors);
             } else {
-                setCurrentUserId(responseData.current_user_id)
                 setCurrentUser(responseData.current_user);
             }
         })();

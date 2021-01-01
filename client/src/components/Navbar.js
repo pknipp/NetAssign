@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const NavBar = ({ currentUserId, currentUser }) => (
     <>
         MyWebAssign
-        {(currentUserId && currentUser) ?
+        {(currentUser) ?
             <>
                 <span>{currentUser.email}</span>
                 <NavLink to="/edituser" activeClassName="active">Account Details</NavLink>
