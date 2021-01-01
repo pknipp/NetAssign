@@ -12,19 +12,14 @@ def index():
     if request.method == 'PUT':
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-
         email = request.json.get('email', None)
         password = request.json.get('password', None)
-
         if not email or not password:
             return {"errors": ["Missing required parameters"]}, 400
-
         authenticated, user = User.authenticate(email, password)
-
         if authenticated:
             login_user(user)
             return {"current_user_id": current_user.id, "current_user": current_user.to_dict()}
-
         return {"errors": ["Invalid credentials"]}, 401
     if request.method == 'DELETE':
         logout_user()
