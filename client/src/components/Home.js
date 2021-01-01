@@ -1,11 +1,11 @@
 
 import React, { useState, useContext } from 'react';
 import { Link, Redirect, Route } from 'react-router-dom';
-import Post from './Post';
+// import Post from './Post';
 import { useHistory } from 'react-router-dom'
 import AuthContext from "../auth"
 import ReactDOM from 'react-dom';
-import ModalWindow from './ModalWindow';
+// import ModalWindow from './ModalWindow';
 
 const Home = () => {
     const [show, setShow] = useState(false);
@@ -34,7 +34,8 @@ const Home = () => {
                 )} */}
                 <h1>Home</h1>
             </div>
-            <ModalWindow onClose={showModal} show={show} />
+            <div>Modal window was here.</div>
+
             {show ? "" : <button id="post-button" onClick={showModal} >+</button>}
         </div>
     );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Modal from 'react-modal';
-import ModalWindow from './ModalWindow';
+// import ModalWindow from './ModalWindow';
 
 
 const customStyles = {
@@ -62,7 +62,8 @@ const Navbar = ({ currentUserId, currentUser }) => {
                                 style={customStyles}
                                 contentLabel='Modal'
                             >
-                                <ModalWindow handleClose={handleClose} />
+                                <div>Modal window was here.</div>
+                                
                             </Modal>
                             {show ? "" : <button className="navbar-item" id="upload" onClick={showModal} >
                                 <i className="fas fa-cloud-upload-alt"></i>
