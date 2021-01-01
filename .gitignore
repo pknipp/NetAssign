@@ -1,0 +1,8 @@
+.env
+__pycache__/
+*.py[cod]
+.DS_Store
+Pipfile.lock
+pet_photos/
+seeder_data/
+node_modules/
