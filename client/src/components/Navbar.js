@@ -6,7 +6,7 @@ const NavBar = ({ currentUserId, currentUser }) => (
         MyWebAssign
         {(currentUserId && currentUser) ?
             <>
-                <span>{currentUser.user_name}</span>
+                <span>{currentUser.email}</span>
                 <NavLink to="/edituser" activeClassName="active">Account Details</NavLink>
                 <NavLink to="/logout" activeClassName="active">Log Out</NavLink>
             </>

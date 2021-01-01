@@ -15,25 +15,19 @@ def index():
     if request.method == 'POST':
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-        username = request.json.get('username', None)
-        user = User.query.filter(User.user_name == username).one_or_none()
-        if user:
-            return {"errors": ["That username has already been taken."]}, 500
-        password = request.json.get('password', None)
-        password2 = request.json.get('password2', None)
-        fullname = request.json.get("fullname", None)
         email = request.json.get('email', None)
-        if not username or not password:
+        password = request.json.get('password', None)
+        if not email or not password:
             return {"errors": ["Missing required parameters"]}, 400
+        user = User.query.filter(User.email == email).one_or_none()
+        print("existing user is ",user)
+        if user:
+            print("email taken")
+            return {"errors": ["That email has already been taken."]}, 500
+        password2 = request.json.get('password2', None)
         if not password == password2:
             return {"errors": ["Passwords must match each other"]}, 400
         new_user = User(
-            can_follow=True,
-            user_name=username,
-            first_name=fullname,
-            last_name=fullname,
-            full_name=fullname,
-            DOB=datetime.now(),
             email=email,
             password=password,
             created_at=datetime.now(),
@@ -42,7 +36,7 @@ def index():
         db.session.add(new_user)
         db.session.commit()
         # return redirect('/api/users')
-        authenticated, user = User.authenticate1(username, password)
+        authenticated, user = User.authenticate(email, password)
         if authenticated:
             login_user(user)
             return {"current_user_id": current_user.id, "current_user": current_user.to_dict()}
@@ -52,51 +46,35 @@ def index():
 @users.route('/<id>', methods=['GET', 'PUT', 'DELETE'])
 def user_info(id):
     user = User.query.filter(User.id == int(id))[0]
+    userd= user.to_dict()
     if request.method == "GET":
-        return user.to_dict()
+        return userd
     if request.method == 'DELETE':
         if user.id == 1:
             return {"errors": ["Don't take Doug. We love Doug! (He's our 'demo'.) Create a new account if you would like to test the 'Delete' route."]}, 401
         db.session.delete(user)
         db.session.commit()
         logout_user()
-
         return {"message": "goodbye"}
     if request.method == 'PUT':
-        if user.id == 1:
-            return {"errors": ["Don't edit Doug's details. We love him just as he is! (He's our 'demo'.) Create a new account if you would like to test the 'Update User' route."]}, 401
-
-        username = request.json.get('username', None)
-        user_former = User.query.filter(User.user_name == username).one_or_none()
-        if user_former:
-            return {"errors": ["That username has already been taken."]}, 500
-
-        userd = user.to_dict()
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-        user.can_follow = request.json.get('canfollow', None)
-        user.password = request.json.get('password', None)
-        user.password2 = request.json.get('password2', None)
-        user.first_name = request.json.get(
-            'fullname', None) or userd["first_name"]
-        user.last_name = request.json.get(
-            "fullname", None) or userd["last_name"]
-        user.email = request.json.get('email', None) or userd["email"]
-        user.full_name = request.json.get(
-            "fullname", None) or userd["full_name"]
-        user.website = request.json.get('website', None) or userd["website"]
-        user.bio = request.json.get('bio', None) or userd["bio"]
-        user.phone = request.json.get('phone', None) or userd["phone"]
-        user.gender = request.json.get('gender', None) or userd["gender"]
-        user.updated_at = datetime.now()
+        if user.id == 1:
+            return {"errors": ["Don't edit our demo user's details.  Create a new account if you would like to test the 'Update User' route."]}, 401
+        email = request.json.get('email', None)
         password = request.json.get('password', None)
         password2 = request.json.get('password2', None)
         if not password or not password2:
             return {"errors": ["Missing required parameters"]}, 400
         if password == password2:
             user.password = password
+            if email:
+                user_former = User.query.filter(User.email == email).one_or_none()
+                if user_former:
+                        return {"errors": ["That email has already been taken."]}, 500
         else:
             return {"errors": ["Passwords must match."]}, 400
-
+        user.email = email or userd["email"]
+        user.updated_at = datetime.now()
         db.session.commit()
         return user.to_dict()

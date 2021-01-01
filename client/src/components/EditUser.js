@@ -6,17 +6,8 @@ import AuthContext from '../auth'
 const EditUser = props => {
     const { fetchWithCSRF, currentUser, setCurrentUserId } = useContext(AuthContext);
     const [email, setEmail] = useState(currentUser.email);
-    const [username, setUsername] = useState(currentUser.user_name);
-    const [fullname, setFullname] = useState(currentUser.full_name);
-    const [canfollow, setCanfollow] = useState(currentUser.can_follow);
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('')
-    const [website, setWebsite] = useState(currentUser.website);
-    const [bio, setBio] = useState(currentUser.bio);
-    const [phone, setPhone] = useState(currentUser.phone);
-    const [gender, setGender] = useState(currentUser.gender);
-    // const token = useSelector(state => state.authentication.token);
-    // const dispatch = useDispatch();
 
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -28,23 +19,8 @@ const EditUser = props => {
         // Make the following an IIFE?
         async function editUser() {
             const response = await fetchWithCSRF(`/api/users/${props.currentUserId}`, {
-                method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    email,
-                    username,
-                    fullname,
-                    canfollow,
-                    password,
-                    password2,
-                    website,
-                    bio,
-                    phone,
-                    gender
-                })
+                method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                body: JSON.stringify({ email, password, password2 })
             });
 
             const responseData = await response.json();
@@ -96,40 +72,10 @@ const EditUser = props => {
             <form onSubmit={submitForm}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <input
-                    type="text"
-                    placeholder="Name"
-                    value={fullname}
-                    onChange={e => setFullname(e.target.value)} name="fullname" />
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={e => setUsername(e.target.value)} name="username" />
-                <input
-                    type="text"
-                    placeholder="Website"
-                    value={website}
-                    onChange={e => setWebsite(e.target.value)} name="website" />
-                <textarea
-                    rows="4"
-                    placeholder="Bio"
-                    value={bio}
-                    onChange={e => setBio(e.target.value)} name="bio"></textarea>
-                <input
                     type="email"
                     placeholder="Email"
                     value={email}
                     onChange={e => setEmail(e.target.value)} name="email" />
-                <input
-                    type="number"
-                    placeholder="Phone"
-                    value={phone}
-                    onChange={e => setPhone(e.target.value)} name="phone" />
-                <input
-                    type="text"
-                    placeholder="Gender"
-                    value={gender}
-                    onChange={e => setGender(e.target.value)} name="gender" />
                 <input
                     type="password"
                     placeholder="New password (required)"
@@ -140,20 +86,12 @@ const EditUser = props => {
                     placeholder="Confirm new password (required)"
                     value={password2}
                     onChange={e => setPassword2(e.target.value)} name="password2" />
-                <label className="checkbox" htmlFor="canfollow">
-                    <input
-                        type="checkbox"
-                        checked={!canfollow}
-                        onChange={e => setCanfollow(!e.target.checked)} name="canfollow" />
-                    {/* Click to allow others to follow you. */}Make profile private?
-                    </label>
                 <button type="submit">Submit Changes</button>
             </form>
             <form onSubmit={deleteUser}>
                 {messages.length ? messages.map(err => <li key={err}>{err}</li>) : ''}
                 <h2>Would you like to delete your account?</h2>
-                <button type="submit">Delete Account
-                </button>
+                <button type="submit">Delete Account</button>
             </form>
         </>
     );

@@ -3,33 +3,18 @@ import AuthContext from '../auth';
 
 const SignUp = props => {
     const [email, setEmail] = useState('');
-    const [username, setUsername] = useState('');
-    const [canfollow, setCanfollow] = useState(false);
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('')
     const { fetchWithCSRF, setCurrentUserId, setCurrentUser } = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
-    const [fullname, setFullname] = useState('');
 
     const submitForm = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users/`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    canfollow,
-                    email,
-                    username,
-                    fullname,
-                    password,
-                    password2
-                })
+                method: 'POST', headers: { "Content-Type": "application/json" },
+                credentials: 'include', body: JSON.stringify({ email, password, password2 })
             });
-
             const responseData = await response.json();
             if (!response.ok) {
                 setErrors(responseData.errors);
@@ -48,16 +33,6 @@ const SignUp = props => {
                 placeholder="Email"
                 value={email}
                 onChange={e => setEmail(e.target.value)} name="email" />
-            <input
-                type="text"
-                placeholder="Name"
-                value={fullname}
-                onChange={e => setFullname(e.target.value)} name="fullname" />
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={e => setUsername(e.target.value)} name="username" />
             <input
                 type="password"
                 placeholder="Password"
