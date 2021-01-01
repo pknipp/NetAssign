@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, redirect
-from petstagram.models import User, db, Follow
+from petstagram.models import User, db
 from datetime import datetime
 from flask_login import login_required, logout_user, login_user, current_user
 from sqlalchemy import or_
@@ -10,12 +10,11 @@ users = Blueprint('users', __name__)
 @users.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
-        response = User.query.filter(User.can_follow).all()
+        response = User.query.all()
         return {"users": [user.to_dict() for user in response]}
     if request.method == 'POST':
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-        # canfollow = request.json.get("canfollow", None)
         username = request.json.get('username', None)
         user = User.query.filter(User.user_name == username).one_or_none()
         if user:
@@ -58,10 +57,6 @@ def user_info(id):
     if request.method == 'DELETE':
         if user.id == 1:
             return {"errors": ["Don't take Doug. We love Doug! (He's our 'demo'.) Create a new account if you would like to test the 'Delete' route."]}, 401
-        follows = Follow.query.filter(
-            or_(Follow.follower_id == int(id), Follow.followed_id == int(id))).all()
-        for follow in follows:
-            db.session.delete(follow)
         db.session.delete(user)
         db.session.commit()
         logout_user()
@@ -80,17 +75,8 @@ def user_info(id):
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
         user.can_follow = request.json.get('canfollow', None)
-
-        # username = request.json.get('username', None)
-        # user = User.query.filter(User.user_name == username).one_or_none()
-        # if user:
-        #     return {"errors": ["That username has already been taken."]}, 500
-        # user.user_name = username or userd["user_name"]
-
-        user.password = request.json.get(
-            'password', None)  # or userd["password"]
-        user.password2 = request.json.get(
-            'password2', None)  # or userd["password2"]
+        user.password = request.json.get('password', None)
+        user.password2 = request.json.get('password2', None)
         user.first_name = request.json.get(
             'fullname', None) or userd["first_name"]
         user.last_name = request.json.get(
