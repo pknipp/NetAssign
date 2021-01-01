@@ -3,18 +3,17 @@ import { NavLink } from 'react-router-dom';
 
 const Navbar = ({ currentUserId, currentUser }) => (
     <>
-        <NavLink to="/" activeClassName="active">MyWebAssign</NavLink>
-        {currentUserId && currentUser &&
+        MyWebAssign
+        {(currentUserId && currentUser) ?
             <>
-                <a href={`/${currentUser.user_name}`}>{currentUser.user_name}</a>
-                <a href="/edituser">Account Details</a>
-                <a href="/logout">Log Out</a>
+                <span>{currentUser.user_name}</span>
+                <NavLink to="/edituser" activeClassName="active">Account Details</NavLink>
+                <NavLink to="/logout" activeClassName="active">Log Out</NavLink>
             </>
-        }
-        {!currentUserId &&
+        :
             <>
-                <a href="/login" >Log In</a>
-                <a href="/signup">Sign Up</a>
+                <NavLink to="/login" activeClassName="active">Log In</NavLink>
+                <NavLink to="/signup" activeClassName="active">Sign Up</NavLink>
             </>
         }
     </>
