@@ -2,18 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
-import Profile from './components/Profile';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import LogOut from './components/LogOut';
 import EditUser from './components/EditUser';
-import Footer from './components/Footer';
 import ProtectedRoute from "./components/ProtectedRoute"
 import AuthRoute from "./components/AuthRoute"
 import AuthContext from './auth';
-import SinglePost from './components/posts/SinglePost';
 import PostContext from './PostContext';
-import AllPosts from './components/feed/AllPosts';
+import Success from './components/Success';
 
 
 function App() {
@@ -60,7 +57,6 @@ function App() {
                     textAlign: `center`,
                     background: `white`,
                     fontSize: `3em`,
-                    /* margin: 0em; */
                     lineHeight: `7em`
                 }}>Loading</h1>}
                 {!loading &&
@@ -69,14 +65,10 @@ function App() {
                         <Switch>
                             <AuthRoute exact path="/login" component={LogIn} />
                             <AuthRoute exact path="/signup" component={SignUp} />
-                            <Route path="/posts/:id" component={SinglePost} />
-                            {/* <ProtectedRoute path="/:profile" component={Profile} currentUserId={currentUserId} /> */}
                             <ProtectedRoute exact path="/logout" component={LogOut} currentUserId={currentUserId} />
                             <ProtectedRoute exact path="/edituser" component={EditUser} currentUser={currentUser} currentUserId={currentUserId} />
-                            <Route exact path="/:profile" component={Profile} currentUserId={currentUserId} />
-                            <ProtectedRoute exact path="/" component={AllPosts} currentUserId={currentUserId} />
+                            <ProtectedRoute exact path="/" component={Success} currentUserId={currentUserId} />
                         </Switch>
-                        <Footer />
                     </BrowserRouter>
                 }
             </PostContext.Provider>
