@@ -15,7 +15,6 @@ const LogOut = props => {
     }
     return (
         <form onSubmit={submitForm}>
-            {/* {errors.map(err => <li key={err} >{err}</li>)} */}
             <button type="submit">Logout</button>
         </form>
     );

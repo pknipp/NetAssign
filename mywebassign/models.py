@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
+    isTeacher = db.Column(db.Boolean, nullable=False)
     email = db.Column(db.String(63), nullable=False, unique=True)
     hashed_password = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
@@ -38,6 +39,26 @@ class User(db.Model, UserMixin):
         return {
             "id": self.id,
             "email": self.email,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
+
+class Question(db.Model, UserMixin):
+    __tablename__ = 'questions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    stuff = db.Column(db.String(63), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    updated_at = db.Column(db.DateTime, nullable=False)
+
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "teacher_id": self.teacher_id,
+            "stuff": self.stuff,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
