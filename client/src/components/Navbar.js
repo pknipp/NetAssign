@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const NavBar = ({ currentUserId, currentUser }) => (
+const NavBar = ({ currentUser }) => (
     <>
         MyWebAssign
         {(currentUser) ?

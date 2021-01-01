@@ -21,6 +21,7 @@ app.register_blueprint(users, url_prefix='/api/users')
 db.init_app(app)
 
 
+# Does the following get used for anything?
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -55,4 +56,4 @@ def restore():
     id = current_user.id if current_user.is_authenticated else None
     user = None if not current_user.is_authenticated else current_user.to_dict()
     if current_user:
-        return {"current_user_id": id, "current_user": user}
+        return {"current_user": user}

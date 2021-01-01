@@ -3,9 +3,9 @@ import { Redirect, Route } from 'react-router-dom';
 import AuthContext from "../auth"
 
 const ProtectedRoute = ({ component: Component, path, exact }) => {
-    const { currentUserId } = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
     return (
-        <Route path={path} exact={exact} render={props => currentUserId ? <Redirect to="/" /> : <Component />} />
+        <Route path={path} exact={exact} render={props => currentUser ? <Redirect to="/" /> : <Component />} />
     )
 }
 export default ProtectedRoute

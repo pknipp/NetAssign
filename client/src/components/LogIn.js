@@ -27,25 +27,19 @@ const LogIn = props => {
     }
     return (
         <form onSubmit={submitForm}>
-            {errors.length ? errors.map((err) => <li key={err} color="red">{err}</li>) :''}
+            {errors.map(err => <li key={err} color="red">{err}</li>)}
             Email
             <input
-                type="text"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                name="email" />
+                type="text" placeholder="Email" value={email}
+                onChange={(e) => setEmail(e.target.value)} name="email"
+            />
             Password
             <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                name="password"
+                type="password" placeholder="Password" value={password}
+                onChange={(e) => setPassword(e.target.value)} name="password"
             />
             <button type="submit">Login</button>
         </form>
     );
 };
-
 export default LogIn;

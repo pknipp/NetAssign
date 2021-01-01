@@ -1,28 +1,3 @@
-
-
-# Flask React Project
-
-## DreamTeam Required Features
-- 1 Images
-- 2 Likes
-- 3 Commenting on images
-- 4 Following & Photo feed
-- Bonus: direct messaging
-- Bonus: hashtags
-
-## Database
-- https://drawsql.app/appacademy-2/diagrams/petstagram#
-
-## Pages & Routes
-- TBD
-
-## MVP Functionality
-- TBD: One aspect of app functionality to be carried out from start to finish by each individual group member
-
-
-
-
-------------------------------------------------
 This is the backend for the Flask React project.
 
 ## Getting started

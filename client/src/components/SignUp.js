@@ -23,28 +23,23 @@ const SignUp = props => {
             }
         })();
     }
-
     return (
         <form onSubmit={submitForm}>
-            {errors.length ? errors.map(err => <li key={err} >{err}</li>) : ''}
+            {errors.map(err => <li key={err} >{err}</li>)}
             <input
-                type="text"
-                placeholder="Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)} name="email" />
+                type="text" placeholder="Email" value={email}
+                onChange={e => setEmail(e.target.value)} name="email"
+            />
             <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)} name="password" />
+                type="password" placeholder="Password" value={password}
+                onChange={e => setPassword(e.target.value)} name="password"
+            />
             <input
-                type="password"
-                placeholder="Confirm password"
-                value={password2}
-                onChange={e => setPassword2(e.target.value)} name="password2" />
+                type="password" placeholder="Confirm password" value={password2}
+                onChange={e => setPassword2(e.target.value)} name="password2"
+            />
             <button type="submit">Sign Up</button>
         </form>
     );
 };
-
 export default SignUp;

@@ -16,7 +16,7 @@ const EditUser = props => {
     const submitForm = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/${props.currentUserId}`, {
+            const response = await fetchWithCSRF(`/api/users/${props.currentUser.id}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ email, password, password2 })
             });
@@ -32,16 +32,10 @@ const EditUser = props => {
     }
     const deleteUser = e => {
         e.preventDefault();
-
-        // Make the following an IIFE?
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/${props.currentUserId}`, {
-                method: 'DELETE',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: 'include',
-                body: JSON.stringify({})
+            const response = await fetchWithCSRF(`/api/users/${props.currentUser.id}`, {
+                method: 'DELETE', headers: {"Content-Type": "application/json"},
+                credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) {
@@ -59,24 +53,18 @@ const EditUser = props => {
             <form onSubmit={submitForm}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
+                    type="email" placeholder="Email" value={email}
                     onChange={e => setEmail(e.target.value)} name="email" />
                 <input
-                    type="password"
-                    placeholder="New password (required)"
-                    value={password}
+                    type="password" placeholder="New password (required)" value={password}
                     onChange={e => setPassword(e.target.value)} name="password" />
                 <input
-                    type="password"
-                    placeholder="Confirm new password (required)"
-                    value={password2}
+                    type="password" placeholder="Confirm new password (required)" value={password2}
                     onChange={e => setPassword2(e.target.value)} name="password2" />
                 <button type="submit">Submit Changes</button>
             </form>
             <form onSubmit={deleteUser}>
-                {messages.length ? messages.map(err => <li key={err}>{err}</li>) : ''}
+                {messages.map(err => <li key={err}>{err}</li>)}
                 <h2>Would you like to delete your account?</h2>
                 <button type="submit">Delete Account</button>
             </form>
