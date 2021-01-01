@@ -46,7 +46,7 @@ const Navbar = ({ currentUserId, currentUser }) => {
     return (
         <nav className="navbar is-fixed-top" style={{ border: `1px solid #efefef` }}>
             <div className="navbar-brand" style={{ alignItems: `center` }}>
-                <NavLink to="/" activeClassName="active"><h1 style={{ alignItems: `center`, fontSize: `24px` }}>Petstagram</h1></NavLink>
+                <NavLink to="/" activeClassName="active"><h1 style={{ alignItems: `center`, fontSize: `24px` }}>MyWebAssign</h1></NavLink>
             </div>
             <div className="navbar-end" style={{
                 display: `flex`,
@@ -55,19 +55,8 @@ const Navbar = ({ currentUserId, currentUser }) => {
                 <>
                     {currentUserId && currentUser &&
                         <>
-                            {/* <ModalWindow onClose={showModal} show={show} /> */}
-                            <Modal
-                                isOpen={show}
-                                onRequestClose={handleClose}
-                                style={customStyles}
-                                contentLabel='Modal'
-                            >
-                                <div>Modal window was here.</div>
-                                
-                            </Modal>
                             {show ? "" : <button className="navbar-item" id="upload" onClick={showModal} >
                                 <i className="fas fa-cloud-upload-alt"></i>
-                                {/* Create Post */}
                             </button>}
                             <div className="navbar-item" >
                                 <a href={`/${currentUser.user_name}`}>
@@ -106,7 +95,6 @@ const Navbar = ({ currentUserId, currentUser }) => {
                     }
                 </>
             </div>
-            {/* </div> */}
         </nav>
     )
 }
