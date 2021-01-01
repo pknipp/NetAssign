@@ -92,142 +92,70 @@ const EditUser = props => {
     }
 
     return (
-        <div className="authContain">
-            <div className="authForm">
-                <div className="authFormDiv">
-                    <h1 style={{
-                        margin: `22px auto 12px`,
-                        fontSize: `3em`,
-                        height: `20px`,
-                        marginBlockStart: `1em`,
-                        marginBlockEnd: `1em`
-                    }}>Petstagram</h1>
-                    <h2 style={{
-                        color: `#8e8e8e`,
-                        fontSize: `17px`,
-                        fontWeight: `600`,
-                        lineHeight: `20px`,
-                        margin: `0 40px 10px`,
-                        textAlign: `center`
-                    }}>Edit profile.</h2>
-                    <div className="authFormInnerWrap">
-                        <form onSubmit={submitForm}>
-                            {errors.length ? errors.map(err => <li key={err}
-                                style={{
-                                    color: `red`,
-                                    padding: `0 1em 1em`,
-                                    fontWeight: `700`
-                                }} >{err}</li>) : ''}
-                            <input
-                                className="input"
-                                type="text"
-                                placeholder="Name"
-                                value={fullname}
-                                onChange={e => setFullname(e.target.value)} name="fullname" />
-                            <input
-                                className="input"
-                                type="text"
-                                placeholder="Username"
-                                value={username}
-                                onChange={e => setUsername(e.target.value)} name="username" />
-                            <input
-                                className="input"
-                                type="text"
-                                placeholder="Website"
-                                value={website}
-                                onChange={e => setWebsite(e.target.value)} name="website" />
-                            <textarea
-                                className="input"
-                                rows="4"
-                                placeholder="Bio"
-                                value={bio}
-                                onChange={e => setBio(e.target.value)} name="bio"></textarea>
-                            <input
-                                className="input"
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)} name="email" />
-                            <input
-                                className="input"
-                                type="number"
-                                placeholder="Phone"
-                                value={phone}
-                                onChange={e => setPhone(e.target.value)} name="phone" />
-                            <input
-                                className="input"
-                                type="text"
-                                placeholder="Gender"
-                                value={gender}
-                                onChange={e => setGender(e.target.value)} name="gender" />
-                            <input
-                                className="input"
-                                type="password"
-                                placeholder="New password (required)"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)} name="password" />
-                            <input
-                                className="input"
-                                type="password"
-                                placeholder="Confirm new password (required)"
-                                value={password2}
-                                onChange={e => setPassword2(e.target.value)} name="password2" />
-
-                            <label className="checkbox" htmlFor="canfollow" style={{
-                                color: `rgb(142, 142, 142)`,
-                                fontSize: `16px`,
-                                fontWeight: `600`
-                            }}>
-                                <input
-                                    type="checkbox"
-                                    style={{
-                                        margin: `10px 5px`,
-                                        width: `auto`
-                                    }}
-                                    checked={!canfollow}
-                                    onChange={e => setCanfollow(!e.target.checked)} name="canfollow" />
-                                {/* Click to allow others to follow you. */}Make profile private?
-                                </label>
-                            <button type="submit" className="button has-background-link has-text-white" style={{
-                                height: `2rem`,
-                                paddingLeft: `.5em`,
-                                paddingRight: `.5em`,
-                                margin: `8px 40px`,
-                                fontWeight: `600`
-                            }}>Submit Changes</button>
-                        </form>
-                    </div>
-
-                    <div className="authFormInnerWrap">
-                        <form onSubmit={deleteUser} style={{ marginTop: `0` }}>
-                            {messages.length ? messages.map(err => <li key={err}
-                                style={{
-                                    color: `red`,
-                                    padding: `1em`,
-                                    fontWeight: `700`,
-                                    textAlign: `center`
-                                }} >{err}</li>) : ''}
-                            <h2 style={{
-                                color: `#8e8e8e`,
-                                fontSize: `17px`,
-                                fontWeight: `600`,
-                                lineHeight: `20px`,
-                                margin: `0 40px 10px`,
-                                textAlign: `center`
-                            }}>Would you like to delete your account?</h2>
-                            <button type="submit" className="button has-background-link has-text-white" style={{
-                                height: `2rem`,
-                                paddingLeft: `.5em`,
-                                paddingRight: `.5em`,
-                                margin: `8px 40px`,
-                                fontWeight: `600`
-                            }}>Delete Account
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <>
+            <form onSubmit={submitForm}>
+                {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={fullname}
+                    onChange={e => setFullname(e.target.value)} name="fullname" />
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)} name="username" />
+                <input
+                    type="text"
+                    placeholder="Website"
+                    value={website}
+                    onChange={e => setWebsite(e.target.value)} name="website" />
+                <textarea
+                    rows="4"
+                    placeholder="Bio"
+                    value={bio}
+                    onChange={e => setBio(e.target.value)} name="bio"></textarea>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)} name="email" />
+                <input
+                    type="number"
+                    placeholder="Phone"
+                    value={phone}
+                    onChange={e => setPhone(e.target.value)} name="phone" />
+                <input
+                    type="text"
+                    placeholder="Gender"
+                    value={gender}
+                    onChange={e => setGender(e.target.value)} name="gender" />
+                <input
+                    type="password"
+                    placeholder="New password (required)"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)} name="password" />
+                <input
+                    type="password"
+                    placeholder="Confirm new password (required)"
+                    value={password2}
+                    onChange={e => setPassword2(e.target.value)} name="password2" />
+                <label className="checkbox" htmlFor="canfollow">
+                    <input
+                        type="checkbox"
+                        checked={!canfollow}
+                        onChange={e => setCanfollow(!e.target.checked)} name="canfollow" />
+                    {/* Click to allow others to follow you. */}Make profile private?
+                    </label>
+                <button type="submit">Submit Changes</button>
+            </form>
+            <form onSubmit={deleteUser}>
+                {messages.length ? messages.map(err => <li key={err}>{err}</li>) : ''}
+                <h2>Would you like to delete your account?</h2>
+                <button type="submit">Delete Account
+                </button>
+            </form>
+        </>
     );
 };
 
