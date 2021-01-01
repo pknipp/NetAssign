@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import NavBar from './components/NavBar';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import LogOut from './components/LogOut';
@@ -41,7 +41,7 @@ const App = _ => {
                 <h1>Loading</h1>
             :
                 <BrowserRouter>
-                    <Navbar currentUserId={currentUserId} currentUser={currentUser} />
+                    <NavBar currentUserId={currentUserId} currentUser={currentUser} />
                     <Switch>
                         <AuthRoute exact path="/login" component={LogIn} />
                         <AuthRoute exact path="/signup" component={SignUp} />

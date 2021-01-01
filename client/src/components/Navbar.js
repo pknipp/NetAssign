@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Navbar = ({ currentUserId, currentUser }) => (
+const NavBar = ({ currentUserId, currentUser }) => (
     <>
         MyWebAssign
         {(currentUserId && currentUser) ?
@@ -18,4 +18,4 @@ const Navbar = ({ currentUserId, currentUser }) => (
         }
     </>
 )
-export default Navbar;
+export default NavBar;
