@@ -5,10 +5,10 @@ from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager, \
     current_user, login_user, logout_user, login_required
 from flask_migrate import Migrate
-from petstagram.models import db, User
-from petstagram.api.session import session
-from petstagram.api.users import users
-from petstagram.config import Config
+from mywebassign.models import db, User
+from mywebassign.api.session import session
+from mywebassign.api.users import users
+from mywebassign.config import Config
 from datetime import datetime
 
 

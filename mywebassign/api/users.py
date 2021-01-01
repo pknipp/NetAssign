@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, redirect
-from petstagram.models import User, db
+from mywebassign.models import User, db
 from datetime import datetime
 from flask_login import login_required, logout_user, login_user, current_user
 from sqlalchemy import or_
