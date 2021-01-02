@@ -49,7 +49,9 @@ class Question(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    stuff = db.Column(db.String(63), nullable=False)
+    question = db.Column(db.String(127), nullable=False)
+    inputs = db.Column(db.String(127), nullable=False)
+    answer = db.Column(db.String(63), nullable=False)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
@@ -58,7 +60,9 @@ class Question(db.Model, UserMixin):
         return {
             "id": self.id,
             "teacher_id": self.teacher_id,
-            "stuff": self.stuff,
+            "question": self.question,
+            "inputs": self.inputs,
+            "answer": self.answer,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
