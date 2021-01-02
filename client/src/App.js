@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import AuthRoute from "./components/AuthRoute"
 import AuthContext from './auth';
 import Success from './components/Success';
+import Questions from './components/Questions';
 
 
 const App = _ => {

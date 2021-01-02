@@ -1,5 +1,6 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/webassign#)
 Question parsing:
+synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
 
 example:
 ```
