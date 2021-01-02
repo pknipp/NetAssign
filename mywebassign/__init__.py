@@ -5,9 +5,10 @@ from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager, \
     current_user, login_user, logout_user, login_required
 from flask_migrate import Migrate
-from mywebassign.models import db, User
+from mywebassign.models import db, User, Question
 from mywebassign.api.session import session
 from mywebassign.api.users import users
+from mywebassign.api.questions import questions
 from mywebassign.config import Config
 from datetime import datetime
 
@@ -18,6 +19,7 @@ migrate = Migrate(app, db)
 app.config.from_object(Config)
 app.register_blueprint(session, url_prefix='/api/session')
 app.register_blueprint(users, url_prefix='/api/users')
+app.register_blueprint(questions, url_prefix='/api/questions')
 db.init_app(app)
 
 

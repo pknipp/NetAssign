@@ -50,8 +50,8 @@ class Question(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     stuff = db.Column(db.String(63), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False)
-    updated_at = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime)
+    updated_at = db.Column(db.DateTime)
 
 
     def to_dict(self):
