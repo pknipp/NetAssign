@@ -43,7 +43,7 @@ const App = _ => {
                         <AuthRoute exact path="/signup" component={SignUp} />
                         <ProtectedRoute exact path="/logout" component={LogOut} currentUser={currentUser} />
                         <ProtectedRoute exact path="/edituser" component={EditUser} currentUser={currentUser} />
-                        <ProtectedRoute exact path="/" component={Success} />
+                        <ProtectedRoute exact path="/" component={Questions} />
                     </Switch>
                 </BrowserRouter>
             }
