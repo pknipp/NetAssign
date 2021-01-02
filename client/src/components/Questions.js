@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import AuthContext from '../auth'
 
 const Questions = _ => {
-    const [questionList, setQuestionList] = useState([])
+    const [question, setQuestion] = useState("")
     const { currentUser } = useContext(AuthContext)
     const [show, setShow] = useState(false)
     const [suggestions, setSuggestions] = useState([]);
@@ -15,7 +15,7 @@ const Questions = _ => {
                 const res = await fetch(`/api/questions`)
                 if (res.ok) {
                     const data = await res.json();
-                    setQuestionList(data.questions);
+                    setQuestion(data.question);
                 }
             } catch (err) {
                 console.error(err)
@@ -23,9 +23,9 @@ const Questions = _ => {
         })()
     }, [])
 
-    return (!questionList.length) ? null :
+    return (!question) ? null :
         <div>
-            {questionList[0].stuff}
+            {question}
         </div>
 }
 
