@@ -11,8 +11,24 @@ seed(1)
 fake = Faker()
 load_dotenv()
 
-users = [("demo@aol.com", True), ("jdoe@aol.com", False)]
-questions = [(1, "{0} plus {1} equals ... ", "x0 + x1", [[2, 3, 20], [5, 7, 200]])]
+users = [
+    ("demoTeacher@aol.com", True),
+    ("johndoe@aol.com", True),
+    ("demoStudent@aol.com", False),
+    ("johnnydoe@aol.com", False)
+    ]
+questions = [
+    (1, "{0} plus {1} equals ... ", "x0 + x1", [[2, 3, 10], [5, 7, 20]]),
+    (1, "{0} times {1} equals ... ","x0 * x1", [[-3, -1, 20], [2, 3, 10]]),
+    (1, "{0} divided by {1} equals ... ","x0/x1", [[2, 4, 20], [1, 3, 20]]),
+    (1, "{0} raised to power of {1} equals ... ", "x0^x1", [[2, 6, 4], [2, 5, 3]]),
+    (1, "The square root of {0} equals ...", "sqrt(x0)", [[2, 12, 10]]),
+    (1, "{0} * {1} + {2} equals ... ", "x0 * x1 + x2", [[0,3,3], [1,4,3], [2,5,3]]),
+    (1, "ln {0} equals ... ", "log(x0)", [[2, 9, 7]]),
+    (1, "log {0} equals ...", "log(x0)/log(10)", [[2, 19, 17]]),
+    (1, "cos {0} rads equals ... ", "cos(x0)", [[0, 2, 20]]),
+    (1, "arctan {0} equals ... (in radians)", "atan(x0)", [[1, 5, 4]])
+    ]
 
 with app.app_context():
     db.drop_all()
