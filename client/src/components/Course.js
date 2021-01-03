@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import AuthContext from '../auth'
 
-const Course = _ => {
+const Course = props => {
     const [courses, setCourses] = useState([])
     const { currentUser } = useContext(AuthContext)
 
@@ -19,15 +19,7 @@ const Course = _ => {
         })()
     }, [currentUser.id])
 
-    return (!courses.length) ? null :
-        <ul>
-            {courses.map(course => (
-                <li key={course.course.id}>
-                    {course.course.name}<br/>
-                    {(currentUser.is_teacher) ? null : <span>Instructor: {course.teacher.email} </span>}
-                </li>
-            ))}
-        </ul>
+    return <h3>{Object.keys(props)[0]}</h3>
 }
 
 
