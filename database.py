@@ -57,3 +57,25 @@ with app.app_context():
             updated_at=fake.date_time_between(start_date=created_at)
         ))
     db.session.commit()
+
+
+with app.app_context():
+
+    # avg number of assignments per teacher
+    n_assignment_per_teacher = 10
+
+    for _ in range(n_t):
+        user_id = randrange(n_user)
+        created_at = fake.date_time_between(
+            start_date=user_t[user_id]
+        )
+        post_t.append(created_at)
+        db.session.add(Post(
+            user_id=user_id + 1,
+            photo_url=fake.isbn10(),
+            created_at=created_at,
+            updated_at=created_at,
+            caption=fake.paragraph(nb_sentences=2, variable_nb_sentences=True),
+        ))
+
+    db.session.commit()
