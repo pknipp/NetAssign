@@ -17,18 +17,14 @@ def index():
     if request.method == 'GET':
         response = Question.query.all()[0]
         q_and_a = response.to_dict()
-        print("q_and_a = ", q_and_a)
         question = q_and_a['question']
-        print("question = ", question)
         inputs = json.loads(q_and_a['inputs'])
-        print("inputs = ", inputs)
-        print("inputs[0][1] = ", inputs[0][1])
-        print("inputs[1] = ", inputs[1])
         answer = q_and_a['answer']
-        print("answer = ", answer)
         x = list()
-        x.append(inputs[0][0] + (inputs[0][1] - inputs[0][0]) * randint(0,inputs[0][2])/inputs[0][2])
-        x.append(inputs[1][0] + (inputs[1][1] - inputs[1][0]) * randint(0,inputs[1][2])/inputs[1][2])
-        specific_question = question.format(x[0], x[1])
-        specific_answer   = cexprtk.evaluate_expression(answer, {"x0": x[0], "x1": x[1]})
+        input_dict = dict()
+        for i in range(len(inputs)):
+            x.append(inputs[i][0]+(inputs[i][1]-inputs[i][0])*randint(0, inputs[i][2])/inputs[i][2])
+            input_dict["x" + str(i)] = x[i]
+        specific_question = question.format(*x)
+        specific_answer = cexprtk.evaluate_expression(answer, input_dict)
         return {"specific_question": specific_question, "specific_answer": specific_answer}

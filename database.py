@@ -12,7 +12,7 @@ fake = Faker()
 load_dotenv()
 
 users = [("demo@aol.com", True), ("jdoe@aol.com", False)]
-questions = [(1, "{0} plus {1} equals ... ", [[2, 3, 20], [5, 7, 200]], "x0 + x1")]
+questions = [(1, "{0} plus {1} equals ... ", "x0 + x1", [[2, 3, 20], [5, 7, 200]])]
 
 with app.app_context():
     db.drop_all()
@@ -35,8 +35,8 @@ with app.app_context():
         db.session.add(Question(
             teacher_id=question[0],
             question=question[1],
-            inputs=json.dumps(question[2]),
-            answer=question[3],
+            answer=question[2],
+            inputs=json.dumps(question[3]),
             created_at=created_at,
             updated_at=fake.date_time_between(start_date=created_at)
         ))
