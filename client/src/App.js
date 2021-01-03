@@ -8,8 +8,8 @@ import EditUser from './components/EditUser';
 import ProtectedRoute from "./components/ProtectedRoute"
 import AuthRoute from "./components/AuthRoute"
 import AuthContext from './auth';
-import Success from './components/Success';
-import Questions from './components/Questions';
+// import Success from './components/Success';
+import Enrollments from './components/Enrollments';
 
 
 const App = _ => {
@@ -41,9 +41,11 @@ const App = _ => {
                     <Switch>
                         <AuthRoute exact path="/login" component={LogIn} />
                         <AuthRoute exact path="/signup" component={SignUp} />
+                        {/* Is currentUser prop needed, because of context? */}
                         <ProtectedRoute exact path="/logout" component={LogOut} currentUser={currentUser} />
                         <ProtectedRoute exact path="/edituser" component={EditUser} currentUser={currentUser} />
-                        <ProtectedRoute exact path="/" component={Questions} />
+                        {/* <ProtectedRoute exact path="/" component={Questions} /> */}
+                        <ProtectedRoute exact path="/" component={Enrollments} />
                     </Switch>
                 </BrowserRouter>
             }

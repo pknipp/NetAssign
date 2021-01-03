@@ -3,12 +3,7 @@ import AuthContext from '../auth'
 
 const Questions = _ => {
     const [qAndAs, setQandAs] = useState([])
-    const [answer, setAnswer] = useState("")
     const { currentUser } = useContext(AuthContext)
-    const [show, setShow] = useState(false)
-    const [suggestions, setSuggestions] = useState([]);
-    const [currentProfile, setCurrentProfile] = useState(null);
-    const [followStatus, setFollowStatus] = useState(null);
 
     useEffect(() => {
         (async () => {

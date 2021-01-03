@@ -9,6 +9,7 @@ from mywebassign.models import db, User, Question
 from mywebassign.api.session import session
 from mywebassign.api.users import users
 from mywebassign.api.questions import questions
+from mywebassign.api.enrollments import enrollments
 from mywebassign.config import Config
 from datetime import datetime
 
@@ -20,6 +21,7 @@ app.config.from_object(Config)
 app.register_blueprint(session, url_prefix='/api/session')
 app.register_blueprint(users, url_prefix='/api/users')
 app.register_blueprint(questions, url_prefix='/api/questions')
+app.register_blueprint(enrollments, url_prefix='/api/enrollments')
 db.init_app(app)
 
 

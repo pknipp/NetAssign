@@ -9,7 +9,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    isTeacher = db.Column(db.Boolean, nullable=False)
+    is_teacher = db.Column(db.Boolean, nullable=False)
     email = db.Column(db.String(63), nullable=False, unique=True)
     hashed_password = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
@@ -38,6 +38,7 @@ class User(db.Model, UserMixin):
         return {
             "id": self.id,
             "email": self.email,
+            "is_teacher": self.is_teacher,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }

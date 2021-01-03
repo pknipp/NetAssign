@@ -27,7 +27,7 @@ with app.app_context():
         created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(User(
             email= users[i][0] if (i < 2) else fake.simple_profile()["mail"],
-            isTeacher= i == 0 or (i > 1 and i < n_teachers + 1),
+            is_teacher= i == 0 or (i > 1 and i < n_teachers + 1),
             password="password",
             created_at=created_at,
             updated_at=fake.date_time_between(start_date=created_at)
@@ -115,7 +115,7 @@ with app.app_context():
         teacher_id = courses[i][0]
         for j in range(n_teachers + n_students):
             student_id = j + 1
-            if (student_id == 2 and course_id == 1) or (student_id == teacher_id) or (random() < enrollments_per_student/len(courses)):
+            if (student_id == 2 and course_id == 1) or (student_id == teacher_id) or (random() < enrollments_per_student/len(courses) and not student_id <= n_teachers + 1):
                 db.session.add(Enrollment(
                     course_id=course_id,
                     student_id=student_id,
