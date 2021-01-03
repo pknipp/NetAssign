@@ -9,7 +9,9 @@ use faker to generate more seed material
 in database.py, ensure that created_at dates are consistent between related models
 change project name from mywebassign to myassign?
 eager loading rather than lazy loading
-muse upon rationale for putting routes in different blueprints
+muse upon rationale for putting routes in different blueprints (and naming components)
+change "Teacher" to "Instructor" to leave open higher-ed possibility
+remove period from end of fake words used for Assignment names
 
 example:
 ```
