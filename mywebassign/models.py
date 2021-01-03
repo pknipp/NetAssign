@@ -34,7 +34,6 @@ class User(db.Model, UserMixin):
         else:
             return False, None
 
-
     def to_dict(self):
         return {
             "id": self.id,
@@ -52,9 +51,8 @@ class Question(db.Model, UserMixin):
     question = db.Column(db.String(127), nullable=False)
     inputs = db.Column(db.String(127), nullable=False)
     answer = db.Column(db.String(63), nullable=False)
-    created_at = db.Column(db.DateTime)
-    updated_at = db.Column(db.DateTime)
-
+    created_at = db.Column(db.DateTime, nullable=False)
+    updated_at = db.Column(db.DateTime, nullable=False)
 
     def to_dict(self):
         return {
@@ -63,6 +61,123 @@ class Question(db.Model, UserMixin):
             "question": self.question,
             "inputs": self.inputs,
             "answer": self.answer,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
+
+class Assignment(db.Model, UserMixin):
+    __tablename__ = 'assignments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    name = db.Column(db.String(63), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    updated_at = db.Column(db.DateTime, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "teacher_id": self.teacher_id,
+            "name": self.name,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
+
+class Appearance(db.Model, UserMixin):
+    __tablename__ = 'appearances'
+
+    id = db.Column(db.Integer, primary_key=True)
+    assignment_id = db.Column(db.Integer, db.ForeignKey("assignments.id"), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    db.UniqueConstraint(assignment_id, question_id)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "assignment_id": self.assignment_id,
+            "question_id": self.question_id,
+            "created_at": self.created_at
+        }
+
+
+class Course(db.Model, UserMixin):
+    __tablename__ = 'courses'
+
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    name = db.Column(db.String(63), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    updated_at = db.Column(db.DateTime, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "teacher_id": self.teacher_id,
+            "name": self.name,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
+
+class Enrollment(db.Model, UserMixin):
+    __tablename__ = 'enrollments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey("courses.id"), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    db.UniqueConstraint(student_id, course_id)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "student_id": self.student_id,
+            "course_id": self.course_id,
+            "created_at": self.created_at
+        }
+
+
+class Deployment(db.Model, UserMixin):
+    __tablename__ = 'deployments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey("courses.id"), nullable=False)
+    assignment_id = db.Column(db.Integer, db.ForeignKey("assignments.id"), nullable=False)
+    deadline = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False)
+    updated_at = db.Column(db.DateTime, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "course_id": self.course_id,
+            "assignment_id": self.assignment_id,
+            "deadline": self.deadline,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
+
+class Submission(db.Model, UserMixin):
+    __tablename__ = 'submissions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    deployment_id = db.Column(db.Integer, db.ForeignKey("deployments.id"), nullable=False)
+    json_content = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, nullable=False)
+    updated_at = db.Column(db.DateTime, nullable=False)
+    db.UniqueConstraint(student_id, deployment_id)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "student_id": self.user_id,
+            "deployment_id": self.deployment_id,
+            "json_content": self.json_content,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
