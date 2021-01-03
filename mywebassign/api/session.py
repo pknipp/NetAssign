@@ -14,6 +14,7 @@ def index():
             return jsonify({"msg": "Missing JSON in request"}), 400
         email = request.json.get('email', None)
         password = request.json.get('password', None)
+        print("credentials are ", email, password)
         if not email or not password:
             return {"errors": ["Missing required parameters"]}, 400
         authenticated, user = User.authenticate(email, password)

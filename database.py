@@ -38,7 +38,7 @@ with app.app_context():
     for i in range(2 + n_teacher + n_student):
         created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(User(
-            email= users[i] if (i < 2) else fake.simple_profile()["mail"],
+            email= users[i][0] if (i < 2) else fake.simple_profile()["mail"],
             isTeacher= i == 0 or (i > 1 and i < n_teacher + 2),
             password="password",
             created_at=created_at,

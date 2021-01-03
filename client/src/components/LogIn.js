@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import AuthContext from '../auth'
 
 const LogIn = props => {
-    const [email, setEmail] = useState("demo@aol.com");
+    const [email, setEmail] = useState("demoTeacher@aol.com");
     const [password, setPassword] = useState("password");
     const [errors, setErrors] = useState([]);
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
