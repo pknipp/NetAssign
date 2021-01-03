@@ -13,31 +13,33 @@ load_dotenv()
 
 users = [
     ("demoTeacher@aol.com", True),
-    ("johndoe@aol.com", True),
     ("demoStudent@aol.com", False),
-    ("johnnydoe@aol.com", False)
     ]
+# number of non-demo users
+n_teacher = 5
+n_student = 25
+
 questions = [
     (1, "{0} plus {1} equals ... ", "x0 + x1", [[2, 3, 10], [5, 7, 20]]),
     (1, "{0} times {1} equals ... ","x0 * x1", [[-3, -1, 20], [2, 3, 10]]),
     (1, "{0} divided by {1} equals ... ","x0/x1", [[2, 4, 20], [1, 3, 20]]),
     (1, "{0} raised to power of {1} equals ... ", "x0^x1", [[2, 6, 4], [2, 5, 3]]),
-    (1, "The square root of {0} equals ...", "sqrt(x0)", [[2, 12, 10]]),
-    (1, "{0} * {1} + {2} equals ... ", "x0 * x1 + x2", [[0,3,3], [1,4,3], [2,5,3]]),
-    (1, "ln {0} equals ... ", "log(x0)", [[2, 9, 7]]),
-    (1, "log {0} equals ...", "log(x0)/log(10)", [[2, 19, 17]]),
-    (1, "cos {0} rads equals ... ", "cos(x0)", [[0, 2, 20]]),
-    (1, "arctan {0} equals ... (in radians)", "atan(x0)", [[1, 5, 4]])
+    (1, "The square root of {0} equals ...", "sqrt(x0)", [[2, 99, 97]]),
+    (1, "{0} * {1} + {2} equals ... ", "x0 * x1 + x2", [[2,7,5], [2,9,7], [2,15,13]]),
+    (1, "ln {0} equals ... ", "log(x0)", [[2, 99, 97]]),
+    (1, "log {0} equals ...", "log(x0)/log(10)", [[2, 99, 97]]),
+    (1, "cos {0} rads equals ... ", "cos(x0)", [[-3, 3, 60]]),
+    (1, "arctan {0} equals ... (in radians)", "atan(x0)", [[-4, 4, 80]])
     ]
 
 with app.app_context():
     db.drop_all()
     db.create_all()
-    for user in users:
+    for i in range(2 + n_teacher + n_student):
         created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(User(
-            email=user[0],
-            isTeacher=user[1],
+            email= users[i] if (i < 2) else fake.simple_profile()["mail"],
+            isTeacher= i == 0 or (i > 1 and i < n_teacher + 2),
             password="password",
             created_at=created_at,
             updated_at=fake.date_time_between(start_date=created_at)
@@ -59,23 +61,23 @@ with app.app_context():
     db.session.commit()
 
 
-with app.app_context():
+# with app.app_context():
 
-    # avg number of assignments per teacher
-    n_assignment_per_teacher = 10
+#     # avg number of assignments per teacher
+#     n_assignment_per_teacher = 10
 
-    for _ in range(n_t):
-        user_id = randrange(n_user)
-        created_at = fake.date_time_between(
-            start_date=user_t[user_id]
-        )
-        post_t.append(created_at)
-        db.session.add(Post(
-            user_id=user_id + 1,
-            photo_url=fake.isbn10(),
-            created_at=created_at,
-            updated_at=created_at,
-            caption=fake.paragraph(nb_sentences=2, variable_nb_sentences=True),
-        ))
+#     for _ in range(n_t):
+#         user_id = randrange(n_user)
+#         created_at = fake.date_time_between(
+#             start_date=user_t[user_id]
+#         )
+#         post_t.append(created_at)
+#         db.session.add(Post(
+#             user_id=user_id + 1,
+#             photo_url=fake.isbn10(),
+#             created_at=created_at,
+#             updated_at=created_at,
+#             caption=fake.paragraph(nb_sentences=2, variable_nb_sentences=True),
+#         ))
 
-    db.session.commit()
+#     db.session.commit()
