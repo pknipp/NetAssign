@@ -1,4 +1,4 @@
-from mywebassign.models import User, Question
+from mywebassign.models import User, Question, Course
 from mywebassign import app, db
 from dotenv import load_dotenv
 from datetime import date, datetime, timedelta
@@ -15,9 +15,24 @@ users = [
     ("demoTeacher@aol.com", True),
     ("demoStudent@aol.com", False),
     ]
-# number of non-demo users
+
+# number of non-demo users (including demo users)
 n_teacher = 5
 n_student = 25
+
+with app.app_context():
+    db.drop_all()
+    db.create_all()
+    for i in range(n_teacher + n_student):
+        created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
+        db.session.add(User(
+            email= users[i][0] if (i < 2) else fake.simple_profile()["mail"],
+            isTeacher= i == 0 or (i > 1 and i < n_teacher + 1),
+            password="password",
+            created_at=created_at,
+            updated_at=fake.date_time_between(start_date=created_at)
+        ))
+    db.session.commit()
 
 questions = [
     (1, "{0} plus {1} equals ... ", "x0 + x1", [[2, 3, 10], [5, 7, 20]]),
@@ -33,21 +48,6 @@ questions = [
     ]
 
 with app.app_context():
-    db.drop_all()
-    db.create_all()
-    for i in range(2 + n_teacher + n_student):
-        created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
-        db.session.add(User(
-            email= users[i][0] if (i < 2) else fake.simple_profile()["mail"],
-            isTeacher= i == 0 or (i > 1 and i < n_teacher + 2),
-            password="password",
-            created_at=created_at,
-            updated_at=fake.date_time_between(start_date=created_at)
-        ))
-    db.session.commit()
-
-
-with app.app_context():
     for question in questions:
         created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(Question(
@@ -60,24 +60,50 @@ with app.app_context():
         ))
     db.session.commit()
 
+courses = [
+"DemoClass",
+"Aeronautics",
+"Algebra",
+"Archaeology",
+"Art",
+"Astrology",
+"Astronomy",
+"Biology",
+"Botany",
+"Chemistry",
+"Dance",
+"Earth Science",
+"Egyptology",
+"Engineering",
+"French",
+"Geography",
+"Geology",
+"Geometry",
+"German",
+"Heiroglyphics",
+"History",
+"Italian",
+"Karate",
+"Latin",
+"Music",
+"Physics",
+"Portuguese",
+"Russian",
+"Spanish",
+]
 
-# with app.app_context():
+with app.app_context():
 
-#     # avg number of assignments per teacher
-#     n_assignment_per_teacher = 10
-
-#     for _ in range(n_t):
-#         user_id = randrange(n_user)
-#         created_at = fake.date_time_between(
-#             start_date=user_t[user_id]
-#         )
-#         post_t.append(created_at)
-#         db.session.add(Post(
-#             user_id=user_id + 1,
-#             photo_url=fake.isbn10(),
-#             created_at=created_at,
-#             updated_at=created_at,
-#             caption=fake.paragraph(nb_sentences=2, variable_nb_sentences=True),
-#         ))
-
-#     db.session.commit()
+    for i in range(len(courses)):
+        created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
+        if (i == 1 or random() < 1/n_teacher):
+            teacher_id = 1
+        else:
+            teacher_id = randrange(2, 2 + n_teacher)
+        db.session.add(Course(
+            teacher_id=teacher_id,
+            name=courses[i],
+            created_at=created_at,
+            updated_at=created_at,
+        ))
+    db.session.commit()

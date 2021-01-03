@@ -8,6 +8,8 @@ create Home component for both teacher and student, which should include courses
 teacher should be enrolled in own course, right?
 teacher should have submissions, right?
 use faker to generate more seed material
+in database.py, ensure that created_at dates are consistent between related models
+change project name from mywebassign to myassign?
 
 example:
 ```
