@@ -49,7 +49,7 @@ def user_info(id):
         return userd
     if request.method == 'DELETE':
         if user.id == 1 or user.id == 2:
-            return {"errors": ["Don't delete our 'demo' user. Create a new account if you would like to test the 'Delete' route."]}, 401
+            return {"errors": ["Don't delete one of our 'demo' users. Create a new account if you would like to test the 'Delete' route."]}, 401
         db.session.delete(user)
         db.session.commit()
         logout_user()
@@ -58,7 +58,7 @@ def user_info(id):
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
         if user.id == 1 or user.id == 2:
-            return {"errors": ["Don't edit our demo user's details.  Create a new account if you would like to test the 'Update User' route."]}, 401
+            return {"errors": ["Don't edit the details for one of our demo users.  Create a new account if you would like to test the 'Update User' route."]}, 401
         email = request.json.get('email', None)
         password = request.json.get('password', None)
         password2 = request.json.get('password2', None)

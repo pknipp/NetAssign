@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom'
 import AuthContext from '../auth'
 
-const LogIn = props => {
+const LogIn = _ => {
     const [email, setEmail] = useState("demoTeacher@aol.com");
     const [password, setPassword] = useState("password");
     const [errors, setErrors] = useState([]);

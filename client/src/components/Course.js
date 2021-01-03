@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import AuthContext from '../auth';
+import React, { useContext, useEffect, useState } from 'react'
+import AuthContext from '../auth'
 
-const Enrollments = _ => {
+const Course = _ => {
     const [courses, setCourses] = useState([])
     const { currentUser } = useContext(AuthContext)
 
@@ -24,14 +23,12 @@ const Enrollments = _ => {
         <ul>
             {courses.map(course => (
                 <li key={course.course.id}>
-                    <NavLink to="/course" activeClassName="active">
                     {course.course.name}<br/>
                     {(currentUser.is_teacher) ? null : <span>Instructor: {course.teacher.email} </span>}
-                    </NavLink>
                 </li>
             ))}
         </ul>
 }
 
 
-export default Enrollments
+export default Course;

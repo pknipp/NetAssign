@@ -1,5 +1,4 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/webassign#)
-are props NOT needed for Edituser and Logout, because of context?
 synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
 for questions, incorporate something like pickone/picksame
 introduce MC questions

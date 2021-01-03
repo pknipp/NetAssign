@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import AuthContext from '../auth'
 
 
-const EditUser = props => {
+const EditUser = _ => {
     const { fetchWithCSRF, currentUser, setCurrentUser } = useContext(AuthContext);
     const [email, setEmail] = useState(currentUser.email);
     const [password, setPassword] = useState('');
@@ -16,7 +16,7 @@ const EditUser = props => {
     const submitForm = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/${props.currentUser.id}`, {
+            const response = await fetchWithCSRF(`/api/users/${currentUser.id}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ email, password, password2 })
             });
@@ -33,7 +33,7 @@ const EditUser = props => {
     const deleteUser = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/${props.currentUser.id}`, {
+            const response = await fetchWithCSRF(`/api/users/${currentUser.id}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
