@@ -17,12 +17,14 @@ import Course from './components/Course';
 const App = _ => {
     const [fetchWithCSRF, setFetchWithCSRF] = useState(() => fetch);
     const [currentUser, setCurrentUser] = useState(null);
+    const [currentCourse, setCurrentCourse]=useState(null);
     const [loading, setLoading] = useState(true)
     const authContextValue = {
         fetchWithCSRF,
         currentUser,
         setCurrentUser
     };
+    const courseContextValue = {currentCourse, setCurrentCourse};
 
     useEffect(() => {
         (async () => {
@@ -35,6 +37,7 @@ const App = _ => {
 
     return (
         <AuthContext.Provider value={authContextValue}>
+        <CourseContext.Provider value={courseContextValue}>
             {loading ?
                 <h1>Loading</h1>
             :
@@ -50,6 +53,7 @@ const App = _ => {
                     </Switch>
                 </BrowserRouter>
             }
+        </CourseContext.Provider>
         </AuthContext.Provider>
     );
 }
