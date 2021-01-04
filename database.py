@@ -1,4 +1,4 @@
-from mywebassign.models import User, Question, Course, Enrollment, Assignment, Appearance
+from mywebassign.models import User, Question, Course, Enrollment, Assignment, Appearance, Deployment
 from mywebassign import app, db
 from dotenv import load_dotenv
 from datetime import date, datetime, timedelta
@@ -152,5 +152,26 @@ with app.app_context():
                     assignment_id=assignment_id,
                     question_id=question_id,
                     created_at=fake.date_time_between(start_date=datetime(2000, 1, 15))
+                ))
+    db.session.commit()
+
+# average number of questions per assignment
+deployments_per_assignment = 2
+n_assignments = assignments_per_teacher * n_teachers
+n_deployments = n_assignments * deployments_per_assignment
+
+with app.app_context():
+    for i in range(len(courses)):
+        course_id = i + 1
+        for j in range(n_teachers * assignments_per_teacher):
+            assignment_id = j + 1
+            if (assignment_id == 1 and course_id == 1) or random() < deployments_per_assignment/len(courses):
+                created_at=fake.date_time_between(start_date=datetime(2000, 1, 15))
+                db.session.add(Deployment(
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                    created_at=created_at,
+                    updated_at=fake.date_time_between(start_date=created_at),
+                    deadline=created_at
                 ))
     db.session.commit()

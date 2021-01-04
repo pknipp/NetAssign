@@ -11,6 +11,7 @@ eager loading rather than lazy loading
 muse upon rationale for putting routes in different blueprints (and naming components)
 change "Teacher" to "Instructor" to leave open higher-ed possibility
 remove period from end of fake words used for Assignment names
+do a realistic deadline for deployments
 
 example:
 ```
