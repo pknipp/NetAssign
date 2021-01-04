@@ -128,7 +128,7 @@ assignments_per_teacher = 10
 
 with app.app_context():
     for i in range(n_teachers * assignments_per_teacher):
-        teacher_id = 1 if (i == 1 or random() < 1/n_teachers) else randrange(3, 1 + n_teachers)
+        teacher_id = 1 if (i == 0 or random() < 1/n_teachers) else randrange(3, 1 + n_teachers)
         name = "DemoAssignment" if (i == 0) else fake.text(max_nb_chars=20)
         created_at=fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(Assignment(

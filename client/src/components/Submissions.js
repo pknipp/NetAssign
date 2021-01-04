@@ -3,6 +3,7 @@ import AuthContext from '../auth'
 
 const Submissions = ({ match }) => {
     let deployment_id = match.params.deployment_id
+    console.log("deployment_id = ", deployment_id);
     const [questions, setQuestions] = useState([])
     const { currentUser } = useContext(AuthContext)
 
