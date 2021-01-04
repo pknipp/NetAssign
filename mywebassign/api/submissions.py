@@ -1,6 +1,7 @@
 import json
 import cexprtk
 from random import random, randint
+from datetime import date, datetime, timedelta
 from flask import Blueprint, request, redirect
 from mywebassign.models import db, Assignment, Deployment, Submission, Appearance, Question
 # from flask_login import login_required, logout_user, login_user, current_user
@@ -35,4 +36,13 @@ def get_questions(did_and_uid):
                 specific_question = question.format(*x)
                 specific_answer = round(cexprtk.evaluate_expression(answer, input_dict),4)
                 specific_q_and_as.append({"id": q_and_a["id"], "question": specific_question, "answer": specific_answer})
+            new_submission = Submission(
+                student_id=student_id,
+                deployment_id=deployment_id,
+                json_content=json.dumps(specific_q_and_as),
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            )
+            db.session.add(new_submission)
+            db.session.commit()
         return({"questions": specific_q_and_as})
