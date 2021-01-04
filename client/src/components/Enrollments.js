@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
 
 const Enrollments = _ => {
@@ -24,7 +24,8 @@ const Enrollments = _ => {
         <ul>
             {courses.map(course => (
                 <li key={course.course.id}>
-                    <a href={`/${course.course.id}`}>{course.course.name}</a>
+                    {/* <a href={`/${course.course.id}`}>{course.course.name}</a> */}
+                    <NavLink to={`/${course.course.id}`}>{course.course.name}</NavLink>
                 </li>
             ))}
         </ul>

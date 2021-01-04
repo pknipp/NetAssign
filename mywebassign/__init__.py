@@ -11,6 +11,7 @@ from mywebassign.api.users import users
 from mywebassign.api.questions import questions
 from mywebassign.api.enrollments import enrollments
 from mywebassign.api.deployments import deployments
+from mywebassign.api.submissions import submissions
 from mywebassign.config import Config
 from datetime import datetime
 
@@ -24,6 +25,7 @@ app.register_blueprint(users, url_prefix='/api/users')
 app.register_blueprint(questions, url_prefix='/api/questions')
 app.register_blueprint(enrollments, url_prefix='/api/enrollments')
 app.register_blueprint(deployments, url_prefix='/api/deployments')
+app.register_blueprint(submissions, url_prefix='/api/submissions')
 db.init_app(app)
 
 

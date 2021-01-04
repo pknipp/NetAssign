@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 // import AuthContext from '../auth'
 
-const Course = ({ match }) => {
+const Deployments = ({ match }) => {
     let course_id = match.params.course_id
     const [assignments, setAssignments] = useState([])
     // const { currentUser } = useContext(AuthContext)
@@ -26,7 +27,11 @@ const Course = ({ match }) => {
         <ul>
             {(!assignments.length) ? null :
                 assignments.map(assignment => (
-                    <li key={assignment.id}>{assignment.name}</li>
+                    <li key={assignment.assignment.id}>
+                        <NavLink to={`/submissions/${assignment.deployment.id}`}>
+                            {assignment.assignment.name}
+                        </NavLink>
+                    </li>
                 ))
             }
         </ul>
@@ -35,4 +40,4 @@ const Course = ({ match }) => {
 }
 
 
-export default Course;
+export default Deployments;

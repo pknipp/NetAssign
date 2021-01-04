@@ -11,7 +11,8 @@ import AuthContext from './auth';
 // import CourseContext from './CourseContext';
 // import Success from './components/Success';
 import Enrollments from './components/Enrollments';
-import Course from './components/Course';
+import Deployments from './components/Deployments';
+import Submissions from './components/Submissions';
 
 
 const App = _ => {
@@ -49,7 +50,9 @@ const App = _ => {
                         <ProtectedRoute exact path="/logout" component={LogOut} />
                         <ProtectedRoute exact path="/edituser" component={EditUser} />
                         <ProtectedRoute exact path="/" component={Enrollments} />
-                        <Route exact path="/:course_id" component={Course} currentUser={currentUser} />
+                        <Route exact path="/:course_id" component={Deployments}
+                        />
+                        <Route exact path="/submissions/:deployment_id" component={Submissions} />
                     </Switch>
                 </BrowserRouter>
             }
