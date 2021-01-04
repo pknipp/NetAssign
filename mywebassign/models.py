@@ -177,7 +177,7 @@ class Submission(db.Model, UserMixin):
     def to_dict(self):
         return {
             "id": self.id,
-            "student_id": self.user_id,
+            "student_id": self.student_id,
             "deployment_id": self.deployment_id,
             "json_content": self.json_content,
             "created_at": self.created_at,

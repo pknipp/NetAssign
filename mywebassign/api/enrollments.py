@@ -12,7 +12,7 @@ def get_courses(student_id):
         courses = list()
         for enrollment in enrollments:
             course_id = enrollment.to_dict()["course_id"]
-            course = Course.query.filter(Course.id == course_id)[0].to_dict()
-            teacher = User.query.filter(User.id == course["teacher_id"])[0].to_dict()
+            course = Course.query.filter(Course.id == course_id).one_or_none().to_dict()
+            teacher = User.query.filter(User.id == course["teacher_id"]).one_or_none().to_dict()
             courses.append({"course": course, "teacher": teacher})
         return({"courses": courses})

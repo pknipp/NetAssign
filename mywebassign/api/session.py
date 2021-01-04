@@ -2,7 +2,6 @@ from flask import Blueprint, jsonify, request, redirect
 from mywebassign.models import User, db
 from datetime import datetime
 from flask_login import LoginManager, login_required, logout_user, login_user, current_user
-from sqlalchemy import or_
 
 session = Blueprint('session', __name__)
 
@@ -14,7 +13,6 @@ def index():
             return jsonify({"msg": "Missing JSON in request"}), 400
         email = request.json.get('email', None)
         password = request.json.get('password', None)
-        print("credentials are ", email, password)
         if not email or not password:
             return {"errors": ["Missing required parameters"]}, 400
         authenticated, user = User.authenticate(email, password)
