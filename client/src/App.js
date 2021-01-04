@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
@@ -49,7 +49,7 @@ const App = _ => {
                         <ProtectedRoute exact path="/logout" component={LogOut} />
                         <ProtectedRoute exact path="/edituser" component={EditUser} />
                         <ProtectedRoute exact path="/" component={Enrollments} />
-                        <ProtectedRoute exact path="/course" component={Course} />
+                        <Route exact path="/:course_id" component={Course} currentUser={currentUser} />
                     </Switch>
                 </BrowserRouter>
             }
