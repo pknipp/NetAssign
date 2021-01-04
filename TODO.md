@@ -15,3 +15,5 @@ do a realistic deadline for deployments
 include deployment deadline in info fetched w/assignments (for a class)
 insert an isAdmin boolean column in Users table
 make sure that all front-end routes are protected by authContext
+understand whether *all() is required on back-end queries
+round-off some of the numbers which appear in questions and answers

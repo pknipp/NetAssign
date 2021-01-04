@@ -31,7 +31,7 @@ const Submissions = ({ match }) => {
         <ul>
             {(!questions.length) ? null :
                 questions.map(question => (
-                    <li key={question.id}>{question.question_id}</li>
+                    <li key={question.id}>{question.question} {question.answer}</li>
                 ))
             }
         </ul>
