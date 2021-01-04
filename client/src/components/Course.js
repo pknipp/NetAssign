@@ -1,26 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react'
-import AuthContext from '../auth'
+import React, { useEffect, useState } from 'react'
+// import AuthContext from '../auth'
 
 const Course = ({ match }) => {
     let course_id = match.params.course_id
-    // const [courses, setCourses] = useState([])
-    const { currentUser } = useContext(AuthContext)
+    const [assignments, setAssignments] = useState([])
+    // const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/enrollments/${currentUser.id}`)
+                const res = await fetch(`/api/deployments/${course_id}`)
                 if (res.ok) {
                     const data = await res.json();
-                    // setCourses(data.courses);
+                    setAssignments(data.assignments);
                 }
             } catch (err) {
                 console.error(err)
             }
         })()
-    }, [currentUser.id])
+    }, [course_id])
 
-    return <h3>{match.params.course_id}</h3>
+    return (
+        <>
+        <h3>Assignments for this class:</h3>
+        <ul>
+            {(!assignments.length) ? null :
+                assignments.map(assignment => (
+                    <li key={assignment.id}>{assignment.name}</li>
+                ))
+            }
+        </ul>
+        </>
+    )
 }
 
 

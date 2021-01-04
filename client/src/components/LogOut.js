@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import AuthContext from '../auth'
 
 const LogOut = _ => {
-    const [errors, setErrors] = useState("");
+    // const [errors, setErrors] = useState("");
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     const submitForm = e => {
         e.preventDefault();

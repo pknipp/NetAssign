@@ -8,8 +8,8 @@ import EditUser from './components/EditUser';
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoute from "./components/AuthRoute";
 import AuthContext from './auth';
-import CourseContext from './CourseContext';
-import Success from './components/Success';
+// import CourseContext from './CourseContext';
+// import Success from './components/Success';
 import Enrollments from './components/Enrollments';
 import Course from './components/Course';
 
@@ -17,14 +17,14 @@ import Course from './components/Course';
 const App = _ => {
     const [fetchWithCSRF, setFetchWithCSRF] = useState(() => fetch);
     const [currentUser, setCurrentUser] = useState(null);
-    const [currentCourse, setCurrentCourse]=useState(null);
+    // const [currentCourse, setCurrentCourse]=useState(null);
     const [loading, setLoading] = useState(true)
     const authContextValue = {
         fetchWithCSRF,
         currentUser,
         setCurrentUser
     };
-    const courseContextValue = {currentCourse, setCurrentCourse};
+    // const courseContextValue = {currentCourse, setCurrentCourse};
 
     useEffect(() => {
         (async () => {
@@ -37,7 +37,7 @@ const App = _ => {
 
     return (
         <AuthContext.Provider value={authContextValue}>
-        <CourseContext.Provider value={courseContextValue}>
+        {/* <CourseContext.Provider value={courseContextValue}> */}
             {loading ?
                 <h1>Loading</h1>
             :
@@ -53,7 +53,7 @@ const App = _ => {
                     </Switch>
                 </BrowserRouter>
             }
-        </CourseContext.Provider>
+        {/* </CourseContext.Provider> */}
         </AuthContext.Provider>
     );
 }

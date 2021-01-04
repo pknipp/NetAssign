@@ -4,7 +4,7 @@ for questions, incorporate something like pickone/picksame
 introduce MC questions
 for models.py, insert the relationships
 teacher should have submissions, right?
-use faker to generate more seed material
+generate seed material for Submissions table (actually, this table doesn't get populated until first download)
 in database.py, ensure that created_at dates are consistent between related models
 change project name from mywebassign to myassign?
 eager loading rather than lazy loading
@@ -12,13 +12,4 @@ muse upon rationale for putting routes in different blueprints (and naming compo
 change "Teacher" to "Instructor" to leave open higher-ed possibility
 remove period from end of fake words used for Assignment names
 do a realistic deadline for deployments
-
-example:
-```
-// First create a string, which can be stored in db.
-let str = `(x, y, z) => {
-    return x + y * z;
-}`;
-// Second, use this string to create a function which takes 3 args.
-let answer = new Function(`return ${str}`)();
-// Third, use this function to build a question, its answer, and distractors.
+include deployment deadline in info fetched w/assignments (for a class)

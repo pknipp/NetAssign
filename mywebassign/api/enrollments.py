@@ -5,10 +5,10 @@ from mywebassign.models import db, Enrollment, Course, User
 enrollments = Blueprint('enrollments', __name__)
 
 
-@enrollments.route('/<id>', methods=['GET'])
-def get_courses(id):
+@enrollments.route('/<student_id>', methods=['GET'])
+def get_courses(student_id):
     if request.method == 'GET':
-        enrollments = Enrollment.query.filter(Enrollment.student_id == int(id))
+        enrollments = Enrollment.query.filter(Enrollment.student_id == int(student_id))
         courses = list()
         for enrollment in enrollments:
             course_id = enrollment.to_dict()["course_id"]
