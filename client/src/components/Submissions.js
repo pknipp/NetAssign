@@ -4,7 +4,7 @@ import AuthContext from '../auth';
 
 const Submissions = ({ match }) => {
     let deployment_id = match.params.deployment_id;
-    const [questions, setQuestions] = useState([]);
+    const [questionsAndResponses, setQuestionsAndResponses] = useState([]);
     const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
@@ -13,7 +13,7 @@ const Submissions = ({ match }) => {
                 const res = await fetch(`/api/submissions/${deployment_id+ " " + currentUser.id}`)
                 if (res.ok) {
                     const data = await res.json();
-                    setQuestions(data.questions);
+                    setQuestionsAndResponses(data.questions_and_responses);
                 }
             } catch (err) {
                 console.error(err)
@@ -25,8 +25,10 @@ const Submissions = ({ match }) => {
         <>
         <h3>Assignment:</h3>
         <ul>
-            {(!questions.length) ? null :
-                questions.map(question => <Question question={question} />)
+            {(!questionsAndResponses.length) ? null :
+                questionsAndResponses.map((questionAndResponse, index) => (
+                    <Question questionAndResponse={questionAndResponse} number={index} deployment_id={deployment_id}/>
+                ))
             }
         </ul>
         </>

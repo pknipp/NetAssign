@@ -18,15 +18,17 @@ def get_questions(did_and_uid):
     dec = 4
     if request.method == 'GET':
         submissions = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).all()
-        questions = list()
-        answers   = list()
+        qars = list()
+        qrs = list()
         if submissions:
-            questions = json.loads(submissions[0].to_dict()["questions"])
-            answers   = json.loads(submissions[0].to_dict()["answers"])
+            qars = json.loads(submissions[0].to_dict()["questions_and_answers_and_responses"])
+            for qar in qars:
+                qar["answer"] = None
+                qrs.append(qar)
         else:
             deployment = Deployment.query.filter(Deployment.id == deployment_id).all()[0].to_dict()
             assignment = Assignment.query.filter(Assignment.id == deployment["assignment_id"]).all()[0].to_dict()
-            appearances = Appearance.query.filter(Appearance.assignment_id == assignment["id"])
+            appearances = Appearance.query.filter(Appearance.assignment_id == assignment["id"]).all()
             for appearance in appearances:
                 appearance = appearance.to_dict()
                 q_and_a = Question.query.filter(Question.id == appearance["question_id"]).all()[0].to_dict()
@@ -40,16 +42,40 @@ def get_questions(did_and_uid):
                     input_dict["x" + str(i)] = x[i]
                 question = question.format(*x)
                 answer = round(cexprtk.evaluate_expression(answer, input_dict),dec)
-                questions.append({"id": q_and_a["id"], "question": question })
-                answers.append(answer)
+                response = None
+                # Do not include answer in list to be sent to front-end.
+                question_and_answer_and_response = {"id": q_and_a["id"], "question": question, "response": response}
+                qrs.append(question_and_answer_and_response)
+                # Include answer in list to be stored in Submissions table.
+                question_and_answer_and_response["answer"] = answer
+                qars.append(question_and_answer_and_response)
             new_submission = Submission(
                 student_id=student_id,
                 deployment_id=deployment_id,
-                questions=json.dumps(questions),
-                answers=json.dumps(answers),
+                questions_and_answers_and_responses=json.dumps(qars),
                 created_at=datetime.now(),
                 updated_at=datetime.now()
             )
             db.session.add(new_submission)
             db.session.commit()
-        return({"questions": questions})
+        return({"questions_and_responses": qrs})
+
+
+@submissions.route('/<did_and_uid_and_qindex>', methods=['PUT'])
+def put_question(did_and_uid_and_qindex):
+    ids = did_and_uid_and_qindex.split(" ")
+    deployment_id = int(ids[0])
+    student_id = int(ids[1])
+    question_index = int(ids[2])
+    if request.method == 'PUT':
+        submission = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id))[0]
+        qars = json.loads(submission.to_dict()["questions_and_answers_and_responses"])
+        qar = qars[question_index]
+        answer = qar["answer"]
+        response = request.json.get("response", None)
+        qar["response"] = response
+        qars[question_index] = qar
+        submission.questions_and_answers_and_responses = json.dumps(qars)
+        submission.updated_at = datetime.now()
+        db.session.commit()
+        return ({"grade": abs(answer - response) < 0.01 })

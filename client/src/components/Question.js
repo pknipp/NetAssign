@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../auth';
 
-const handleSubmit = e => {
-    e.preventDefault();
-    console.log("submitted answer");
-}
+const Question = ({ questionAndResponse, number, deployment_id }) => {
+    const [response, setResponse] = useState(String(questionAndResponse.response));
+    const [grade, setGrade] = useState(false);
+    const [errors,setErrors]= useState([]);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        (async _ => {
+            const res = await fetchWithCSRF(
+                `/api/submissions/${deployment_id + " " + currentUser.id + " " + number}`, {
+                method: 'PUT', headers: {"Content-Type": "application/json"},
+                credentials: 'include', body: JSON.stringify({response: Number(response)})
+            });
+            const responseData = await res.json();
+            if (!res.ok) {
+                setErrors(responseData.errors);
+            } else {
+                setGrade(responseData.grade);
+                // history.push('/')
+            }
+        })();
+    }
 
-const Question = ({ question }) => {
-    const [answer, setAnswer] = useState("");
-    return <li key={question.id}>
-        {question.question}<br/>
+    return <li key={questionAndResponse.id}>
+        {questionAndResponse.question}<br/>
         <form onSubmit={handleSubmit}>
             <input
-                type="number" placeholder="Answer" value={answer}
-                onChange={e => setAnswer(Number(e.target.value))}
+                type="number" placeholder="Answer" value={response}
+                onChange={e => setResponse(e.target.value)}
             />
+            <button type="submit">submit</button>
+            {!(response) ? "" : grade ? "right" : "wrong"}
         </form>
     </li>
 }

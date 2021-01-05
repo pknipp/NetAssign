@@ -168,9 +168,7 @@ class Submission(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     deployment_id = db.Column(db.Integer, db.ForeignKey("deployments.id"), nullable=False)
-    questions = db.Column(db.Text, nullable=False)
-    answers = db.Column(db.Text, nullable=False)
-    responses = db.Column(db.Text)
+    questions_and_answers_and_responses = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
     db.UniqueConstraint(student_id, deployment_id)
@@ -180,9 +178,7 @@ class Submission(db.Model, UserMixin):
             "id": self.id,
             "student_id": self.student_id,
             "deployment_id": self.deployment_id,
-            "questions": self.questions,
-            "answers": self.answers,
-            "responses": self.responses,
+            "questions_and_answers_and_responses": self.questions_and_answers_and_responses,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
