@@ -1,5 +1,5 @@
-from mywebassign.models import User, Question, Course, Enrollment, Assignment, Appearance, Deployment
-from mywebassign import app, db
+from my_assign.models import User, Question, Course, Enrollment, Assignment, Appearance, Deployment
+from my_assign import app, db
 from dotenv import load_dotenv
 from datetime import date, datetime, timedelta
 from faker import Faker
@@ -12,22 +12,22 @@ fake = Faker()
 load_dotenv()
 
 users = [
-    ("demoTeacher@aol.com", True),
+    ("demoInstructor@aol.com", True),
     ("demoStudent@aol.com", False),
     ]
 
 # number of non-demo users (including demo users)
-n_teachers = 8
+n_instructors = 8
 n_students = 40
 
 with app.app_context():
     db.drop_all()
     db.create_all()
-    for i in range(n_teachers + n_students):
+    for i in range(n_instructors + n_students):
         created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(User(
             email= users[i][0] if (i < 2) else fake.simple_profile()["mail"],
-            is_teacher= i == 0 or (i > 1 and i < n_teachers + 1),
+            is_instructor= i == 0 or (i > 1 and i < n_instructors + 1),
             password="password",
             created_at=created_at,
             updated_at=fake.date_time_between(start_date=created_at)
@@ -51,7 +51,7 @@ with app.app_context():
     for question in questions:
         created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(Question(
-            teacher_id=question[0],
+            instructor_id=question[0],
             question=question[1],
             answer=question[2],
             inputs=json.dumps(question[3]),
@@ -96,10 +96,10 @@ with app.app_context():
 
     for i in range(len(courses)):
         created_at = fake.date_time_between(start_date=datetime(2000, 1, 15))
-        teacher_id = 1 if (i == 0 or random() < 1 / n_teachers) else randrange(3, 2 + n_teachers)
-        courses[i] = [teacher_id, courses[i]]
+        instructor_id = 1 if (i == 0 or random() < 1 / n_instructors) else randrange(3, 2 + n_instructors)
+        courses[i] = [instructor_id, courses[i]]
         db.session.add(Course(
-            teacher_id=teacher_id,
+            instructor_id=instructor_id,
             name=courses[i][1],
             created_at=created_at,
             updated_at=created_at,
@@ -112,10 +112,10 @@ enrollments_per_student = 4
 with app.app_context():
     for i in range(len(courses)):
         course_id = i + 1
-        teacher_id = courses[i][0]
-        for j in range(n_teachers + n_students):
+        instructor_id = courses[i][0]
+        for j in range(n_instructors + n_students):
             student_id = j + 1
-            if (student_id == 2 and course_id == 1) or (student_id == teacher_id) or (random() < enrollments_per_student/len(courses) and not student_id <= n_teachers + 1):
+            if (student_id == 2 and course_id == 1) or (student_id == instructor_id) or (random() < enrollments_per_student/len(courses) and not student_id <= n_instructors + 1):
                 db.session.add(Enrollment(
                     course_id=course_id,
                     student_id=student_id,
@@ -123,16 +123,16 @@ with app.app_context():
                 ))
     db.session.commit()
 
-# average number of assignments per teacher
-assignments_per_teacher = 10
+# average number of assignments per instructor
+assignments_per_instructor = 10
 
 with app.app_context():
-    for i in range(n_teachers * assignments_per_teacher):
-        teacher_id = 1 if (i == 0 or random() < 1/n_teachers) else randrange(3, 1 + n_teachers)
+    for i in range(n_instructors * assignments_per_instructor):
+        instructor_id = 1 if (i == 0 or random() < 1/n_instructors) else randrange(3, 1 + n_instructors)
         name = "DemoAssignment" if (i == 0) else fake.text(max_nb_chars=20)
         created_at=fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(Assignment(
-            teacher_id=teacher_id,
+            instructor_id=instructor_id,
             name=name,
             created_at=created_at,
             updated_at=fake.date_time_between(start_date=created_at)
@@ -143,7 +143,7 @@ with app.app_context():
 questions_per_assignment = 6
 
 with app.app_context():
-    for i in range(n_teachers * assignments_per_teacher):
+    for i in range(n_instructors * assignments_per_instructor):
         assignment_id = i + 1
         for j in range(len(questions)):
             question_id = j + 1
@@ -157,13 +157,13 @@ with app.app_context():
 
 # average number of questions per assignment
 deployments_per_assignment = 2
-n_assignments = assignments_per_teacher * n_teachers
+n_assignments = assignments_per_instructor * n_instructors
 n_deployments = n_assignments * deployments_per_assignment
 
 with app.app_context():
     for i in range(len(courses)):
         course_id = i + 1
-        for j in range(n_teachers * assignments_per_teacher):
+        for j in range(n_instructors * assignments_per_instructor):
             assignment_id = j + 1
             if (assignment_id == 1 and course_id == 1) or random() < deployments_per_assignment/len(courses):
                 created_at=fake.date_time_between(start_date=datetime(2000, 1, 15))

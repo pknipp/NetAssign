@@ -9,7 +9,7 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    is_teacher = db.Column(db.Boolean, nullable=False)
+    is_instructor = db.Column(db.Boolean, nullable=False)
     email = db.Column(db.String(63), nullable=False, unique=True)
     hashed_password = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
@@ -38,7 +38,7 @@ class User(db.Model, UserMixin):
         return {
             "id": self.id,
             "email": self.email,
-            "is_teacher": self.is_teacher,
+            "is_instructor": self.is_instructor,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
@@ -48,7 +48,7 @@ class Question(db.Model, UserMixin):
     __tablename__ = 'questions'
 
     id = db.Column(db.Integer, primary_key=True)
-    teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     question = db.Column(db.String(127), nullable=False)
     inputs = db.Column(db.String(127), nullable=False)
     answer = db.Column(db.String(63), nullable=False)
@@ -58,7 +58,7 @@ class Question(db.Model, UserMixin):
     def to_dict(self):
         return {
             "id": self.id,
-            "teacher_id": self.teacher_id,
+            "instructor_id": self.instructor_id,
             "question": self.question,
             "inputs": self.inputs,
             "answer": self.answer,
@@ -71,7 +71,7 @@ class Assignment(db.Model, UserMixin):
     __tablename__ = 'assignments'
 
     id = db.Column(db.Integer, primary_key=True)
-    teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     name = db.Column(db.String(63), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
@@ -79,7 +79,7 @@ class Assignment(db.Model, UserMixin):
     def to_dict(self):
         return {
             "id": self.id,
-            "teacher_id": self.teacher_id,
+            "instructor_id": self.instructor_id,
             "name": self.name,
             "created_at": self.created_at,
             "updated_at": self.updated_at
@@ -108,7 +108,7 @@ class Course(db.Model, UserMixin):
     __tablename__ = 'courses'
 
     id = db.Column(db.Integer, primary_key=True)
-    teacher_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     name = db.Column(db.String(63), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
@@ -116,7 +116,7 @@ class Course(db.Model, UserMixin):
     def to_dict(self):
         return {
             "id": self.id,
-            "teacher_id": self.teacher_id,
+            "instructor_id": self.instructor_id,
             "name": self.name,
             "created_at": self.created_at,
             "updated_at": self.updated_at
@@ -168,8 +168,9 @@ class Submission(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     deployment_id = db.Column(db.Integer, db.ForeignKey("deployments.id"), nullable=False)
-    json_content = db.Column(db.Text)
-    # json_content = db.Column(db.String(255))
+    questions = db.Column(db.Text, nullable=False)
+    answers = db.Column(db.Text, nullable=False)
+    responses = db.Column(db.Text)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
     db.UniqueConstraint(student_id, deployment_id)
@@ -179,7 +180,9 @@ class Submission(db.Model, UserMixin):
             "id": self.id,
             "student_id": self.student_id,
             "deployment_id": self.deployment_id,
-            "json_content": self.json_content,
+            "questions": self.questions,
+            "answers": self.answers,
+            "responses": self.responses,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }

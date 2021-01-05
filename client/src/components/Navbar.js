@@ -3,10 +3,11 @@ import { NavLink } from 'react-router-dom';
 
 const NavBar = ({ currentUser }) => (
     <>
-        MyWebAssign
+        My_Assign
         {(currentUser) ?
             <>
                 <span>{currentUser.email}</span>
+                <NavLink exact to="/" activeClassName="active">Home</NavLink>
                 <NavLink to="/edituser" activeClassName="active">Account Details</NavLink>
                 <NavLink to="/logout" activeClassName="active">Log Out</NavLink>
             </>

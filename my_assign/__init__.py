@@ -5,14 +5,14 @@ from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager, \
     current_user, login_user, logout_user, login_required
 from flask_migrate import Migrate
-from mywebassign.models import db, User, Question
-from mywebassign.api.session import session
-from mywebassign.api.users import users
-from mywebassign.api.questions import questions
-from mywebassign.api.enrollments import enrollments
-from mywebassign.api.deployments import deployments
-from mywebassign.api.submissions import submissions
-from mywebassign.config import Config
+from my_assign.models import db, User, Question
+from my_assign.api.session import session
+from my_assign.api.users import users
+from my_assign.api.questions import questions
+from my_assign.api.enrollments import enrollments
+from my_assign.api.deployments import deployments
+from my_assign.api.submissions import submissions
+from my_assign.config import Config
 from datetime import datetime
 
 

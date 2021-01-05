@@ -1,13 +1,11 @@
 from flask import Blueprint, jsonify, request, redirect
-from mywebassign.models import Question, db
+from my_assign.models import Question, db
 from datetime import datetime
 # from flask_login import login_required, logout_user, login_user, current_user
 from sqlalchemy import or_
 from random import random, randint
-from pymep.realParser import parse
 import cexprtk
 import json
-from pymep.realParser import eval
 
 questions = Blueprint('questions', __name__)
 

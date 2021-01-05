@@ -1,11 +1,10 @@
-import React, { useEffect, useContext, useState } from 'react';
-import Question from './Question';
-import AuthContext from '../auth';
+import React, { useEffect, useContext, useState } from 'react'
+import AuthContext from '../auth'
 
 const Submissions = ({ match }) => {
-    let deployment_id = match.params.deployment_id;
-    const [questions, setQuestions] = useState([]);
-    const { currentUser } = useContext(AuthContext);
+    let deployment_id = match.params.deployment_id
+    const [questions, setQuestions] = useState([])
+    const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
         (async () => {
@@ -26,7 +25,9 @@ const Submissions = ({ match }) => {
         <h3>Assignment:</h3>
         <ul>
             {(!questions.length) ? null :
-                questions.map(question => <Question question={question} />)
+                questions.map(question => (
+                    <li key={question.id}>{question.question} ({question.answer})</li>
+                ))
             }
         </ul>
         </>

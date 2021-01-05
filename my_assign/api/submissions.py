@@ -4,7 +4,7 @@ from random import random, randint, seed
 from datetime import date, datetime, timedelta
 from sqlalchemy import and_
 from flask import Blueprint, request, redirect
-from mywebassign.models import db, Assignment, Deployment, Submission, Appearance, Question
+from my_assign.models import db, Assignment, Deployment, Submission, Appearance, Question
 
 submissions = Blueprint('submissions', __name__)
 
@@ -15,11 +15,14 @@ def get_questions(did_and_uid):
     ids = did_and_uid.split(" ")
     deployment_id = int(ids[0])
     student_id = int(ids[1])
+    dec = 4
     if request.method == 'GET':
         submissions = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).all()
-        specific_q_and_as = list()
+        questions = list()
+        answers   = list()
         if submissions:
-            specific_q_and_as = json.loads(submissions[0].to_dict()["json_content"])
+            questions = json.loads(submissions[0].to_dict()["questions"])
+            answers   = json.loads(submissions[0].to_dict()["answers"])
         else:
             deployment = Deployment.query.filter(Deployment.id == deployment_id).all()[0].to_dict()
             assignment = Assignment.query.filter(Assignment.id == deployment["assignment_id"]).all()[0].to_dict()
@@ -33,18 +36,20 @@ def get_questions(did_and_uid):
                 x = list()
                 input_dict = dict()
                 for i in range(len(inputs)):
-                    x.append(inputs[i][0]+(inputs[i][1]-inputs[i][0])*randint(0, inputs[i][2])/inputs[i][2])
+                    x.append(round(inputs[i][0]+(inputs[i][1]-inputs[i][0])*randint(0, inputs[i][2])/inputs[i][2],dec))
                     input_dict["x" + str(i)] = x[i]
-                specific_question = question.format(*x)
-                specific_answer = round(cexprtk.evaluate_expression(answer, input_dict),4)
-                specific_q_and_as.append({"id": q_and_a["id"], "question": specific_question, "answer": specific_answer})
+                question = question.format(*x)
+                answer = round(cexprtk.evaluate_expression(answer, input_dict),dec)
+                questions.append({"id": q_and_a["id"], "question": question })
+                answers.append(answer)
             new_submission = Submission(
                 student_id=student_id,
                 deployment_id=deployment_id,
-                json_content=json.dumps(specific_q_and_as),
+                questions=json.dumps(questions),
+                answers=json.dumps(answers),
                 created_at=datetime.now(),
                 updated_at=datetime.now()
             )
             db.session.add(new_submission)
             db.session.commit()
-        return({"questions": specific_q_and_as})
+        return({"questions": questions})
