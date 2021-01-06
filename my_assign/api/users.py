@@ -42,7 +42,7 @@ def index():
 
 @users.route('/<id>', methods=['GET', 'PUT', 'DELETE'])
 def user_info(id):
-    user = User.query.filter(User.id == int(id))[0]
+    user = User.query.filter(User.id == int(id)).one_or_none()
     userd= user.to_dict()
     if request.method == "GET":
         return userd
