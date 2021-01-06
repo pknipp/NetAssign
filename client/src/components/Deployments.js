@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-// import AuthContext from '../auth'
+import AuthContext from '../auth'
 
 const Deployments = ({ match }) => {
     let course_id = match.params.course_id;
     const [assignments, setAssignments] = useState([]);
     const [courseName, setCourseName] = useState("");
-    // const { currentUser } = useContext(AuthContext)
+    const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
         (async () => {

@@ -12,20 +12,18 @@ const Question = ({ qAndR, number, deployment_id }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
 
     const gradeIt = async _ => {
-        if (response !== "") {
-            const res = await fetchWithCSRF(
-                `/api/submissions/${deployment_id + " " + currentUser.id + " " + number}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({response: Number(response)})
-            });
-            const responseData = await res.json();
-            if (!res.ok) {
-                setErrors(responseData.errors);
-            } else {
-                setGrade(responseData.grade);
-
-                // history.push('/')
-            }
+        const res = await fetchWithCSRF(
+            `/api/submissions/${deployment_id + " " + currentUser.id + " " + number}`, {
+            method: 'PUT', headers: {"Content-Type": "application/json"},
+            credentials: 'include', body: JSON.stringify({response: Number(response)})
+        });
+        const responseData = await res.json();
+        if (!res.ok) {
+            setErrors(responseData.errors);
+        } else {
+            if (response !== "") setGrade(responseData.grade);
+            setAnswer(responseData.answer);
+            // history.push('/')
         }
     };
 
@@ -47,8 +45,8 @@ const Question = ({ qAndR, number, deployment_id }) => {
                     Submit
                 </button>
                 {(grade === null) ? null : <img src={grade ? correct : incorrect} />}
-                {/* {(currentUser.is_instructor) ? } */}
             </span>
+            {(currentUser.is_instructor) ? answer : null}
         </form>
     </li>
 }

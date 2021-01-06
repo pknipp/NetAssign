@@ -38,7 +38,6 @@ const App = _ => {
 
     return (
         <AuthContext.Provider value={authContextValue}>
-        {/* <CourseContext.Provider value={courseContextValue}> */}
             {loading ?
                 <h1>Loading</h1>
             :
@@ -51,13 +50,12 @@ const App = _ => {
                             <ProtectedRoute exact path="/logout" component={LogOut} />
                             <ProtectedRoute exact path="/edituser" component={EditUser} />
                             <ProtectedRoute exact path="/" component={Enrollments} />
-                            <Route exact path="/:course_id" component={Deployments} />
-                            <Route exact path="/submissions/:deployment_id" component={Submissions} />
+                            <Route exact path="/:course_id" component={Deployments} currentUser={currentUser} />
+                            <Route exact path="/submissions/:deployment_id" component={Submissions} currentUser={currentUser} />
                         </Switch>
                     </div>
                 </BrowserRouter>
             }
-        {/* </CourseContext.Provider> */}
         </AuthContext.Provider>
     );
 }

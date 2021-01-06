@@ -35,12 +35,12 @@ with app.app_context():
     db.session.commit()
 
 questions = [
-    (1, "{0} plus {1} = ", "x0 + x1", [[2, 3, 10], [5, 7, 20]]),
-    (1, "{0} times {1} = ","x0 * x1", [[-3, -1, 20], [2, 3, 10]]),
-    (1, "{0} divided by {1} = ","x0/x1", [[2, 4, 20], [1, 3, 20]]),
-    (1, "{0} raised to power of {1} = ", "x0^x1", [[2, 6, 4], [2, 5, 3]]),
-    (1, "The square root of {0} equals = ", "sqrt(x0)", [[2, 99, 97]]),
-    (1, "{0} * {1} + {2} = ", "x0 * x1 + x2", [[2,7,5], [2,9,7], [2,15,13]]),
+    (1, "{0} + {1} = ", "x0 + x1", [[2, 3, 10], [5, 7, 20]]),
+    (1, "{0} x {1} = ","x0 * x1", [[-3, -1, 20], [2, 3, 10]]),
+    (1, "{0}/{1} = ","x0/x1", [[2, 4, 20], [1, 3, 20]]),
+    (1, "{0}<sup>{1}</sup> = ", "x0^x1", [[2, 6, 4], [2, 5, 3]]),
+    (1, "Square root of {0} = ", "sqrt(x0)", [[2, 99, 97]]),
+    (1, "{0} x {1} + {2} = ", "x0 * x1 + x2", [[2,7,5], [2,9,7], [2,15,13]]),
     (1, "ln {0} = ", "log(x0)", [[2, 99, 97]]),
     (1, "log {0} = ", "log(x0)/log(10)", [[2, 99, 97]]),
     (1, "cos {0} rads = ", "cos(x0)", [[-3, 3, 60]]),
@@ -129,7 +129,7 @@ assignments_per_instructor = 10
 with app.app_context():
     for i in range(n_instructors * assignments_per_instructor):
         instructor_id = 1 if (i == 0 or random() < 1/n_instructors) else randrange(3, 1 + n_instructors)
-        name = "DemoAssignment" if (i == 0) else fake.text(max_nb_chars=20)
+        name = "DemoAssignment" if (i == 0) else fake.text(max_nb_chars=20)[0:-1]
         created_at=fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(Assignment(
             instructor_id=instructor_id,
