@@ -44,16 +44,17 @@ const App = _ => {
             :
                 <BrowserRouter>
                     <NavBar currentUser={currentUser} />
-                    <Switch>
-                        <AuthRoute exact path="/login" component={LogIn} />
-                        <AuthRoute exact path="/signup" component={SignUp} />
-                        <ProtectedRoute exact path="/logout" component={LogOut} />
-                        <ProtectedRoute exact path="/edituser" component={EditUser} />
-                        <ProtectedRoute exact path="/" component={Enrollments} />
-                        <Route exact path="/:course_id" component={Deployments}
-                        />
-                        <Route exact path="/submissions/:deployment_id" component={Submissions} />
-                    </Switch>
+                    <div className="switch">
+                        <Switch>
+                            <AuthRoute exact path="/login" component={LogIn} />
+                            <AuthRoute exact path="/signup" component={SignUp} />
+                            <ProtectedRoute exact path="/logout" component={LogOut} />
+                            <ProtectedRoute exact path="/edituser" component={EditUser} />
+                            <ProtectedRoute exact path="/" component={Enrollments} />
+                            <Route exact path="/:course_id" component={Deployments} />
+                            <Route exact path="/submissions/:deployment_id" component={Submissions} />
+                        </Switch>
+                    </div>
                 </BrowserRouter>
             }
         {/* </CourseContext.Provider> */}

@@ -3,8 +3,9 @@ import { NavLink } from 'react-router-dom';
 // import AuthContext from '../auth'
 
 const Deployments = ({ match }) => {
-    let course_id = match.params.course_id
-    const [assignments, setAssignments] = useState([])
+    let course_id = match.params.course_id;
+    const [assignments, setAssignments] = useState([]);
+    const [courseName, setCourseName] = useState("");
     // const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
@@ -14,6 +15,7 @@ const Deployments = ({ match }) => {
                 if (res.ok) {
                     const data = await res.json();
                     setAssignments(data.assignments);
+                    setCourseName(data.course_name);
                 }
             } catch (err) {
                 console.error(err)
@@ -23,13 +25,13 @@ const Deployments = ({ match }) => {
 
     return (
         <>
-        <h3>Assignments for this class:</h3>
+        <h3>Assignments for {courseName}:</h3>
         <ul>
             {(!assignments.length) ? null :
                 assignments.map(assignment => (
                     <li key={assignment.assignment.id}>
                         <NavLink to={`/submissions/${assignment.deployment.id}`}>
-                            {assignment.assignment.name}
+                            {assignment.assignment.name} (due {assignment.deployment.deadline})
                         </NavLink>
                     </li>
                 ))

@@ -20,15 +20,20 @@ const Enrollments = _ => {
         })()
     }, [currentUser.id])
 
-    return (!courses.length) ? null :
-        <ul>
-            {courses.map(course => (
-                <li key={course.course.id}>
-                    {/* <a href={`/${course.course.id}`}>{course.course.name}</a> */}
-                    <NavLink to={`/${course.course.id}`}>{course.course.name}</NavLink>
-                </li>
-            ))}
-        </ul>
+    return (
+        <>
+            <p align="center">My classes:</p>
+            {(!courses.length) ? null :
+            <ul>
+                {courses.map(course => (
+                    <li key={course.course.id}>
+                        {/* <a href={`/${course.course.id}`}>{course.course.name}</a> */}
+                        <NavLink to={`/${course.course.id}`}>{course.course.name}</NavLink>
+                    </li>
+                ))}
+            </ul>}
+        </>
+    )
 }
 
 

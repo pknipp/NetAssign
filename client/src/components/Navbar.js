@@ -2,21 +2,25 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const NavBar = ({ currentUser }) => (
-    <>
-        My_Assign
+    <div className="navContainer">
+        <span className="nav">
+            <span>My_Assign welcomes</span>&nbsp;
+            {(currentUser) ? currentUser.email : "you"}.
+        </span>
         {(currentUser) ?
             <>
-                <span>{currentUser.email}</span>
-                <NavLink exact to="/" activeClassName="active">Home</NavLink>
-                <NavLink to="/edituser" activeClassName="active">Account Details</NavLink>
-                <NavLink to="/logout" activeClassName="active">Log Out</NavLink>
+                {/* <span className="nav">{currentUser.email}</span> */}
+                <NavLink exact to="/" className="nav" activeClassName="active">Home</NavLink>
+                <NavLink to="/edituser" className="nav" activeClassName="active">Account Details</NavLink>
+                <NavLink to="/logout" className="nav" activeClassName="active">Log Out</NavLink>
             </>
         :
             <>
-                <NavLink to="/login" activeClassName="active">Log In</NavLink>
-                <NavLink to="/signup" activeClassName="active">Sign Up</NavLink>
+                {/* <span className="nav">you</span> */}
+                <NavLink to="/login" className="nav" activeClassName="active">Log In</NavLink>
+                <NavLink to="/signup" className="nav" activeClassName="active">Sign Up</NavLink>
             </>
         }
-    </>
+    </div>
 )
 export default NavBar;
