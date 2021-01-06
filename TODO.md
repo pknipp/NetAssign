@@ -18,13 +18,12 @@ In database.py, control created_at (= t1), updated_at (t2), and deadline as foll
     (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d
     (8)submissions (s): deadline > t2s > t1s > t1u, t1s > t1d
 
-Use tables to format lists of courses, assignments, and (possibly) questions.
+Figure out (using list above?) how to seed other students w/a certain number of responses.
+Use html tables to format lists of courses, assignments, and (possibly) questions.
 Insert an isAdmin boolean column in Users table
 Make sure that all front-end routes are protected by authContext
-Ask Tyna what #all().
-Figure out how to seed other students w/a certain number of responses.
 Create a gradebook (for students AND teachers).
 Create instructor-editors for following tables: Question, Assignment, Course, Deployment
 Rename some components to reflect their function rather than first db Query
 Determine why clicking Logout then requires a refresh before anything appears.
-Containerize this
+Globally rename my_assign as either net_assign or NetAssign.
