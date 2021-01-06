@@ -21,7 +21,7 @@ In database.py, control created_at (= t1), updated_at (t2), and deadline as foll
 Use tables to format lists of courses, assignments, and (possibly) questions.
 Insert an isAdmin boolean column in Users table
 Make sure that all front-end routes are protected by authContext
-Understand whether #all(), #one_or_none(), [0], and or nothing is required when chaining from #filter
+Ask Tyna what #all().
 Figure out how to seed other students w/a certain number of responses.
 Create a gradebook (for students AND teachers).
 Create instructor-editors for following tables: Question, Assignment, Course, Deployment

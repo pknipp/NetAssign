@@ -69,10 +69,10 @@ def put_question(did_and_uid_and_qindex):
     ids = did_and_uid_and_qindex.split(" ")
     deployment_id = int(ids[0])
     student_id = int(ids[1])
-    is_instructor = User.query.filter(User.id == student_id)[0].to_dict()["is_instructor"]
+    is_instructor = User.query.filter(User.id == student_id).one_or_none().to_dict()["is_instructor"]
     question_index = int(ids[2])
     if request.method == 'PUT':
-        submission = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id))[0]
+        submission = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).one_or_none()
         qars = json.loads(submission.to_dict()["questions_and_answers_and_responses"])
         qar = qars[question_index]
         answer = qar["answer"]

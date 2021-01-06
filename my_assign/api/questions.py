@@ -13,6 +13,7 @@ questions = Blueprint('questions', __name__)
 @questions.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
+        # Is #all() unnecessary in the following line?
         responses = Question.query.all()
         specific_q_and_as = list()
         for response in responses:
