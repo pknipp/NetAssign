@@ -15,35 +15,35 @@ def get_questions(did_and_uid):
     ids = did_and_uid.split(" ")
     deployment_id = int(ids[0])
     student_id = int(ids[1])
-    is_instructor = User.query.filter(User.id == student_id)[0].to_dict()["is_instructor"]
+    is_instructor = User.query.filter(User.id == student_id).one_or_none().to_dict()["is_instructor"]
     dec = 4
     if request.method == 'GET':
-        submissions = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).all()
-        deployment = Deployment.query.filter(Deployment.id == deployment_id).all()[0].to_dict()
-        assignment = Assignment.query.filter(Assignment.id == deployment["assignment_id"]).all()[0].to_dict()
+        submission = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).one_or_none()
+        deployment = Deployment.query.filter(Deployment.id == deployment_id).one_or_none().to_dict()
+        assignment = Assignment.query.filter(Assignment.id == deployment["assignment_id"]).one_or_none().to_dict()
         qars = list()
         qrs = list()
-        if submissions:
-            qars = json.loads(submissions[0].to_dict()["questions_and_answers_and_responses"])
+        if submission:
+            qars = json.loads(submission.to_dict()["questions_and_answers_and_responses"])
             for qar in qars:
                 if not is_instructor:
                     qar["answer"] = None
                 qrs.append(qar)
         else:
-            appearances = Appearance.query.filter(Appearance.assignment_id == assignment["id"]).all()
+            appearances = Appearance.query.filter(Appearance.assignment_id == assignment["id"])
             for appearance in appearances:
                 appearance = appearance.to_dict()
-                q_and_a = Question.query.filter(Question.id == appearance["question_id"]).all()[0].to_dict()
+                q_and_a = Question.query.filter(Question.id == appearance["question_id"]).one_or_none().to_dict()
                 question = q_and_a['question']
                 inputs = json.loads(q_and_a['inputs'])
                 answer = q_and_a['answer']
                 x = list()
-                input_dict = dict()
+                input_d = dict()
                 for i in range(len(inputs)):
                     x.append(round(inputs[i][0]+(inputs[i][1]-inputs[i][0])*randint(0, inputs[i][2])/inputs[i][2],dec))
-                    input_dict["x" + str(i)] = x[i]
+                    input_d["x" + str(i)] = x[i]
                 question = question.format(*x)
-                answer = round(cexprtk.evaluate_expression(answer, input_dict),dec)
+                answer = round(cexprtk.evaluate_expression(answer, input_d),dec)
                 response = None
                 question_and_answer_and_response = {"id": q_and_a["id"], "question": question,"answer": answer, "response": response}
                 qars.append(question_and_answer_and_response)
