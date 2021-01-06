@@ -14,5 +14,5 @@ def get_deployments(course_id):
         for deployment in deployments:
             deployment_d = deployment.to_dict()
             assignment_id = deployment_d["assignment_id"]
-            assignments.append({"assignment": Assignment.query.filter(Assignment.id == assignment_id)[0].to_dict(), "deployment": deployment_d})
+            assignments.append({"assignment": Assignment.query.filter(Assignment.id == assignment_id).one_or_none().to_dict(), "deployment": deployment_d})
         return({"assignments": assignments, "course_name": course_name})
