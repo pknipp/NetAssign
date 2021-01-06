@@ -28,7 +28,10 @@ const Enrollments = _ => {
                 {courses.map(course => (
                     <li key={course.course.id}>
                         {/* <a href={`/${course.course.id}`}>{course.course.name}</a> */}
-                        <NavLink to={`/${course.course.id}`}>{course.course.name}</NavLink>
+                        <NavLink to={`/${course.course.id}`}>
+                            {course.course.name}
+                        </NavLink>
+                        (instructor: {course.instructor.email})
                     </li>
                 ))}
             </ul>}
