@@ -9,7 +9,7 @@ deployments = Blueprint('deployments', __name__)
 def get_deployments(course_id):
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == int(course_id)).order_by(Deployment.deadline)
-        course_name = Course.query.filter(Course.id == int(course_id))[0].to_dict()["name"]
+        course_name = Course.query.filter(Course.id == int(course_id)).one_or_none().to_dict()["name"]
         assignments = list()
         for deployment in deployments:
             deployment_d = deployment.to_dict()
