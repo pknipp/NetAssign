@@ -7,6 +7,7 @@ const Question = ({ qAndR, number, deployment_id }) => {
     let lastResponse = (qAndR.response === null) ? "" : String(qAndR.response);
     const [response, setResponse] = useState(String(lastResponse));
     const [grade, setGrade] = useState(null);
+    const [answer, setAnswer] = useState(null);
     const [errors,setErrors]= useState([]);
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
 
@@ -22,6 +23,7 @@ const Question = ({ qAndR, number, deployment_id }) => {
                 setErrors(responseData.errors);
             } else {
                 setGrade(responseData.grade);
+
                 // history.push('/')
             }
         }
@@ -45,6 +47,7 @@ const Question = ({ qAndR, number, deployment_id }) => {
                     Submit
                 </button>
                 {(grade === null) ? null : <img src={grade ? correct : incorrect} />}
+                {/* {(currentUser.is_instructor) ? } */}
             </span>
         </form>
     </li>
