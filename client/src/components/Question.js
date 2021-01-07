@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import innerText from "react-innertext";
 import AuthContext from '../auth';
 import correct from "../correct10.jpg";
 import incorrect from "../incorrect10.jpeg";
@@ -34,7 +35,9 @@ const Question = ({ qAndR, number, deployment_id }) => {
     }
 
     return <li key={qAndR.id}>
-        <div dangerouslySetInnerHTML={{__html: qAndR.question}}></div>
+        {/* <div dangerouslySetInnerHTML={{__html: qAndR.question}}></div> */}
+        {/* {innerText(qAndR.question)} */}
+        {qAndR.question}
         <form onSubmit={handleSubmit}>
             <span>
                 <input
