@@ -25,7 +25,7 @@ const Submissions = ({ match }) => {
 
     return (
         <>
-        <h3>Questions for "{assignmentName}" assignment:x<sup>2</sup></h3>
+        <h3>Questions for "{assignmentName}" assignment:</h3>
         <ol>
             {(!questionsAndResponses.length) ? null :
                 questionsAndResponses.map((questionAndResponse, index) => (

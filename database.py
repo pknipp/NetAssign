@@ -45,6 +45,7 @@ questions = [
     (1, "log {0} = ", "log(x0)/log(10)", [[2, 99, 97]]),
     (1, "cos {0} rads = ", "cos(x0)", [[-3, 3, 60]]),
     (1, "arctan {0} = (express answer in radians)", "atan(x0)", [[-4, 4, 80]]),
+    (1, "If a girl runs at {0} m/s for {1} hours, how many km does she travel?", "x0 * x1 * 3.6", [[4, 7, 30], [2, 3, 10]]),
     # (1, "[{0}, 2][1]", "[x0, 2][1]", [[3, 4, 10]])
     ]
 
