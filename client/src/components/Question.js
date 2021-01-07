@@ -34,7 +34,7 @@ const Question = ({ qAndR, number, deployment_id }) => {
     }
 
     return <li key={qAndR.id}>
-        {qAndR.question}<br/>
+        <div dangerouslySetInnerHTML={{__html: qAndR.question}}></div>
         <form onSubmit={handleSubmit}>
             <span>
                 <input
