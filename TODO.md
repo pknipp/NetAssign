@@ -2,6 +2,7 @@
 synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
 for questions, incorporate something like pickone/picksame (will require bracket look-up)
 introduce MC questions
+Get 'x<sup>2</sup>' to render properly.
 For models.py, insert the relationships
 Use eager loading rather than lazy loading
 Go back and minimize amount of data in all fetches
