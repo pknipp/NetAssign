@@ -1,6 +1,6 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/my_assign#)
 synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
-for questions, incorporate something like pickone/picksame
+for questions, incorporate something like pickone/picksame (will require bracket look-up)
 introduce MC questions
 For models.py, insert the relationships
 Use eager loading rather than lazy loading
@@ -21,9 +21,9 @@ In database.py, control created_at (= t1), updated_at (t2), and deadline as foll
 Figure out (using list above?) how to seed other students w/a certain number of responses.
 Use html tables to format lists of courses, assignments, and (possibly) questions.
 Insert an isAdmin boolean column in Users table
+Insert addition columns (fname, lname, etc) in Users table?
 Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
 Create instructor-editors for following tables: Question, Assignment, Course, Deployment
 Rename some components to reflect their function rather than first db Query
 Determine why clicking Logout then requires a refresh before anything appears.
-Globally rename my_assign as either net_assign or NetAssign, to match heroku.

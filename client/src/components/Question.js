@@ -15,7 +15,7 @@ const Question = ({ qAndR, number, deployment_id }) => {
         const res = await fetchWithCSRF(
             `/api/submissions/${deployment_id + " " + currentUser.id + " " + number}`, {
             method: 'PUT', headers: {"Content-Type": "application/json"},
-            credentials: 'include', body: JSON.stringify({response: Number(response)})
+            credentials: 'include', body: JSON.stringify({response: (response === "") ? null : Number(response)})
         });
         const responseData = await res.json();
         if (!res.ok) {

@@ -82,7 +82,10 @@ def put_question(did_and_uid_and_qindex):
         submission.questions_and_answers_and_responses = json.dumps(qars)
         submission.updated_at = datetime.now()
         db.session.commit()
-        res = {"grade": abs(answer - response) <= tolerance * abs(answer) or abs(answer - response) < tolerance}
+        grade = None
+        if response != None:
+            grade = abs(answer - response) <= tolerance * abs(answer) or abs(answer - response) < tolerance
+        res = {"grade": grade}
         if is_instructor:
            res["answer"] = answer
         return res

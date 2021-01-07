@@ -44,7 +44,8 @@ questions = [
     (1, "ln {0} = ", "log(x0)", [[2, 99, 97]]),
     (1, "log {0} = ", "log(x0)/log(10)", [[2, 99, 97]]),
     (1, "cos {0} rads = ", "cos(x0)", [[-3, 3, 60]]),
-    (1, "arctan {0} = (express answer in radians)", "atan(x0)", [[-4, 4, 80]])
+    (1, "arctan {0} = (express answer in radians)", "atan(x0)", [[-4, 4, 80]]),
+    # (1, "[{0}, 2][1]", "[x0, 2][1]", [[3, 4, 10]])
     ]
 
 with app.app_context():
