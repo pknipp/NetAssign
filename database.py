@@ -1,5 +1,5 @@
-from my_assign.models import User, Question, Course, Enrollment, Assignment, Appearance, Deployment
-from my_assign import app, db
+from net_assign.models import User, Question, Course, Enrollment, Assignment, Appearance, Deployment
+from net_assign import app, db
 from dotenv import load_dotenv
 from datetime import date, datetime, timedelta
 from faker import Faker

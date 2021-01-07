@@ -26,4 +26,4 @@ Create a gradebook (for students AND teachers).
 Create instructor-editors for following tables: Question, Assignment, Course, Deployment
 Rename some components to reflect their function rather than first db Query
 Determine why clicking Logout then requires a refresh before anything appears.
-Globally rename my_assign as either net_assign or NetAssign.
+Globally rename my_assign as either net_assign or NetAssign, to match heroku.

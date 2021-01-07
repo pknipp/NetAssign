@@ -4,7 +4,7 @@ from random import random, randint, seed
 from datetime import date, datetime, timedelta
 from sqlalchemy import and_
 from flask import Blueprint, request, redirect
-from my_assign.models import db, Assignment, Deployment, Submission, Appearance, Question, User
+from net_assign.models import db, Assignment, Deployment, Submission, Appearance, Question, User
 
 submissions = Blueprint('submissions', __name__)
 

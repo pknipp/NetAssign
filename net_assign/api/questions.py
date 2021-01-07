@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, redirect
-from my_assign.models import Question, db
+from net_assign.models import Question, db
 from datetime import datetime
 # from flask_login import login_required, logout_user, login_user, current_user
 from sqlalchemy import or_

@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const NavBar = ({ currentUser }) => (
     <div className="navContainer">
         <span className="nav">
-            <span>My_Assign welcomes</span>&nbsp;
+            <span>NetAssign welcomes</span>&nbsp;
             {(currentUser) ? currentUser.email : "you"}.
         </span>
         {(currentUser) ?

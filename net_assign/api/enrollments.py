@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect
-from my_assign.models import db, Enrollment, Course, User
+from net_assign.models import db, Enrollment, Course, User
 # from flask_login import login_required, logout_user, login_user, current_user
 
 enrollments = Blueprint('enrollments', __name__)
