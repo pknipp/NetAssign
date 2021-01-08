@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
 
-const Enrollments = _ => {
+const Enrollments = ({ currentUser }) => {
+    debugger
     const [courses, setCourses] = useState([])
-    const { currentUser } = useContext(AuthContext)
+    // const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
         (async () => {

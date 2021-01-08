@@ -30,9 +30,9 @@ const Deployments = ({ match }) => {
             {(!assignments.length) ? null :
                 assignments.map(assignment => (
                     <li key={assignment.assignment.id}>
-                        <NavLink to={`/submissions/${assignment.deployment.id}`}>
+                        <a href={`/submissions/${assignment.deployment.id}`}>
                             {assignment.assignment.name} (due {assignment.deployment.deadline})
-                        </NavLink>
+                        </a>
                     </li>
                 ))
             }

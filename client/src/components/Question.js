@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import innerText from "react-innertext";
 import AuthContext from '../auth';
 import correct from "../correct10.jpg";
@@ -11,6 +12,7 @@ const Question = ({ qAndR, number, deployment_id }) => {
     const [answer, setAnswer] = useState(null);
     const [errors,setErrors]= useState([]);
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
+    const history = useHistory();
 
     const gradeIt = async _ => {
         const res = await fetchWithCSRF(
@@ -24,13 +26,16 @@ const Question = ({ qAndR, number, deployment_id }) => {
         } else {
             if (response !== "") setGrade(responseData.grade);
             setAnswer(responseData.answer);
-            // history.push('/')
+            // history.push(`/submissions/${deployment_id}`)
+            // history.push('/');
         }
     };
 
+    // useEffect(() => console.log("This is an invocation of useEffect."), [])
     useEffect(() => gradeIt(), [])
     const handleSubmit = e => {
         e.preventDefault();
+        // console.log("inside handleSubmit")
         gradeIt();
     }
 

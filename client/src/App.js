@@ -25,7 +25,6 @@ const App = _ => {
         currentUser,
         setCurrentUser
     };
-    // const courseContextValue = {currentCourse, setCurrentCourse};
 
     useEffect(() => {
         (async () => {
@@ -38,18 +37,20 @@ const App = _ => {
 
     return (
         <AuthContext.Provider value={authContextValue}>
-            {loading ?
+            {loading &&
                 <h1>Loading</h1>
-            :
+            }
+            {!loading &&
                 <BrowserRouter>
                     <NavBar currentUser={currentUser} />
                     <div className="switch">
                         <Switch>
                             <AuthRoute exact path="/login" component={LogIn} />
                             <AuthRoute exact path="/signup" component={SignUp} />
-                            <ProtectedRoute exact path="/logout" component={LogOut} />
+                            <ProtectedRoute exact path="/logout" component={LogOut} currentUser={currentUser} />
                             <ProtectedRoute exact path="/edituser" component={EditUser} />
-                            <ProtectedRoute exact path="/" component={Enrollments} />
+                            <ProtectedRoute exact path="/" component={Enrollments} currentUser={currentUser}/>
+                            {/* <Route exact path="/:course_id" component={Deployments} currentUser={currentUser} /> */}
                             <Route exact path="/:course_id" component={Deployments} currentUser={currentUser} />
                             <Route exact path="/submissions/:deployment_id" component={Submissions} currentUser={currentUser} />
                         </Switch>
