@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import innerText from "react-innertext";
+// import { useHistory } from 'react-router-dom';
+// import innerText from "react-innertext";
 import AuthContext from '../auth';
 import correct from "../correct10.jpg";
 import incorrect from "../incorrect10.jpeg";
@@ -10,9 +10,9 @@ const Question = ({ qAndR, number, deployment_id }) => {
     const [response, setResponse] = useState(String(lastResponse));
     const [grade, setGrade] = useState(null);
     const [answer, setAnswer] = useState(null);
-    const [errors,setErrors]= useState([]);
+    const [,setErrors]= useState([]);
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
-    const history = useHistory();
+    // const history = useHistory();
 
     const gradeIt = async () => {
         const res = await fetchWithCSRF(
@@ -34,7 +34,9 @@ const Question = ({ qAndR, number, deployment_id }) => {
         }
     };
 
-    useEffect(() => gradeIt(), [])
+    useEffect(() => {
+        gradeIt();
+    })
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -54,7 +56,7 @@ const Question = ({ qAndR, number, deployment_id }) => {
                 <button type="submit">
                     Submit
                 </button>
-                {(grade === null) ? null : <img src={grade ? correct : incorrect} />}
+                {(grade === null) ? null : <img src={grade ? correct : incorrect} alt={grade ? "correct" : "incorrect"}/>}
             </span>
             {(currentUser.is_instructor) ? answer : null}
         </form>

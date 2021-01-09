@@ -2,7 +2,7 @@
 synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
 for questions, incorporate something like pickone/picksame (will require bracket look-up)
 introduce MC questions
-Get 'x<sup>2</sup>' to render properly.
+Get 'x<sup>2</sup>' to render properly (using npm react-innertext package?)
 For models.py, insert the relationships
 Use eager loading rather than lazy loading
 Go back and minimize amount of data in all fetches
@@ -27,5 +27,4 @@ Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
 Create instructor-editors for following tables: Question, Assignment, Course, Deployment
 Rename some components to reflect their function rather than first db Query
-Determine why clicking Logout then requires a refresh before anything appears.
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.

@@ -16,7 +16,7 @@ import Submissions from './components/Submissions';
 
 
 const App = _ => {
-    const [fetchWithCSRF, setFetchWithCSRF] = useState(() => fetch);
+    const [fetchWithCSRF] = useState(() => fetch);
     const [currentUser, setCurrentUser] = useState(null);
     // const [currentCourse, setCurrentCourse]=useState(null);
     const [loading, setLoading] = useState(true)
@@ -37,22 +37,18 @@ const App = _ => {
 
     return (
         <AuthContext.Provider value={authContextValue}>
-            {loading &&
-                <h1>Loading</h1>
-            }
-            {!loading &&
+            {loading ? <h1>Loading</h1> :
                 <BrowserRouter>
-                    <NavBar currentUser={currentUser} />
+                    <NavBar />
                     <div className="switch">
                         <Switch>
                             <AuthRoute exact path="/login" component={LogIn} />
                             <AuthRoute exact path="/signup" component={SignUp} />
-                            <ProtectedRoute exact path="/logout" component={LogOut} currentUser={currentUser} />
+                            <ProtectedRoute exact path="/logout" component={LogOut} />
                             <ProtectedRoute exact path="/edituser" component={EditUser} />
-                            <ProtectedRoute exact path="/" component={Enrollments} currentUser={currentUser}/>
-                            {/* <Route exact path="/:course_id" component={Deployments} currentUser={currentUser} /> */}
-                            <Route exact path="/:course_id" component={Deployments} currentUser={currentUser} />
-                            <Route exact path="/submissions/:deployment_id" component={Submissions} currentUser={currentUser} />
+                            <ProtectedRoute exact path="/" component={Enrollments} />
+                            <Route exact path="/:course_id" component={Deployments} />
+                            <Route exact path="/submissions/:deployment_id" component={Submissions} />
                         </Switch>
                     </div>
                 </BrowserRouter>

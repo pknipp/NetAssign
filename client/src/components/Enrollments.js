@@ -2,10 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
 
-const Enrollments = ({ currentUser }) => {
-    debugger
+const Enrollments = () => {
     const [courses, setCourses] = useState([])
-    // const { currentUser } = useContext(AuthContext)
+    const { currentUser } = useContext(AuthContext)
 
     useEffect(() => {
         (async () => {
@@ -28,7 +27,6 @@ const Enrollments = ({ currentUser }) => {
             <ul>
                 {courses.map(course => (
                     <li key={course.course.id}>
-                        {/* <a href={`/${course.course.id}`}>{course.course.name}</a> */}
                         <NavLink to={`/${course.course.id}`}>
                             {course.course.name}
                         </NavLink>
