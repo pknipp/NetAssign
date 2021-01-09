@@ -14,28 +14,30 @@ const Question = ({ qAndR, number, deployment_id }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const history = useHistory();
 
-    const gradeIt = async _ => {
+    const gradeIt = async () => {
         const res = await fetchWithCSRF(
             `/api/submissions/${deployment_id + " " + currentUser.id + " " + number}`, {
-            method: 'PUT', headers: {"Content-Type": "application/json"},
-            credentials: 'include', body: JSON.stringify({response: (response === "") ? null : Number(response)})
-        });
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json"
+                    },
+                credentials: 'include',
+                body: JSON.stringify({response: (response === "") ? null : Number(response)})
+            }
+        );
         const responseData = await res.json();
         if (!res.ok) {
             setErrors(responseData.errors);
         } else {
             if (response !== "") setGrade(responseData.grade);
             setAnswer(responseData.answer);
-            // history.push(`/submissions/${deployment_id}`)
-            // history.push('/');
         }
     };
 
-    // useEffect(() => console.log("This is an invocation of useEffect."), [])
     useEffect(() => gradeIt(), [])
+
     const handleSubmit = e => {
         e.preventDefault();
-        // console.log("inside handleSubmit")
         gradeIt();
     }
 
