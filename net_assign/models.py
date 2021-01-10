@@ -180,6 +180,7 @@ class Deployment(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    submissions = db.relationship("Submission", back_populates="deployment", cascade="all, delete-orphan")
     assignment = db.relationship("Assignment", back_populates="deployments")
     course = db.relationship("Course", back_populates="deployments")
 
@@ -205,3 +206,4 @@ class Submission(db.Model, UserMixin):
         }
 
     user = db.relationship("User", back_populates="submissions")
+    deployment = db.relationship("Deployment", back_populates="submissions")
