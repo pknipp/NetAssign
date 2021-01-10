@@ -11,7 +11,7 @@ questions = Blueprint('questions', __name__)
 
 
 @questions.route('/', methods=['GET'])
-def get_questions():
+def index():
     if request.method == 'GET':
         user_id = current_user.id
         print("ids are ", user_id, " and ", current_user.id)
@@ -26,9 +26,23 @@ def get_questions():
             questions.append({"id": q_and_a_and_i["id"], "author": author, "question": question, "answer": answer, "inputs": inputs})
         return({"questions": questions})
 
-@questions.route('/<qid>', methods=['GET'])
-def get_question(qid):
+@questions.route('/<qid>', methods=['GET', 'PUT'])
+def index_one(qid):
+    question_id = int(qid)
+    question = Question.query.filter(Question.id == int(qid)).one_or_none()
     if request.method == 'GET':
-        question_id = int(qid)
-        question = Question.query.filter(Question.id == int(qid)).one_or_none().to_dict()
-        return({"question_answer_inputs": question})
+        return({"question_answer_inputs": question.to_dict()})
+    if request.method == 'PUT':
+        if not request.is_json:
+            return jsonify({"msg": "Missing JSON in request"}), 400
+        questio = request.json.get('question', None)
+        answer = request.json.get('answer', None)
+        inputs = request.json.get('inputs', None)
+        is_public = request.json.get('isPublic', None)
+        question.question = questio # or userd["email"]
+        question.answer = answer
+        question.inputs = inputs
+        question.is_public = is_public
+        question.updated_at = datetime.now()
+        db.session.commit()
+        return ({"message": "success"})

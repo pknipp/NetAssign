@@ -9,7 +9,7 @@ const EditQuestion = ({ match }) => {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [inputs, setInputs] = useState('');
-    const [isPrivate, setIsPublic] = useState(true);
+    const [isPublic, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
 
@@ -22,7 +22,7 @@ const EditQuestion = ({ match }) => {
                     setQuestion(data.question_answer_inputs.question);
                     setAnswer(data.question_answer_inputs.answer);
                     setInputs(data.question_answer_inputs.inputs);
-                    setIsPublic(data.question_answer_inputs.is_private);
+                    setIsPublic(data.question_answer_inputs.is_public);
                 }
             } catch (err) {
                 console.error(err)
@@ -30,19 +30,19 @@ const EditQuestion = ({ match }) => {
         })()
     }, [])
 
-
     const putQuestion = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
-                body: JSON.stringify({ question, answer, inputs })
+                body: JSON.stringify({ question, answer, inputs, isPublic })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
         })();
     }
+
     const deleteQuestion = e => {
         e.preventDefault();
         (async _ => {
