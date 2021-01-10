@@ -27,10 +27,10 @@ const Questions = () => {
 
     return (
         questions.map(question => {
-            let { id, author, answer, inputs } = question
             return (
                 <ul>
-                    <Question key={id} author={author} question={question.question} answer={answer} inputs={inputs} />
+                    <Question
+                        key={question.id} question={question} />
                 </ul>
             )
         })

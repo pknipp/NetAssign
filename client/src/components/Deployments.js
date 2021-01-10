@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Deployments = ({ match }) => {
-    let course_id = match.params.course_id;
+    let courseId = match.params.courseId;
     const [assignments, setAssignments] = useState([]);
     const [courseName, setCourseName] = useState("");
 
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/deployments/${course_id}`)
+                const res = await fetch(`/api/deployments/${courseId}`)
                 if (res.ok) {
                     const data = await res.json();
                     setAssignments(data.assignments);
@@ -19,7 +19,7 @@ const Deployments = ({ match }) => {
                 console.error(err)
             }
         })()
-    }, [course_id])
+    }, [courseId])
 
     return (
         <>

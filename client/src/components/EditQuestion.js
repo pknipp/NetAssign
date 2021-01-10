@@ -4,12 +4,12 @@ import AuthContext from '../auth'
 
 
 const EditQuestion = ({ match }) => {
-    const questionId = match.params.question_id;
+    const questionId = match.params.questionId;
     const { fetchWithCSRF, currentUser, setCurrentUser } = useContext(AuthContext);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [inputs, setInputs] = useState('');
-    const [isPublic, setIsPublic] = useState(null);
+    const [isPrivate, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
 
@@ -19,9 +19,10 @@ const EditQuestion = ({ match }) => {
                 const res = await fetch(`/api/questions/${questionId}`)
                 if (res.ok) {
                     const data = await res.json();
-                    setQuestion(data.question);
-                    setAnswer(data.answer);
-                    setIsPublic(data.is_public);
+                    setQuestion(data.question_answer_inputs.question);
+                    setAnswer(data.question_answer_inputs.answer);
+                    setInputs(data.question_answer_inputs.inputs);
+                    setIsPublic(data.question_answer_inputs.is_private);
                 }
             } catch (err) {
                 console.error(err)
