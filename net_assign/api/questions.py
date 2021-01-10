@@ -15,7 +15,7 @@ def index():
     if request.method == 'GET':
         user_id = current_user.id
         print("ids are ", user_id, " and ", current_user.id)
-        q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public == True))
+        q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public == True)).order_by(Question.id)
         questions = list()
         for q_and_a_and_i in q_and_a_and_is:
             q_and_a_and_i = q_and_a_and_i.to_dict()
