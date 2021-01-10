@@ -6,8 +6,8 @@ import Question from './Question';
 
 const Questions = () => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
-    const [errors, setErrors] = useState([]);
-    const [messages, setMessages] = useState([]);
+    const [, setErrors] = useState([]);
+    const [, setMessages] = useState([]);
     const [questions, setQuestions] = useState([]);
     // let history = useHistory();
 
@@ -23,7 +23,7 @@ const Questions = () => {
                 setQuestions(responseData.questions);
             }
         })();
-    },[])
+    }, [])
 
     return (
         questions.map(question => {

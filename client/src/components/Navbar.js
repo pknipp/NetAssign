@@ -13,7 +13,7 @@ const NavBar = () => {
             {(currentUser) ?
                 <>
                     {/* <span className="nav">{currentUser.email}</span> */}
-                    <NavLink exact to="/create" className="nav" activeClassName="active">Create/Edit Question</NavLink>
+                    <NavLink exact to="/questions" className="nav" activeClassName="active">Questions</NavLink>
                     <NavLink exact to="/" className="nav" activeClassName="active">Home</NavLink>
                     <NavLink to="/edituser" className="nav" activeClassName="active">Account Details</NavLink>
                     <NavLink to="/logout" className="nav" activeClassName="active">Log Out</NavLink>

@@ -14,16 +14,13 @@ questions = Blueprint('questions', __name__)
 def index(uid):
     if request.method == 'GET':
         user_id = int(uid)
-        print(user_id)
-        q_and_a_and_is = Question.query.filter(Question.instructor_id == user_id)
-        # q_and_a_and_is = Question.query.all()
-        # print(len(q_and_a_and_is))
+        q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public == True))
         questions = list()
         for q_and_a_and_i in q_and_a_and_is:
             q_and_a_and_i = q_and_a_and_i.to_dict()
-            author = User.query.filter(User.id == q_and_a_and_i["instructor_id"]).one_or_none().to_dict()["email"]
+            author = User.query.filter(User.id == q_and_a_and_i["instructor_id"]).one_or_none().to_dict()
             question = q_and_a_and_i['question']
             answer   = q_and_a_and_i['answer']
-            inputs = json.loads(q_and_a_and_i['inputs'])
+            inputs = q_and_a_and_i['inputs']
             questions.append({"id": q_and_a_and_i["id"], "author": author, "question": question, "answer": answer, "inputs": inputs})
         return({"questions": questions})

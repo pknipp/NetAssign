@@ -39,12 +39,12 @@ questions = [
     (1, True, "{0} x {1} = ","x0 * x1", [[-3, -1, 20], [2, 3, 10]]),
     (1, True, "{0}/{1} = ","x0/x1", [[2, 4, 20], [1, 3, 20]]),
     (1, True, "{0}<sup>{1}</sup> = ", "x0^x1", [[2, 6, 4], [2, 5, 3]]),
-    (1, True, "Square root of {0} = ", "sqrt(x0)", [[2, 99, 97]]),
+    (1, False, "Square root of {0} = ", "sqrt(x0)", [[2, 99, 97]]),
     (1, True, "{0} x {1} + {2} = ", "x0 * x1 + x2", [[2,7,5], [2,9,7], [2,15,13]]),
     (1, True, "ln {0} = ", "log(x0)", [[2, 99, 97]]),
-    (1, False, "log {0} = ", "log(x0)/log(10)", [[2, 99, 97]]),
+    (3, True, "log {0} = ", "log(x0)/log(10)", [[2, 99, 97]]),
     (1, True, "cos {0} rads = ", "cos(x0)", [[-3, 3, 60]]),
-    (1, False, "arctan {0} = (express answer in radians)", "atan(x0)", [[-4, 4, 80]]),
+    (3, False, "arctan {0} = (express answer in radians)", "atan(x0)", [[-4, 4, 80]]),
     (1, True, "If a girl runs at {0} m/s for {1} hours, how many km does she travel?", "x0 * x1 * 3.6", [[4, 7, 30], [2, 3, 10]]),
     # (1, "[{0}, 2][1]", "[x0, 2][1]", [[3, 4, 10]])
     ]
