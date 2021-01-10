@@ -74,6 +74,7 @@ class Question(db.Model, UserMixin):
         }
 
     user = db.relationship("User", back_populates="questions")
+    appearances = db.relationship("Appearance", back_populates="question", cascade="all, delete-orphan")
 
 class Assignment(db.Model, UserMixin):
     __tablename__ = 'assignments'
@@ -93,6 +94,8 @@ class Assignment(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    deployments = db.relationship("Deployment", back_populates="assignment", cascade="all, delete-orphan")
+    appearances = db.relationship("Appearance", back_populates="assignment", cascade="all, delete-orphan")
     user = db.relationship("User", back_populates="assignments")
 
 class Appearance(db.Model, UserMixin):
@@ -112,6 +115,8 @@ class Appearance(db.Model, UserMixin):
             "created_at": self.created_at
         }
 
+    question = db.relationship("Question", back_populates="appearances")
+    assignment = db.relationship("Assignment", back_populates="appearances")
 
 class Course(db.Model, UserMixin):
     __tablename__ = 'courses'
@@ -172,6 +177,7 @@ class Deployment(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    assignment = db.relationship("Assignment", back_populates="deployments")
 
 class Submission(db.Model, UserMixin):
     __tablename__ = 'submissions'
