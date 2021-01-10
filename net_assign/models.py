@@ -136,6 +136,8 @@ class Course(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    enrollments = db.relationship("Enrollment", back_populates="course", cascade="all, delete-orphan")
+    deployments = db.relationship("Deployment", back_populates="course", cascade="all, delete-orphan")
     user = db.relationship("User", back_populates="courses")
 
 class Enrollment(db.Model, UserMixin):
@@ -156,6 +158,7 @@ class Enrollment(db.Model, UserMixin):
         }
 
     user = db.relationship("User", back_populates="enrollments")
+    course = db.relationship("Course", back_populates="enrollments")
 
 class Deployment(db.Model, UserMixin):
     __tablename__ = 'deployments'
@@ -178,6 +181,7 @@ class Deployment(db.Model, UserMixin):
         }
 
     assignment = db.relationship("Assignment", back_populates="deployments")
+    course = db.relationship("Course", back_populates="deployments")
 
 class Submission(db.Model, UserMixin):
     __tablename__ = 'submissions'
