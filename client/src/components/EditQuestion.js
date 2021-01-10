@@ -5,9 +5,9 @@ import AuthContext from '../auth'
 
 const EditUser = _ => {
     const { fetchWithCSRF, currentUser, setCurrentUser } = useContext(AuthContext);
-    const [email, setEmail] = useState(currentUser.email);
-    const [password, setPassword] = useState('');
-    const [password2, setPassword2] = useState('')
+    const [question, setQuestion] = useState(currentUser.email);
+    const [answer, setAnswer] = useState('');
+    const [inputs, setInputs] = useState('')
 
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -53,13 +53,13 @@ const EditUser = _ => {
             <form onSubmit={submitForm}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <input
-                    type="email" placeholder="Email" value={email}
+                    type="email" placeholder="Question" value={email}
                     onChange={e => setEmail(e.target.value)} name="email" />
                 <input
-                    type="password" placeholder="New password (required)" value={password}
+                    type="password" placeholder="Answer" value={password}
                     onChange={e => setPassword(e.target.value)} name="password" />
                 <input
-                    type="password" placeholder="Confirm new password (required)" value={password2}
+                    type="password" placeholder="Inputs" value={password2}
                     onChange={e => setPassword2(e.target.value)} name="password2" />
                 <button type="submit">Submit Changes</button>
             </form>
