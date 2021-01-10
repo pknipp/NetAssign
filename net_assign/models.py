@@ -49,6 +49,7 @@ class Question(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     instructor_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    is_public = db.Column(db.Boolean, nullable=False)
     question = db.Column(db.String(127), nullable=False)
     inputs = db.Column(db.String(127), nullable=False)
     answer = db.Column(db.String(63), nullable=False)
@@ -59,6 +60,7 @@ class Question(db.Model, UserMixin):
         return {
             "id": self.id,
             "instructor_id": self.instructor_id,
+            "is_public": self.is_public,
             "question": self.question,
             "inputs": self.inputs,
             "answer": self.answer,
