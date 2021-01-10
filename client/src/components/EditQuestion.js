@@ -1,39 +1,51 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AuthContext from '../auth'
 
 
-const EditUser = _ => {
+const EditQuestion = ({ match }) => {
+    const questionId = match.params.question_id;
     const { fetchWithCSRF, currentUser, setCurrentUser } = useContext(AuthContext);
-    const [question, setQuestion] = useState(currentUser.email);
+    const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
-    const [inputs, setInputs] = useState('')
-
+    const [inputs, setInputs] = useState('');
+    const [isPublic, setIsPublic] = useState(null);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
-    let history = useHistory();
 
-    const submitForm = e => {
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await fetch(`/api/questions/${questionId}`)
+                if (res.ok) {
+                    const data = await res.json();
+                    setQuestion(data.question);
+                    setAnswer(data.answer);
+                    setIsPublic(data.is_public);
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        })()
+    }, [])
+
+
+    const putQuestion = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/${currentUser.id}`, {
+            const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
-                body: JSON.stringify({ email, password, password2 })
+                body: JSON.stringify({ question, answer, inputs })
             });
             const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else if (responseData.messages) {
-                setMessages(responseData.messages)
-            } else {
-                history.push('/')
-            }
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
         })();
     }
-    const deleteUser = e => {
+    const deleteQuestion = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/${currentUser.id}`, {
+            const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
@@ -50,26 +62,21 @@ const EditUser = _ => {
 
     return (
         <>
-            <form onSubmit={submitForm}>
+            <form onSubmit={putQuestion}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <input
-                    type="email" placeholder="Question" value={email}
-                    onChange={e => setEmail(e.target.value)} name="email" />
+                    type="text" value={question}
+                    onChange={e => setQuestion(e.target.value)} name="question" />
                 <input
-                    type="password" placeholder="Answer" value={password}
-                    onChange={e => setPassword(e.target.value)} name="password" />
+                    type="text" placeholder="Answer" value={answer}
+                    onChange={e => setAnswer(e.target.value)} name="answer" />
                 <input
-                    type="password" placeholder="Inputs" value={password2}
-                    onChange={e => setPassword2(e.target.value)} name="password2" />
+                    type="text" placeholder="Inputs" value={inputs}
+                    onChange={e => setInputs(e.target.value)} name="inputs" />
                 <button type="submit">Submit Changes</button>
-            </form>
-            <form onSubmit={deleteUser}>
-                {messages.map(err => <li key={err}>{err}</li>)}
-                <h2>Would you like to delete your account?</h2>
-                <button type="submit">Delete Account</button>
             </form>
         </>
     );
 };
 
-export default EditUser;
+export default EditQuestion;

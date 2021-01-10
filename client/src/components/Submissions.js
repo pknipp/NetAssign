@@ -11,7 +11,7 @@ const Submissions = ({ match }) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/submissions/${deployment_id+ " " + currentUser.id}`)
+                const res = await fetch(`/api/submissions/${deployment_id}`)
                 if (res.ok) {
                     const data = await res.json();
                     setQuestionsAndResponses(data.questions_and_responses);

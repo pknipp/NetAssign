@@ -16,7 +16,7 @@ const Submission = ({ qAndR, number, deployment_id }) => {
 
     const gradeIt = async () => {
         const res = await fetchWithCSRF(
-            `/api/submissions/${deployment_id + " " + currentUser.id + " " + number}`, {
+            `/api/submissions/${deployment_id + " " + number}`, {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json"

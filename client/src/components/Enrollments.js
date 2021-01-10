@@ -9,7 +9,7 @@ const Enrollments = () => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/enrollments/${currentUser.id}`)
+                const res = await fetch(`/api/enrollments/`)
                 if (res.ok) {
                     const data = await res.json();
                     setCourses(data.courses);

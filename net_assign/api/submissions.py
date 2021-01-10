@@ -4,17 +4,17 @@ from random import random, randint, seed
 from datetime import date, datetime, timedelta
 from sqlalchemy import and_
 from flask import Blueprint, request, redirect
+from flask_login import current_user
 from net_assign.models import db, Assignment, Deployment, Submission, Appearance, Question, User
 
 submissions = Blueprint('submissions', __name__)
 
 seed()
 
-@submissions.route('/<did_and_uid>', methods=['GET'])
-def get_questions(did_and_uid):
-    ids = did_and_uid.split(" ")
-    deployment_id = int(ids[0])
-    student_id = int(ids[1])
+@submissions.route('/<did>', methods=['GET'])
+def get_questions(did):
+    deployment_id = int(did)
+    student_id = current_user.id
     is_instructor = User.query.filter(User.id == student_id).one_or_none().to_dict()["is_instructor"]
     dec = 4
     if request.method == 'GET':
@@ -63,14 +63,14 @@ def get_questions(did_and_uid):
         return({"questions_and_responses": qrs, "assignment_name": assignment["name"]})
 
 
-@submissions.route('/<did_and_uid_and_qindex>', methods=['PUT'])
-def put_question(did_and_uid_and_qindex):
+@submissions.route('/<did_and_qindex>', methods=['PUT'])
+def put_question(did_and_qindex):
     tolerance = 0.02
-    ids = did_and_uid_and_qindex.split(" ")
+    ids = did_and_qindex.split(" ")
     deployment_id = int(ids[0])
-    student_id = int(ids[1])
+    student_id = current_user.id
     is_instructor = User.query.filter(User.id == student_id).one_or_none().to_dict()["is_instructor"]
-    question_index = int(ids[2])
+    question_index = int(ids[1])
     if request.method == 'PUT':
         submission = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).one_or_none()
         qars = json.loads(submission.to_dict()["questions_and_answers_and_responses"])

@@ -41,9 +41,11 @@ def index():
         return {"errors": ["Invalid credentials"]}, 401
 
 
-@users.route('/<id>', methods=['GET', 'PUT', 'DELETE'])
-def user_info(id):
-    user = User.query.filter(User.id == int(id)).one_or_none()
+@users.route('/', methods=['GET', 'PUT', 'DELETE'])
+def user_info():
+    user = current_user
+    print(user)
+    # user = User.query.filter(User.id == int(id)).one_or_none()
     userd= user.to_dict()
     if request.method == "GET":
         return userd

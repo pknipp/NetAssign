@@ -1,14 +1,14 @@
 from flask import Blueprint, request, redirect
 from net_assign.models import db, Enrollment, Course, User
-# from flask_login import login_required, logout_user, login_user, current_user
+from flask_login import current_user
 
 enrollments = Blueprint('enrollments', __name__)
 
 
-@enrollments.route('/<student_id>', methods=['GET'])
-def get_courses(student_id):
+@enrollments.route('/', methods=['GET'])
+def get_courses():
     if request.method == 'GET':
-        enrollments = Enrollment.query.filter(Enrollment.student_id == int(student_id))
+        enrollments = Enrollment.query.filter(Enrollment.student_id == current_user.id)
         courses = list()
         for enrollment in enrollments:
             course_id = enrollment.to_dict()["course_id"]
