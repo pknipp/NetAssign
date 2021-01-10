@@ -23,7 +23,7 @@ def index():
             question = q_and_a_and_i['question']
             answer   = q_and_a_and_i['answer']
             inputs = q_and_a_and_i['inputs']
-            questions.append({"id": q_and_a_and_i["id"], "author": author, "question": question, "answer": answer, "inputs": inputs})
+            questions.append({"id": q_and_a_and_i["id"], "author": author, "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i["is_public"]})
         return({"questions": questions})
 
 @questions.route('/<qid>', methods=['GET', 'PUT'])

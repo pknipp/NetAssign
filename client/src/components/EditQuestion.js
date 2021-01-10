@@ -74,6 +74,10 @@ const EditQuestion = ({ match }) => {
                 <input
                     type="text" placeholder="Inputs" value={inputs}
                     onChange={e => setInputs(e.target.value)} name="inputs" />
+                <span>
+                    {isPublic ? "Public " : "Private "}
+                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                </span>
                 <button type="submit">Submit Changes</button>
             </form>
         </>

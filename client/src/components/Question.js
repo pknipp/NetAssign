@@ -12,6 +12,7 @@ const Question = ({ question }) => {
                 <li> question: {question.question} </li>
                 <li> answer: {question.answer} </li>
                 <li> inputs: {question.inputs} </li>
+                <li> is public? {question.is_public ? "yes" : "no"}</li>
                 { (currentUser.id === question.author.id) ?
                     <NavLink exact to={`/questions/${question.id}`} className="nav" activeClassName="active">
                         edit question
