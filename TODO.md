@@ -3,7 +3,7 @@ synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
 for questions, incorporate something like pickone/picksame (will require bracket look-up)
 introduce MC questions
 Get 'x<sup>2</sup>' to render properly (using npm react-innertext package?)
-For models.py, insert the relationships
+For models.py, insert the many-to-many relationships?
 Use eager loading rather than lazy loading
 Go back and minimize amount of data in all fetches
 Muse upon rationale for putting routes in different blueprints (and naming components)
@@ -25,7 +25,8 @@ Insert an isAdmin boolean column in Users table
 Insert addition columns (fname, lname, etc) in Users table?
 Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
-Create instructor-editors for following tables: Question, Assignment, Course, Deployment
+Create instructor-editors for following tables: Assignment, Course, Deployment
+Improve editor for following tables: Question
+Make question-creator component (reuse EditQuestion component?)
 Rename some components to reflect their function rather than first db Query
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
-
