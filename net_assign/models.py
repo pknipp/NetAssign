@@ -43,6 +43,11 @@ class User(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    questions = db.relationship("Question", back_populates="user", cascade="all, delete-orphan")
+    enrollments = db.relationship("Enrollment", back_populates="user", cascade="all, delete-orphan")
+    assignments = db.relationship("Assignment", back_populates="user", cascade="all, delete-orphan")
+    courses = db.relationship("Course", back_populates="user", cascade="all, delete-orphan")
+    submissions = db.relationship("Submission", back_populates="user", cascade="all, delete-orphan")
 
 class Question(db.Model, UserMixin):
     __tablename__ = 'questions'
@@ -68,6 +73,7 @@ class Question(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    user = db.relationship("User", back_populates="questions")
 
 class Assignment(db.Model, UserMixin):
     __tablename__ = 'assignments'
@@ -87,6 +93,7 @@ class Assignment(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    user = db.relationship("User", back_populates="assignments")
 
 class Appearance(db.Model, UserMixin):
     __tablename__ = 'appearances'
@@ -124,6 +131,7 @@ class Course(db.Model, UserMixin):
             "updated_at": self.updated_at
         }
 
+    user = db.relationship("User", back_populates="courses")
 
 class Enrollment(db.Model, UserMixin):
     __tablename__ = 'enrollments'
@@ -142,6 +150,7 @@ class Enrollment(db.Model, UserMixin):
             "created_at": self.created_at
         }
 
+    user = db.relationship("User", back_populates="enrollments")
 
 class Deployment(db.Model, UserMixin):
     __tablename__ = 'deployments'
@@ -184,3 +193,5 @@ class Submission(db.Model, UserMixin):
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
+
+    user = db.relationship("User", back_populates="submissions")
