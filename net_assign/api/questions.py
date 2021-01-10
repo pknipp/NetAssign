@@ -14,7 +14,6 @@ questions = Blueprint('questions', __name__)
 def index():
     if request.method == 'GET':
         user_id = current_user.id
-        print("ids are ", user_id, " and ", current_user.id)
         q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public == True)).order_by(Question.id)
         questions = list()
         for q_and_a_and_i in q_and_a_and_is:
@@ -35,6 +34,7 @@ def index_one(qid):
     if request.method == 'PUT':
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
+            # tighten up following code by eliminating superfluous py variables
         questio = request.json.get('question', None)
         answer = request.json.get('answer', None)
         inputs = request.json.get('inputs', None)

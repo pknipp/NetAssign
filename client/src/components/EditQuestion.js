@@ -53,11 +53,9 @@ const EditQuestion = ({ match }) => {
                 credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else if (responseData.messages) {
-                setMessages(responseData.messages)
-            }
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            history.push("/questions")
         })();
     }
 
