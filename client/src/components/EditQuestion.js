@@ -12,6 +12,7 @@ const EditQuestion = ({ match }) => {
     const [isPublic, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
+    const history = useHistory();
 
     useEffect(() => {
         (async () => {
@@ -40,6 +41,7 @@ const EditQuestion = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
+            history.push("/questions")
         })();
     }
 
@@ -55,8 +57,6 @@ const EditQuestion = ({ match }) => {
                 setErrors(responseData.errors);
             } else if (responseData.messages) {
                 setMessages(responseData.messages)
-            } else {
-                setCurrentUser(null);
             }
         })();
     }
@@ -76,9 +76,20 @@ const EditQuestion = ({ match }) => {
                     onChange={e => setInputs(e.target.value)} name="inputs" />
                 <span>
                     {isPublic ? "Public " : "Private "}
-                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                    <button onClick={e => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setIsPublic(!isPublic)
+                    }}>
+                        toggle
+                    </button>
                 </span>
                 <button type="submit">Submit Changes</button>
+            </form>
+            <form onSubmit={deleteQuestion}>
+                {messages.map(err => <li key={err}>{err}</li>)}
+                <h4>Would you like to delete this question?</h4>
+                <button type="submit">Delete Question</button>
             </form>
         </>
     );

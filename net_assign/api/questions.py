@@ -26,7 +26,7 @@ def index():
             questions.append({"id": q_and_a_and_i["id"], "author": author, "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i["is_public"]})
         return({"questions": questions})
 
-@questions.route('/<qid>', methods=['GET', 'PUT'])
+@questions.route('/<qid>', methods=['GET', 'PUT', 'DELETE'])
 def index_one(qid):
     question_id = int(qid)
     question = Question.query.filter(Question.id == int(qid)).one_or_none()
@@ -46,3 +46,7 @@ def index_one(qid):
         question.updated_at = datetime.now()
         db.session.commit()
         return ({"message": "success"})
+    if request.method == 'DELETE':
+        db.session.delete(question)
+        db.session.commit()
+        return {"message": "I hope that no one needs that question."}
