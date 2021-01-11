@@ -41,7 +41,7 @@ const EditAssignment = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/assignments")
+            history.push(`/assignments/${assignmentId}`)
         })();
     }
 
@@ -73,6 +73,21 @@ const EditAssignment = ({ match }) => {
         })();
     }
 
+    const dropQuestion = (e, qid) => {
+        e.preventDefault();
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
+                method: 'DELETE', headers: {"Content-Type": "application/json"},
+                credentials: 'include', body: JSON.stringify({})
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            // history.push("/assignments")
+        })();
+
+    }
+
     return (
         <>
             <form onSubmit={assignmentId ? putAssignment : postAssignment}>
@@ -84,7 +99,10 @@ const EditAssignment = ({ match }) => {
                     {questions.map(question => (
                         <li key={question.id}>
                             question: {question.question}<br/>
-                            answer: {question.answer}
+                            answer: {question.answer}<br/>
+                            <button onClick={e => dropQuestion(e, question.id)}>
+                                drop
+                            </button>
                         </li>
                     ))}
                 </ul>
