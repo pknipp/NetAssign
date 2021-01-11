@@ -4,7 +4,7 @@ import AuthContext from '../auth'
 
 
 const EditQuestion = ({ match }) => {
-    const questionId = match.params.questionId;
+    const questionId = Number(match.params.questionId)  ;
     const { fetchWithCSRF, currentUser, setCurrentUser } = useContext(AuthContext);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
@@ -15,6 +15,7 @@ const EditQuestion = ({ match }) => {
     const history = useHistory();
 
     useEffect(() => {
+        if (questionId > 0) {
         (async () => {
             try {
                 const res = await fetch(`/api/questions/${questionId}`)
@@ -28,7 +29,7 @@ const EditQuestion = ({ match }) => {
             } catch (err) {
                 console.error(err)
             }
-        })()
+        })()}
     }, [])
 
     const putQuestion = e => {
@@ -36,6 +37,20 @@ const EditQuestion = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                body: JSON.stringify({ question, answer, inputs, isPublic })
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            history.push("/questions")
+        })();
+    }
+
+    const postQuestion = e => {
+        e.preventDefault();
+        (async _ => {
+            const response = await fetchWithCSRF("/api/questions/", {
+                method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });
             const responseData = await response.json();
@@ -61,10 +76,10 @@ const EditQuestion = ({ match }) => {
 
     return (
         <>
-            <form onSubmit={putQuestion}>
+            <form onSubmit={questionId ? putQuestion : postQuestion}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <input
-                    type="text" value={question}
+                    type="text" placeholder="Question" value={question}
                     onChange={e => setQuestion(e.target.value)} name="question" />
                 <input
                     type="text" placeholder="Answer" value={answer}
@@ -84,11 +99,11 @@ const EditQuestion = ({ match }) => {
                 </span>
                 <button type="submit">Submit Changes</button>
             </form>
-            <form onSubmit={deleteQuestion}>
+            {questionId ? <form onSubmit={deleteQuestion}>
                 {messages.map(err => <li key={err}>{err}</li>)}
                 <h4>Would you like to delete this question?</h4>
                 <button type="submit">Delete Question</button>
-            </form>
+            </form> : null}
         </>
     );
 };

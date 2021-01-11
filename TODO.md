@@ -9,14 +9,14 @@ Go back and minimize amount of data in all fetches
 Muse upon rationale for putting routes in different blueprints (and naming components)
 In database.py, control created_at (= t1), updated_at (t2), and deadline as follows:
     (1)user(u): t2u > t1u
-    (3)course (c): t2c > t1c > t1u
-    (4)enrollment (e): te > t1c, te > t1u
+    (3)course (c): t2c > t1c > t1u, CUD
+    (4)enrollment (e): te > t1c, te > t1u, CUD
 
     (2)question (q): t2q > t1q > t1u
-    (5)assignment (as): t2as > t1as > t1u, t2as > t1q
-    (6)appearances (ap): tap > t1q, tap > t1as
+    (5)assignment (as): t2as > t1as > t1u, t2as > t1q, CUD
+    (6)appearances (ap): tap > t1q, tap > t1as, CUD
 
-    (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d
+    (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CUD
     (8)submissions (s): deadline > t2s > t1s > t1u, t1s > t1d
 
 Figure out (using list above?) how to seed other students w/a certain number of responses.

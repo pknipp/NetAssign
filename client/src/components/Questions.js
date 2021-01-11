@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth'
 import Question from './Question';
 
@@ -26,14 +26,19 @@ const Questions = () => {
     }, [])
 
     return (
-        questions.map(question => {
+        <>
+        <NavLink exact to={"/questions/0"} className="nav" activeClassName="active">
+            create new question
+        </NavLink>
+        {questions.map(question => {
             return (
                 <ul>
                     <Question
                         key={question.id} question={question} />
                 </ul>
             )
-        })
+        })}
+        </>
     )
 };
 
