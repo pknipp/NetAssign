@@ -10,6 +10,7 @@ const EditAssignment = ({ match }) => {
     const [name, setName] = useState('');
     const [isPublic, setIsPublic] = useState(true);
     const [questions, setQuestions] = useState([]);
+    const [rerender, setRerender] = useState(false);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
@@ -29,7 +30,7 @@ const EditAssignment = ({ match }) => {
                 console.error(err)
             }
         })()}
-    }, [])
+    }, [rerender])
 
     const putAssignment = e => {
         e.preventDefault();
@@ -69,7 +70,7 @@ const EditAssignment = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/assignments")
+            history.push("/assignments/")
         })();
     }
 
@@ -83,9 +84,8 @@ const EditAssignment = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            // history.push("/assignments")
+            setRerender(!rerender);
         })();
-
     }
 
     return (
