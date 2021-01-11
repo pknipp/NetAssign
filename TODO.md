@@ -14,7 +14,7 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
     (4)enrollment (e): te > t1c, te > t1u, CUD
 
     (2)question (q): t2q > t1q > t1u
-    (5)assignment (as): t2as > t1as > t1u, t2as > t1q, CUD
+    (5)assignment (as): t2as > t1as > t1u, t2as > t1q
     (6)appearances (ap): tap > t1q, tap > t1as, CUD
 
     (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CUD
@@ -32,3 +32,4 @@ Rename some components to reflect their function rather than first db Query
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
 On back-end, change some for-loops to list comprehensions.
 For assignment-creation route, simultaneously create a row in the appearances table
+Insert ability to duplicate questions and assignments

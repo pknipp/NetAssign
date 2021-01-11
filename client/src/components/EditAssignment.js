@@ -9,6 +9,7 @@ const EditAssignment = ({ match }) => {
     const [assignment, setAssignment] = useState('');
     const [name, setName] = useState('');
     const [isPublic, setIsPublic] = useState(true);
+    const [questions, setQuestions] = useState([]);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
@@ -22,6 +23,7 @@ const EditAssignment = ({ match }) => {
                     const data = await res.json();
                     setName(data.assignment.name);
                     setIsPublic(data.assignment.is_public);
+                    setQuestions(data.questions);
                 }
             } catch (err) {
                 console.error(err)
@@ -78,6 +80,14 @@ const EditAssignment = ({ match }) => {
                 <input
                     type="text" placeholder="Name" value={name}
                     onChange={e => setName(e.target.value)} name="name" />
+                <ul>
+                    {questions.map(question => (
+                        <li key={question.id}>
+                            question: {question.question}<br/>
+                            answer: {question.answer}
+                        </li>
+                    ))}
+                </ul>
                 <span>
                     {isPublic ? "Public " : "Private "}
                     <button onClick={e => {
