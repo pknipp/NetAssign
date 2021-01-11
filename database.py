@@ -136,6 +136,7 @@ with app.app_context():
         created_at=fake.date_time_between(start_date=datetime(2000, 1, 15))
         db.session.add(Assignment(
             instructor_id=instructor_id,
+            is_public=True,
             name=name,
             created_at=created_at,
             updated_at=fake.date_time_between(start_date=created_at)

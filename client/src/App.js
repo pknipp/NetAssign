@@ -15,6 +15,8 @@ import Deployments from './components/Deployments';
 import Submissions from './components/Submissions';
 import Questions from './components/Questions';
 import EditQuestion from './components/EditQuestion';
+import Assignments from './components/Assignments';
+import EditAssignment from './components/EditAssignment';
 
 
 const App = _ => {
@@ -48,7 +50,9 @@ const App = _ => {
                             <AuthRoute exact path="/signup" component={SignUp} />
                             <ProtectedRoute exact path="/logout" component={LogOut} />
                             <ProtectedRoute exact path="/questions" component={Questions} />
+                            <ProtectedRoute exact path="/assignments" component={Assignments} />
                             <Route exact path="/questions/:questionId" component={EditQuestion} />
+                            <Route exact path="/assignments/:assignmentId" component={EditAssignment} />
                             <ProtectedRoute exact path="/edituser" component={EditUser} />
                             <ProtectedRoute exact path="/" component={Enrollments} />
                             <Route exact path="/:courseId" component={Deployments} />

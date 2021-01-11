@@ -7,7 +7,8 @@ For models.py, insert the many-to-many relationships?
 Use eager loading rather than lazy loading
 Go back and minimize amount of data in all fetches
 Muse upon rationale for putting routes in different blueprints (and naming components)
-In database.py, control created_at (= t1), updated_at (t2), and deadline as follows:
+In database.py, control created_at (= t1), updated_at (t2), and is_public (for both
+    questions and assignments) and deadline as follows:
     (1)user(u): t2u > t1u
     (3)course (c): t2c > t1c > t1u, CUD
     (4)enrollment (e): te > t1c, te > t1u, CUD
@@ -21,12 +22,13 @@ In database.py, control created_at (= t1), updated_at (t2), and deadline as foll
 
 Figure out (using list above?) how to seed other students w/a certain number of responses.
 Use html tables to format lists of courses, assignments, and (possibly) questions.
-Insert an isAdmin boolean column in Users table
+Insert an is_admin boolean column in Users table
 Insert addition columns (fname, lname, etc) in Users table?
 Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
 Create instructor-editors for following tables: Assignment, Course, Deployment
 Improve editor for following tables: Question
-Make question-creator component (reuse EditQuestion component?)
 Rename some components to reflect their function rather than first db Query
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
+On back-end, change some for-loops to list comprehensions.
+For assignment-creation route, simultaneously create a row in the appearances table
