@@ -1,6 +1,7 @@
 from flask import Blueprint, request, redirect
 from net_assign.models import db, Enrollment, Course, User
 from flask_login import current_user
+from datetime import datetime
 
 enrollments = Blueprint('enrollments', __name__)
 
@@ -18,8 +19,8 @@ def index():
             courses.append({"course": course, "instructor": instructor})
         return({"courses": courses})
 
-@enrollments.route('/<course_id>/', methods=['DELETE'])
-def delete_enrollment(course_id):
+@enrollments.route('/<course_id>/', methods=['DELETE', 'POST'])
+def change_enrollment(course_id):
     course_id = int(course_id)
     student_id= current_user.id
     if request.method == 'DELETE':
@@ -27,3 +28,12 @@ def delete_enrollment(course_id):
         db.session.delete(enrollment)
         db.session.commit()
         return {"message": "This class will miss you."}
+    if request.method == 'POST':
+        new_enrollment = Enrollment(
+            student_id=student_id,
+            course_id=course_id,
+            created_at=datetime.now()
+        )
+        db.session.add(new_enrollment)
+        db.session.commit()
+        return {"message": "We hope that you enjoy the class."}

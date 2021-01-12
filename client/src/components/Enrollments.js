@@ -25,6 +25,10 @@ const Enrollments = () => {
         }
     }
 
+    useEffect(() => {
+        getMyCourses();
+    }, [rerender])
+
     const getMoreCourses = async () => {
         if (!showMoreCourses) {
             try {
@@ -42,18 +46,26 @@ const Enrollments = () => {
         setShowMoreCourses(!showMoreCourses);
         setRerender(!rerender);
     }
-    let myCourses = courses.map(course => course.course);
-    let notMyCourses = moreCourses.filter(course => !myCourses.includes(course));
-    debugger;
-    useEffect(() => {
-        getMyCourses();
-    }, [rerender])
 
     const deleteEnrollment = (e, courseId) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${courseId}/`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
+                credentials: 'include', body: JSON.stringify({})
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            setRerender(!rerender);
+        })();
+    }
+
+    const createEnrollment = (e, courseId) => {
+        e.preventDefault();
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/enrollments/${courseId}/`, {
+                method: 'POST', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
@@ -89,7 +101,12 @@ const Enrollments = () => {
             <ul>
                 {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
                     <li key={course.id}>
-                        {course.name}
+                        <>
+                            <button onClick={e => createEnrollment(e, course.id)}>
+                                add
+                            </button>
+                            {course.name}
+                        </>
                     </li>
                 ))}
             </ul>
