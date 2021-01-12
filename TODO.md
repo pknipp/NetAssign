@@ -17,7 +17,7 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
     (5)assignment (as): t2as > t1as > t1u, t2as > t1q
     (6)appearances (ap): tap > t1q, tap > t1as, CUD
 
-    (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CUD
+    (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CU
     (8)submissions (s): deadline > t2s > t1s > t1u, t1s > t1d
 
 Figure out (using list above?) how to seed other students w/a certain number of responses.
@@ -33,3 +33,4 @@ Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal 
 On back-end, change some for-loops to list comprehensions.
 For assignment-creation route, simultaneously create a row in the appearances table
 Insert ability to duplicate questions and assignments
+Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)

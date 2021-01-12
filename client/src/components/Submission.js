@@ -1,22 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react';
-// import { useHistory } from 'react-router-dom';
 // import innerText from "react-innertext";
 import AuthContext from '../auth';
 import correct from "../correct10.jpg";
 import incorrect from "../incorrect10.jpeg";
 
-const Submission = ({ qAndR, number, deployment_id }) => {
+const Submission = ({ qAndR, number, deploymentId }) => {
     let lastResponse = (qAndR.response === null) ? "" : String(qAndR.response);
     const [response, setResponse] = useState(String(lastResponse));
     const [grade, setGrade] = useState(null);
     const [answer, setAnswer] = useState(null);
     const [,setErrors]= useState([]);
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
-    // const history = useHistory();
 
     const gradeIt = async () => {
         const res = await fetchWithCSRF(
-            `/api/submissions/${deployment_id + " " + number}`, {
+            `/api/submissions/${deploymentId + " " + number}`, {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json"

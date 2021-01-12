@@ -3,7 +3,7 @@ import Submission from './Submission';
 import AuthContext from '../auth';
 
 const Submissions = ({ match }) => {
-    let deployment_id = match.params.deployment_id;
+    let deploymentId = match.params.deploymentId;
     const [questionsAndResponses, setQuestionsAndResponses] = useState([]);
     const [assignmentName, setAssignmentName] = useState("");
     const { currentUser } = useContext(AuthContext);
@@ -11,7 +11,7 @@ const Submissions = ({ match }) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/submissions/${deployment_id}`)
+                const res = await fetch(`/api/submissions/${deploymentId}`)
                 if (res.ok) {
                     const data = await res.json();
                     setQuestionsAndResponses(data.questions_and_responses);
@@ -21,7 +21,7 @@ const Submissions = ({ match }) => {
                 console.error(err)
             }
         })()
-    }, [deployment_id, currentUser.id])
+    }, [deploymentId, currentUser.id])
 
     return (
         <>
@@ -29,7 +29,7 @@ const Submissions = ({ match }) => {
         <ol>
             {(!questionsAndResponses.length) ? null :
                 questionsAndResponses.map((questionAndResponse, index) => (
-                    <Submission key={questionAndResponse.id} qAndR={questionAndResponse} number={index} deployment_id={deployment_id}/>
+                    <Submission key={questionAndResponse.id} qAndR={questionAndResponse} number={index} deploymentId={deploymentId}/>
                     // <h3>Hello world</h3>
                 ))
             }
