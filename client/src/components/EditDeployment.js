@@ -7,10 +7,11 @@ const EditDeployment = ({ match }) => {
     const deploymentId = Number(match.params.deploymentId);
     debugger;
     const { fetchWithCSRF } = useContext(AuthContext);
-    const [name, setName] = useState('');
+    const [courseName, setCourseName] = useState('');
+    const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState(null);
     const [rerender, setRerender] = useState(false);
-    const [courses, setCourses] = useState([]);
+    const [courseId, setCourseId] = useState(null);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
@@ -18,11 +19,13 @@ const EditDeployment = ({ match }) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/deployments/${deploymentId}`)
+                const res = await fetch(`/api/deployments/${deploymentId}/`)
                 if (res.ok) {
                     const data = await res.json();
-                    setName(data.name);
+                    setCourseName(data.course_name);
+                    setAssignmentName(data.assignment_name);
                     setDeadline(data.deadline);
+                    setCourseId(data.course_id);
                 }
             } catch (err) {
                 console.error(err)
@@ -33,7 +36,7 @@ const EditDeployment = ({ match }) => {
     const putDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}/`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ deadline })
             });
@@ -49,7 +52,7 @@ const EditDeployment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF("/api/deployments/", {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
-                body: JSON.stringify({ courses })
+                body: JSON.stringify({ courseId })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -61,14 +64,14 @@ const EditDeployment = ({ match }) => {
     const deleteDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}/`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/deployments/")
+            history.push(`/courses/${courseId}`)
         })();
     }
 
@@ -76,7 +79,8 @@ const EditDeployment = ({ match }) => {
         <>
             <form onSubmit={deploymentId ? putDeployment : postDeployment}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
-                Course: {name}
+                Course: {courseName}<br/>
+                Assignment: {assignmentName}
                 <input
                     type="text" placeholder="deadline" value={deadline}
                     onChange={e => setDeadline(e.target.value)} name="deadline" />

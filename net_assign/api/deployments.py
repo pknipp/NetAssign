@@ -4,14 +4,19 @@ from net_assign.models import db, Assignment, Deployment, Course
 
 deployments = Blueprint('deployments', __name__)
 
-@deployments.route('/<deployment_id>/', methods=['GET'])
+@deployments.route('/<deployment_id>/', methods=['GET', 'DELETE'])
 def index(deployment_id):
-    deployment_id = int(deployment_id)
+    deployment = Deployment.query.filter(Deployment.id == int(deployment_id)).one_or_none()
     if request.method == 'GET':
         deployment = Deployment.query.filter(Deployment.id == deployment_id).one_or_none()
         deployment_d = deployment.to_dict()
         assignment = Assignment.query.filter(Assignment.id == deployment_d["assignment_id"]).one_or_none()
-        return({"name": assignment.to_dict()["name"], "deadline": deployment_d["deadline"]})
+        course = Course.query.filter(Course.id == deployment_d["course_id"]).one_or_none()
+        return({"course_name":course.to_dict()["name"], "assignment_name": assignment.to_dict()["name"], "deadline": deployment_d["deadline"], "course_id": course.to_dict()["id"]})
+    if request.method == 'DELETE':
+        db.session.delete(deployment)
+        db.session.commit()
+        return {"message": "I hope that no one needs that deployment."}
 
 @deployments.route('/courses/<course_id>/', methods=['GET'])
 def get_deployments(course_id):
