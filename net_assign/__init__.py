@@ -5,7 +5,7 @@ from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import LoginManager, \
     current_user, login_user, logout_user, login_required
 from flask_migrate import Migrate
-from net_assign.models import db, User, Question, Assignment, Appearance
+from net_assign.models import db, User, Question, Assignment, Appearance, Course
 from net_assign.api.session import session
 from net_assign.api.users import users
 from net_assign.api.questions import questions
@@ -14,6 +14,7 @@ from net_assign.api.deployments import deployments
 from net_assign.api.submissions import submissions
 from net_assign.api.assignments import assignments
 from net_assign.api.appearances import appearances
+from net_assign.api.courses import courses
 from net_assign.config import Config
 from datetime import datetime
 
@@ -30,6 +31,7 @@ app.register_blueprint(deployments, url_prefix='/api/deployments')
 app.register_blueprint(submissions, url_prefix='/api/submissions')
 app.register_blueprint(assignments, url_prefix='/api/assignments')
 app.register_blueprint(appearances, url_prefix='/api/appearances')
+app.register_blueprint(courses, url_prefix='/api/courses')
 db.init_app(app)
 
 

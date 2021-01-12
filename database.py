@@ -118,7 +118,7 @@ with app.app_context():
         instructor_id = courses[i][0]
         for j in range(n_instructors + n_students):
             student_id = j + 1
-            if (student_id == 2 and course_id == 1) or (student_id == instructor_id) or (random() < enrollments_per_student/len(courses) and not student_id <= n_instructors + 1):
+            if (student_id == 2 and course_id == 1) or (student_id == instructor_id) or (random() < enrollments_per_student/len(courses) and (student_id == 2 or not student_id <= n_instructors + 1)):
                 db.session.add(Enrollment(
                     course_id=course_id,
                     student_id=student_id,

@@ -45,5 +45,4 @@ const Deployments = ({ match }) => {
     )
 }
 
-
 export default Deployments;
