@@ -17,7 +17,7 @@ import Questions from './components/Questions';
 import EditQuestion from './components/EditQuestion';
 import Assignments from './components/Assignments';
 import EditAssignment from './components/EditAssignment';
-// import EditDeployment from './components/EditDeployment';
+import EditDeployment from './components/EditDeployment';
 
 const App = _ => {
     const [fetchWithCSRF] = useState(() => fetch);
@@ -57,7 +57,7 @@ const App = _ => {
                             <ProtectedRoute exact path="/" component={Enrollments} />
                             <Route exact path="/courses/:courseId" component={Deployments} />
                             <Route exact path="/submissions/:deployment_id" component={Submissions} />
-                            {/* <Route exact path="/deployments/:deployment_id" component={EditDeployment} /> */}
+                            <Route exact path="/deployments/:deployment_id" component={EditDeployment} />
                         </Switch>
                     </div>
                 </BrowserRouter>

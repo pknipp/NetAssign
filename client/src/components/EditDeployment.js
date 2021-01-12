@@ -4,9 +4,8 @@ import AuthContext from '../auth'
 
 
 const EditDeployment = ({ match }) => {
-    const assignmentId = Number(match.params.deploymentId)  ;
+    const deploymentId = Number(match.params.deploymentId)  ;
     const { fetchWithCSRF } = useContext(AuthContext);
-    // const [assignment, setAssignment] = useState('');
     const [name, setName] = useState('');
     const [rerender, setRerender] = useState(false);
     const [errors, setErrors] = useState([]);
@@ -16,7 +15,7 @@ const EditDeployment = ({ match }) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/deployments/${assignmentId}`)
+                const res = await fetch(`/api/deployments/${deploymentId}`)
                 if (res.ok) {
                     const data = await res.json();
                     setName(data.assignment.name);
@@ -27,12 +26,12 @@ const EditDeployment = ({ match }) => {
         })()
     }, [rerender])
 
-    const putAssignment = e => {
+    const putDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
-                body: JSON.stringify({ name, isPublic })
+                body: JSON.stringify({ deadline })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -41,10 +40,10 @@ const EditDeployment = ({ match }) => {
         })();
     }
 
-    const postAssignment = e => {
+    const postDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF("/api/assignments/", {
+            const response = await fetchWithCSRF("/api/deployments/", {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ name, isPublic })
             });
@@ -55,31 +54,17 @@ const EditDeployment = ({ match }) => {
         })();
     }
 
-    const deleteAssignment = e => {
+    const deleteDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/assignments/")
-        })();
-    }
-
-    const dropQuestion = (e, qid) => {
-        e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
-                method: 'DELETE', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
-            });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            setRerender(!rerender);
+            history.push("/deployments/")
         })();
     }
 
