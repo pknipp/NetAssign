@@ -5,7 +5,7 @@ import AuthContext from '../auth'
 
 const EditQuestion = ({ match }) => {
     const questionId = Number(match.params.questionId)  ;
-    const { fetchWithCSRF, currentUser, setCurrentUser } = useContext(AuthContext);
+    const { fetchWithCSRF } = useContext(AuthContext);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [inputs, setInputs] = useState('');

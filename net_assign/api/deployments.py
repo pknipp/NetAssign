@@ -5,7 +5,7 @@ from net_assign.models import db, Assignment, Deployment, Course
 deployments = Blueprint('deployments', __name__)
 
 
-@deployments.route('/<course_id>', methods=['GET'])
+@deployments.route('/courses/<course_id>/', methods=['GET'])
 def get_deployments(course_id):
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == int(course_id)).order_by(Deployment.deadline)

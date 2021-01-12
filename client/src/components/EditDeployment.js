@@ -3,33 +3,28 @@ import { useHistory } from 'react-router-dom';
 import AuthContext from '../auth'
 
 
-const EditAssignment = ({ match }) => {
-    const assignmentId = Number(match.params.assignmentId)  ;
+const EditDeployment = ({ match }) => {
+    const assignmentId = Number(match.params.deploymentId)  ;
     const { fetchWithCSRF } = useContext(AuthContext);
     // const [assignment, setAssignment] = useState('');
     const [name, setName] = useState('');
-    const [isPublic, setIsPublic] = useState(true);
-    const [questions, setQuestions] = useState([]);
     const [rerender, setRerender] = useState(false);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
 
     useEffect(() => {
-        if (assignmentId > 0) {
         (async () => {
             try {
-                const res = await fetch(`/api/assignments/${assignmentId}`)
+                const res = await fetch(`/api/deployments/${assignmentId}`)
                 if (res.ok) {
                     const data = await res.json();
                     setName(data.assignment.name);
-                    setIsPublic(data.assignment.is_public);
-                    setQuestions(data.questions);
                 }
             } catch (err) {
                 console.error(err)
             }
-        })()}
+        })()
     }, [rerender])
 
     const putAssignment = e => {
@@ -129,4 +124,4 @@ const EditAssignment = ({ match }) => {
     );
 };
 
-export default EditAssignment;
+export default EditDeployment;

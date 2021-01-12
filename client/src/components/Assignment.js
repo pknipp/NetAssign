@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
-import EditAssignment from './EditAssignment';
+// import EditAssignment from './EditAssignment';
 
 const Assignment = ({ assignment }) => {
-    const { currentUser, fetchWithCSRF } = useContext(AuthContext);
+    const { currentUser } = useContext(AuthContext);
 
     return (
         <li>
@@ -15,6 +15,7 @@ const Assignment = ({ assignment }) => {
                 <NavLink exact to={`/assignments/${assignment.assignment.id}`} className="nav"activeClassName="active">
                     view{(currentUser.id === assignment.author.id) ? "/edit" : ""} assignment
                 </NavLink>
+                
             </ul>
         </li>
     )
