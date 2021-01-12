@@ -4,10 +4,13 @@ import AuthContext from '../auth'
 
 
 const EditDeployment = ({ match }) => {
-    const deploymentId = Number(match.params.deploymentId)  ;
+    const deploymentId = Number(match.params.deploymentId);
+    debugger;
     const { fetchWithCSRF } = useContext(AuthContext);
     const [name, setName] = useState('');
+    const [deadline, setDeadline] = useState(null);
     const [rerender, setRerender] = useState(false);
+    const [courses, setCourses] = useState([]);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
@@ -18,13 +21,14 @@ const EditDeployment = ({ match }) => {
                 const res = await fetch(`/api/deployments/${deploymentId}`)
                 if (res.ok) {
                     const data = await res.json();
-                    setName(data.assignment.name);
+                    setName(data.name);
+                    setDeadline(data.deadline);
                 }
             } catch (err) {
                 console.error(err)
             }
         })()
-    }, [rerender])
+    }, [])
 
     const putDeployment = e => {
         e.preventDefault();
@@ -36,7 +40,7 @@ const EditDeployment = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push(`/assignments/${assignmentId}`)
+            // history.push(`/assignments/${assignmentId}`)
         })();
     }
 
@@ -45,7 +49,7 @@ const EditDeployment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF("/api/deployments/", {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
-                body: JSON.stringify({ name, isPublic })
+                body: JSON.stringify({ courses })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -70,40 +74,19 @@ const EditDeployment = ({ match }) => {
 
     return (
         <>
-            <form onSubmit={assignmentId ? putAssignment : postAssignment}>
+            <form onSubmit={deploymentId ? putDeployment : postDeployment}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+                Course: {name}
                 <input
-                    type="text" placeholder="Name" value={name}
-                    onChange={e => setName(e.target.value)} name="name" />
-                 <span>
-                    {isPublic ? "Public " : "Private "}
-                    <button onClick={e => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        setIsPublic(!isPublic)
-                    }}>
-                        toggle
-                    </button>
-                </span>
-                <button type="submit">Submit Changes</button>
+                    type="text" placeholder="deadline" value={deadline}
+                    onChange={e => setDeadline(e.target.value)} name="deadline" />
+                <button type="submit">submit change</button>
             </form>
-            <ol>
-                {questions.map(question => (
-                    <li key={question.id}>
-                        question: {question.question}<br/>
-                        answer: {question.answer}<br/>
-                        <button onClick={e => dropQuestion(e, question.id)}>
-                            drop
-                        </button>
-                    </li>
-                ))}
-            </ol>
 
-
-            {assignmentId ? <form onSubmit={deleteAssignment}>
+            {deploymentId ? <form onSubmit={deleteDeployment}>
                 {messages.map(err => <li key={err}>{err}</li>)}
-                <h4>Would you like to delete this assignment?</h4>
-                <button type="submit">Delete Assignment</button>
+                <h4>Would you like to unschedule this assignment?</h4>
+                <button type="submit">Unschedule</button>
             </form> : null}
         </>
     );

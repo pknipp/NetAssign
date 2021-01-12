@@ -4,6 +4,14 @@ from net_assign.models import db, Assignment, Deployment, Course
 
 deployments = Blueprint('deployments', __name__)
 
+@deployments.route('/<deployment_id>/', methods=['GET'])
+def index(deployment_id):
+    deployment_id = int(deployment_id)
+    if request.method == 'GET':
+        deployment = Deployment.query.filter(Deployment.id == deployment_id).one_or_none()
+        deployment_d = deployment.to_dict()
+        assignment = Assignment.query.filter(Assignment.id == deployment_d["assignment_id"]).one_or_none()
+        return({"name": assignment.to_dict()["name"], "deadline": deployment_d["deadline"]})
 
 @deployments.route('/courses/<course_id>/', methods=['GET'])
 def get_deployments(course_id):

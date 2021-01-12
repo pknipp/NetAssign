@@ -88,16 +88,16 @@ const EditQuestion = ({ match }) => {
                     type="text" placeholder="Inputs" value={inputs}
                     onChange={e => setInputs(e.target.value)} name="inputs" />
                 <span>
-                    {isPublic ? "Public " : "Private "}
+                    {isPublic ? "public " : "private "}
                     <button onClick={e => {
                         e.stopPropagation();
                         e.preventDefault();
                         setIsPublic(!isPublic)
                     }}>
-                        toggle
+                        change
                     </button>
                 </span>
-                <button type="submit">Submit Changes</button>
+                <button type="submit">Submit</button>
             </form>
             {questionId ? <form onSubmit={deleteQuestion}>
                 {messages.map(err => <li key={err}>{err}</li>)}

@@ -56,8 +56,8 @@ const App = _ => {
                             <ProtectedRoute exact path="/edituser" component={EditUser} />
                             <ProtectedRoute exact path="/" component={Enrollments} />
                             <Route exact path="/courses/:courseId" component={Deployments} />
-                            <Route exact path="/submissions/:deployment_id" component={Submissions} />
-                            <Route exact path="/deployments/:deployment_id" component={EditDeployment} />
+                            <Route exact path="/submissions/:deploymentId" component={Submissions} />
+                            <Route exact path="/deployments/:deploymentId" component={EditDeployment} />
                         </Switch>
                     </div>
                 </BrowserRouter>

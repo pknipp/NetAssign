@@ -14,6 +14,7 @@ dec = 4
 def index():
     user_id = current_user.id
     if request.method == 'GET':
+        # Include boolean in re whether or not teacher has scheduled each assignment
         assignments = Assignment.query.filter(or_(Assignment.instructor_id == user_id, Assignment.is_public == True)).order_by(Assignment.id)
         assignment_list = list()
         for assignment in assignments:
