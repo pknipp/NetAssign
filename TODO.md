@@ -10,7 +10,7 @@ Muse upon rationale for putting routes in different blueprints (and naming compo
 In database.py, control created_at (= t1), updated_at (t2), and is_public (for both
     questions and assignments) and deadline as follows:
     (1)user(u): t2u > t1u
-    (3)course (c): t2c > t1c > t1u, CU
+    (3)course (c): t2c > t1c > t1u,
     (4)enrollment (e): te > t1c, te > t1u,
 
     (2)question (q): t2q > t1q > t1u
@@ -31,7 +31,8 @@ Improve editor for following tables: Question
 Rename some components to reflect their function rather than first db Query
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
 On back-end, change some for-loops to list comprehensions.
-For assignment-creation route, simultaneously create a row in the appearances table
+For assignment-creation route, simultaneously create one (many?) rows in the appearances table
+For course-creation route, simultaneously create a row in the enrollments table?
 Insert ability to duplicate questions and assignments
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner

@@ -4,7 +4,7 @@ from net_assign.models import db, Assignment, Deployment, Course
 
 deployments = Blueprint('deployments', __name__)
 
-@deployments.route('/<deployment_id>/', methods=['GET', 'DELETE'])
+@deployments.route('/<deployment_id>/', methods=['GET', 'DELETE', 'PUT'])
 def index(deployment_id):
     deployment = Deployment.query.filter(Deployment.id == int(deployment_id)).one_or_none()
     if request.method == 'GET':

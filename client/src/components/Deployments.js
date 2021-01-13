@@ -22,7 +22,7 @@ const Deployments = ({ match }) => {
             }
         })()
     }, [courseId])
-    debugger
+
     return (
         <>
         <h3>Assignments for {courseName}:</h3>

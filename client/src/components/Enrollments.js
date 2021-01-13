@@ -80,7 +80,7 @@ const Enrollments = () => {
             <p align="center">
                 {courses.length ? `Classes in which I am now enrolled:` : `I am not enrolled in any classes.`}
             </p>
-            <NavLink exact to={"/courses/0"} className="nav" activeClassName="active">
+            <NavLink exact to={"/courses/edit/0"} className="nav" activeClassName="active">
                 create new course
             </NavLink>
             <ul>
