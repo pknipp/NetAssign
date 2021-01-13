@@ -2,23 +2,24 @@ import React, { useContext, useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
 
-const Enrollments = () => {
-    const [courses, setCourses] = useState([]);
-    const [courseIds, setCourseIds] = useState([]);
-    const [moreCourses, setMoreCourses] = useState([]);
+const Roster = ({ match }) => {
+    let courseId = match.params.courseId;
+    const [students, setStudents] = useState([]);
+    const [studentIds, setStudentIds] = useState([]);
+    const [moreStudents, setMoreStudents] = useState([]);
     const [rerender, setRerender]=useState(false);
-    const [showMoreCourses, setShowMoreCourses] = useState(false);
+    const [showMoreStudents, setShowMoreStudents] = useState(false);
     const [messages, setMessages]=useState([]);
     const [errors, setErrors]   = useState([]);
     const { currentUser, fetchWithCSRF } = useContext(AuthContext)
 
-    const getMyCourses = async () => {
+    const getMyStudents = async () => {
         try {
-            const res = await fetch(`/api/enrollments/${currentUser.id + ' ' + '0'}`)
+            const res = await fetch(`/api/enrollments/`)
             if (res.ok) {
                 const data = await res.json();
-                setCourses(data.courses);
-                setCourseIds(data.courses.map(course => course.course.id));
+                setStudents(data.students);
+                setStudentIds(data.students.map(student => student.id));
             }
         } catch (err) {
             console.error(err)
@@ -26,31 +27,31 @@ const Enrollments = () => {
     }
 
     useEffect(() => {
-        getMyCourses();
+        getMyStudents();
     }, [rerender])
 
-    const getMoreCourses = async () => {
-        if (!showMoreCourses) {
+    const getMoreStudents = async () => {
+        if (!showMoreStudents) {
             try {
-                const res = await fetch(`/api/courses`)
+                const res = await fetch(`/api/users/`)
                 if (res.ok) {
                     const data = await res.json();
-                    setMoreCourses(data.courses);;
+                    setMoreStudents(data.students);;
                 }
             } catch (err) {
                 console.error(err)
             }
         } else {
-            setMoreCourses([]);
+            setMoreStudents([]);
         }
-        setShowMoreCourses(!showMoreCourses);
+        setShowMoreStudents(!showMoreStudents);
         setRerender(!rerender);
     }
 
-    const deleteEnrollment = (e, studentId, courseId) => {
+    const deleteEnrollment = (e, courseId) => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
+            const response = await fetchWithCSRF(`/api/enrollments/${courseId}/`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
@@ -61,10 +62,10 @@ const Enrollments = () => {
         })();
     }
 
-    const createEnrollment = (e, studentId, courseId) => {
+    const createEnrollment = (e, courseId) => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
+            const response = await fetchWithCSRF(`/api/enrollments/${courseId}/`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
@@ -83,30 +84,27 @@ const Enrollments = () => {
                 </NavLink>
             }
             <p align="center">
-                {courses.length ? `My current classes:` : `I have no classes now.`}
+                {students.length ? `My current students:` : `I have no students now.`}
             </p>
             <ul>
-                {courses.map(course => (
-                    <li key={course.course.id}>
+                {students.map(student => (
+                    <li key={student.id}>
                         <>
                             {currentUser.is_instructor ?
                                 <>
-                                    <NavLink to={`/courses/edit/${course.course.id}`}>
+                                    <NavLink to={`/courses/edit/${student.id}`}>
                                         edit
                                     </NavLink>
-                                    <NavLink to={`/roster/${course.course.id}`}>
+                                    <NavLink to={`/roster/${student.id}`}>
                                         roster
                                     </NavLink>
                                 </>
                             :
-                                <button onClick={e => deleteEnrollment(e, currentUser.id, course.course.id)}>drop</button>
+                                <button onClick={e => deleteEnrollment(e, student.id)}>drop</button>
                             }
-                            <NavLink to={`/courses/${course.course.id}`}>
-                                {course.course.name}
+                            <NavLink to={`/courses/${student.id}`}>
+                                {student.email}
                             </NavLink>
-                            {currentUser.is_instructor ? null :
-                                <span>{`(instructor: ${course.instructor.email})`}</span>
-                            }
                         </>
                     </li>
                 ))}
@@ -114,14 +112,14 @@ const Enrollments = () => {
 
             {currentUser.is_instructor ? null :
                 <>
-                    <button onClick={() => getMoreCourses()}>
-                        {showMoreCourses ? "Hide" : "Show"} classes in which I am not enrolled.
+                    <button onClick={() => getMoreStudents()}>
+                        {showMoreStudents ? "Hide" : "Show"} students who are not enrolled in this course.
                     </button>
                     <ul>
-                        {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
+                        {moreStudents.filter(student => !studentIds.includes(student.id)).map(course => (
                             <li key={course.id}>
                                 <>
-                                    <button onClick={e => createEnrollment(e, currentUser.id, course.id)}>
+                                    <button onClick={e => createEnrollment(e, course.id)}>
                                         add
                                     </button>
                                     {course.name}
@@ -135,4 +133,4 @@ const Enrollments = () => {
     )
 }
 
-export default Enrollments
+export default Roster;

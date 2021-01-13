@@ -19,6 +19,7 @@ import Assignments from './components/Assignments';
 import EditAssignment from './components/EditAssignment';
 import EditDeployment from './components/EditDeployment';
 import EditCourse from './components/EditCourse';
+import Roster from './components/Roster';
 
 const App = _ => {
     const [fetchWithCSRF] = useState(() => fetch);
@@ -63,6 +64,7 @@ const App = _ => {
                             <Route exact path="/courses/edit/:courseId" component={EditCourse} />
                             {/* all DID's for a particular course*/}
                             <Route exact path="/courses/:courseId" component={Deployments} />
+                            <Route exact path="/roster/:courseId" component={Roster} />
 
                             <Route exact path="/submissions/:deploymentId" component={Submissions} />
 
