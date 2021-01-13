@@ -13,7 +13,7 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
     (3)course (c): t2c > t1c > t1u,
     (4)enrollment (e): te > t1c, te > t1u,
 
-    (2)question (q): t2q > t1q > t1u
+    (2)question (q): t2q > t1q > t1u, UD
     (5)assignment (as): t2as > t1as > t1u, t2as > t1q
     (6)appearances (ap): tap > t1q, tap > t1as, CUD
 

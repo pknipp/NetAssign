@@ -22,10 +22,10 @@ def index():
             answer   = q_and_a_and_i['answer']
             inputs = q_and_a_and_i['inputs']
             questions.append({"id": q_and_a_and_i["id"], "author": author, "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i["is_public"]})
-        return({"questions": questions})
+        return {"questions": questions}
     if request.method == 'POST':
         if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
+            return jsonify({"message": "Missing JSON in request"}), 400
         new_question = Question(
             instructor_id=user_id,
             question=request.json.get('question'),
@@ -37,7 +37,7 @@ def index():
         )
         db.session.add(new_question)
         db.session.commit()
-        return ({"message": "success"})
+        return {"message": "success"}
 
 @questions.route('/<qid>', methods=['GET', 'PUT', 'DELETE'])
 def index_one(qid):

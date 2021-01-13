@@ -17,7 +17,7 @@ def index():
             course = Course.query.filter(Course.id == course_id).one_or_none().to_dict()
             instructor = User.query.filter(User.id == course["instructor_id"]).one_or_none().to_dict()
             courses.append({"course": course, "instructor": instructor})
-        return({"courses": courses})
+        return {"courses": courses}
 
 @enrollments.route('/<course_id>/', methods=['DELETE', 'POST'])
 def change_enrollment(course_id):

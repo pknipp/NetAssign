@@ -21,11 +21,11 @@ def index():
             assignment = assignment.to_dict()
             author = User.query.filter(User.id == assignment["instructor_id"]).one_or_none().to_dict()
             assignment_list.append({"author": author, "assignment": assignment})
-        return({"assignments": assignment_list})
+        return {"assignments": assignment_list}
 
     if request.method == 'POST':
         if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
+            return jsonify({"message": "Missing JSON in request"}), 400
         new_assignment = Assignment(
             instructor_id=user_id,
             name=request.json.get('name'),
@@ -36,7 +36,7 @@ def index():
         # After getting new aid, figure out where to create & add a new enrollment
         db.session.add(new_assignment)
         db.session.commit()
-        return ({"message": "success"})
+        return {"message": "success"}
 
 @assignments.route('/<aid>', methods=['GET', 'PUT', 'DELETE'])
 def index_one(aid):
@@ -60,15 +60,15 @@ def index_one(aid):
             question = question.format(*x)
             answer = round(cexprtk.evaluate_expression(answer, input_d),dec)
             question_list.append({"id": q_and_a_and_i["id"], "question": question, "answer": answer})
-        return({"assignment": assignment.to_dict(), "questions": question_list})
+        return {"assignment": assignment.to_dict(), "questions": question_list}
     if request.method == 'PUT':
         if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
+            return jsonify({"message": "Missing JSON in request"}), 400
         assignment.name = request.json.get('name', None)
         assignment.is_public = request.json.get('isPublic', None)
         assignment.updated_at = datetime.now()
         db.session.commit()
-        return ({"message": "success"})
+        return {"message": "success"}
     if request.method == 'DELETE':
         db.session.delete(assignment)
         db.session.commit()

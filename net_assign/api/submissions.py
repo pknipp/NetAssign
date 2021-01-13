@@ -60,8 +60,7 @@ def get_questions(did):
             )
             db.session.add(new_submission)
             db.session.commit()
-        return({"questions_and_responses": qrs, "assignment_name": assignment["name"]})
-
+        return {"questions_and_responses": qrs, "assignment_name": assignment["name"]}
 
 @submissions.route('/<did_and_qindex>', methods=['PUT'])
 def put_question(did_and_qindex):

@@ -22,4 +22,4 @@ def index():
         return {"errors": ["Invalid credentials"]}, 401
     if request.method == 'DELETE':
         logout_user()
-        return {'msg': 'You have been logged out'}, 200
+        return {'message': 'You have been logged out'}, 200

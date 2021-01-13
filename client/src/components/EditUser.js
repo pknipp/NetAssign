@@ -26,6 +26,7 @@ const EditUser = _ => {
             } else if (responseData.messages) {
                 setMessages(responseData.messages)
             } else {
+                setCurrentUser(responseData.current_user)
                 history.push('/')
             }
         })();
