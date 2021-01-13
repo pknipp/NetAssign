@@ -5,7 +5,6 @@ import AuthContext from '../auth';
 
 const Assignment = ({ assignment }) => {
     const { currentUser } = useContext(AuthContext);
-
     return (
         <li>
             <ul>

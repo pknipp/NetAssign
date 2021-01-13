@@ -5,7 +5,6 @@ import AuthContext from '../auth'
 
 const EditDeployment = ({ match }) => {
     const deploymentId = Number(match.params.deploymentId);
-    debugger;
     const { fetchWithCSRF } = useContext(AuthContext);
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
