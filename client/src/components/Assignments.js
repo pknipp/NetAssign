@@ -26,7 +26,7 @@ const Assignments = () => {
 
     return (
         <>
-        <NavLink exact to={"/assignments/0"} className="nav" activeClassName="active">
+        <NavLink exact to={"/assignments/edit/0"} className="nav" activeClassName="active">
             create new assignment
         </NavLink>
         {assignments.map(assignment => {

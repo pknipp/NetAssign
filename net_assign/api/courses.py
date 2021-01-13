@@ -12,3 +12,13 @@ def index():
         courses = Course.query
         courses = [course.to_dict() for course in courses]
         return({"courses": courses})
+
+@courses.route('/<course_id>', methods=['GET', 'DELETE'])
+def get_course(course_id):
+    course = Course.query.filter(Course.id == int(course_id)).one_or_none()
+    if request.method == 'GET':
+        return({"course": course.to_dict()})
+    if request.method == 'DELETE':
+        db.session.delete(course)
+        db.session.commit()
+        return {"message": "I hope that you no longer need this course."}

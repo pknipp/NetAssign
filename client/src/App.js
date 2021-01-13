@@ -18,6 +18,7 @@ import EditQuestion from './components/EditQuestion';
 import Assignments from './components/Assignments';
 import EditAssignment from './components/EditAssignment';
 import EditDeployment from './components/EditDeployment';
+import EditCourse from './components/EditCourse';
 
 const App = _ => {
     const [fetchWithCSRF] = useState(() => fetch);
@@ -49,14 +50,22 @@ const App = _ => {
                             <AuthRoute exact path="/login" component={LogIn} />
                             <AuthRoute exact path="/signup" component={SignUp} />
                             <ProtectedRoute exact path="/logout" component={LogOut} />
-                            <ProtectedRoute exact path="/questions" component={Questions} />
-                            <ProtectedRoute exact path="/assignments" component={Assignments} />
-                            <Route exact path="/questions/:questionId" component={EditQuestion} />
-                            <Route exact path="/assignments/:assignmentId" component={EditAssignment} />
                             <ProtectedRoute exact path="/edituser" component={EditUser} />
                             <ProtectedRoute exact path="/" component={Enrollments} />
+                            {/* instructor: all questions available */}
+                            <ProtectedRoute exact path="/questions" component={Questions} />
+                            <Route exact path="/questions/:questionId" component={EditQuestion} />
+                            {/* instructor: all assignments available */}
+                            <ProtectedRoute exact path="/assignments" component={Assignments} />
+                            <Route exact path="/assignments/edit/:assignmentId" component={EditAssignment} />
+
+                            {/*  self-explanatory*/}
+                            <Route exact path="/courses/edit/:courseId" component={EditCourse} />
+                            {/* all DID's for a particular course*/}
                             <Route exact path="/courses/:courseId" component={Deployments} />
+
                             <Route exact path="/submissions/:deploymentId" component={Submissions} />
+
                             <Route exact path="/deployments/:deploymentId" component={EditDeployment} />
                         </Switch>
                     </div>

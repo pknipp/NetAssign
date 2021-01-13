@@ -80,9 +80,15 @@ const Enrollments = () => {
             <p align="center">
                 {courses.length ? `Classes in which I am now enrolled:` : `I am not enrolled in any classes.`}
             </p>
+            <NavLink exact to={"/courses/0"} className="nav" activeClassName="active">
+                create new course
+            </NavLink>
             <ul>
                 {courses.map(course => (
                     <li key={course.course.id}>
+                        <NavLink to={`/courses/edit/${course.course.id}`}>
+                            edit
+                        </NavLink>
                         <NavLink to={`/courses/${course.course.id}`}>
                             {course.course.name}
                         </NavLink>
@@ -95,21 +101,26 @@ const Enrollments = () => {
                     </li>
                 ))}
             </ul>
-            <button onClick={() => getMoreCourses()}>
-                {showMoreCourses ? "Hide" : "Show"} classes in which I am not enrolled.
-            </button>
-            <ul>
-                {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
-                    <li key={course.id}>
-                        <>
-                            <button onClick={e => createEnrollment(e, course.id)}>
-                                add
-                            </button>
-                            {course.name}
-                        </>
-                    </li>
-                ))}
-            </ul>
+
+            {currentUser.is_instructor ? null :
+                <>
+                    <button onClick={() => getMoreCourses()}>
+                        {showMoreCourses ? "Hide" : "Show"} classes in which I am not enrolled.
+                    </button>
+                    <ul>
+                        {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
+                            <li key={course.id}>
+                                <>
+                                    <button onClick={e => createEnrollment(e, course.id)}>
+                                        add
+                                    </button>
+                                    {course.name}
+                                </>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            }
         </>
     )
 }

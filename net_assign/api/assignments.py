@@ -38,7 +38,7 @@ def index():
         db.session.commit()
         return ({"message": "success"})
 
-@assignments.route('/<aid>', methods=['GET', 'PUT', 'DELETE'])
+@assignments.route('/edit/<aid>', methods=['GET', 'PUT', 'DELETE'])
 def index_one(aid):
     assignment_id = int(aid)
     assignment = Assignment.query.filter(Assignment.id == assignment_id).one_or_none()

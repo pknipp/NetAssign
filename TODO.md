@@ -10,14 +10,14 @@ Muse upon rationale for putting routes in different blueprints (and naming compo
 In database.py, control created_at (= t1), updated_at (t2), and is_public (for both
     questions and assignments) and deadline as follows:
     (1)user(u): t2u > t1u
-    (3)course (c): t2c > t1c > t1u, CUD
-    (4)enrollment (e): te > t1c, te > t1u, C
+    (3)course (c): t2c > t1c > t1u, CU
+    (4)enrollment (e): te > t1c, te > t1u,
 
     (2)question (q): t2q > t1q > t1u
     (5)assignment (as): t2as > t1as > t1u, t2as > t1q
     (6)appearances (ap): tap > t1q, tap > t1as, CUD
 
-    (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CU
+    (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CU (both need datatime)
     (8)submissions (s): deadline > t2s > t1s > t1u, t1s > t1d
 
 Figure out (using list above?) how to seed other students w/a certain number of responses.
@@ -34,3 +34,5 @@ On back-end, change some for-loops to list comprehensions.
 For assignment-creation route, simultaneously create a row in the appearances table
 Insert ability to duplicate questions and assignments
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
+When fetching lists from back-end, sort them in the most logical manner
+enable instructor to add/drop student from roster

@@ -12,10 +12,10 @@ const Assignment = ({ assignment }) => {
                 <li> name: {assignment.assignment.name} </li>
                 <li> author: {assignment.author.email}</li>
                 <li> is public? {assignment.assignment.is_public ? "yes" : "no"}</li>
-                <NavLink exact to={`/assignments/${assignment.assignment.id}`} className="nav"activeClassName="active">
+                <NavLink exact to={`/assignments/edit/${assignment.assignment.id}`} className="nav"activeClassName="active">
                     view{(currentUser.id === assignment.author.id) ? "/edit" : ""} assignment
                 </NavLink>
-                
+
             </ul>
         </li>
     )
