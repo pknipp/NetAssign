@@ -37,7 +37,7 @@ const EditCourse = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push(`/courses`)
+            history.push(`/`)
         })();
     }
 
@@ -51,7 +51,7 @@ const EditCourse = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/courses")
+            history.push("/")
         })();
     }
 
