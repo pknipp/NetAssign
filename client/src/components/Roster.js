@@ -15,7 +15,7 @@ const Roster = ({ match }) => {
 
     const getMyStudents = async () => {
         try {
-            const res = await fetch(`/api/enrollments/`)
+            const res = await fetch(`/api/enrollments/${'0 ' + courseId}`)
             if (res.ok) {
                 const data = await res.json();
                 setStudents(data.students);
