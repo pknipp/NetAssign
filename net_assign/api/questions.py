@@ -13,15 +13,14 @@ questions = Blueprint('questions', __name__)
 def index(user_id):
     user_id = int(user_id)
     if request.method == 'GET':
-        q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public == True)).order_by(Question.id)
+        q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public)).order_by(Question.id)
         questions = list()
         for q_and_a_and_i in q_and_a_and_is:
-            q_and_a_and_i = q_and_a_and_i.to_dict()
-            author = User.query.filter(User.id == q_and_a_and_i["instructor_id"]).one_or_none().to_dict()
-            question = q_and_a_and_i['question']
-            answer   = q_and_a_and_i['answer']
-            inputs = q_and_a_and_i['inputs']
-            questions.append({"id": q_and_a_and_i["id"], "author": author, "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i["is_public"]})
+            author = User.query.filter(User.id == q_and_a_and_i.instructor_id).one_or_none()
+            question = q_and_a_and_i.question
+            answer   = q_and_a_and_i.answer
+            inputs = q_and_a_and_i.inputs
+            questions.append({"id": q_and_a_and_i.id, "author": author.to_dict(), "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i.is_public})
         return {"questions": questions}
     if request.method == 'POST':
         if not request.is_json:
@@ -41,7 +40,6 @@ def index(user_id):
 
 @questions.route('/<qid>', methods=['GET', 'PUT', 'DELETE'])
 def index_one(qid):
-    question_id = int(qid)
     question = Question.query.filter(Question.id == int(qid)).one_or_none()
     if request.method == 'GET':
         return({"question_answer_inputs": question.to_dict()})
