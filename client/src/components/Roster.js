@@ -33,7 +33,7 @@ const Roster = ({ match }) => {
     const getMoreStudents = async () => {
         if (!showMoreStudents) {
             try {
-                const res = await fetch(`/api/users/`)
+                const res = await fetch(`/api/users`)
                 if (res.ok) {
                     const data = await res.json();
                     setMoreStudents(data.students);;
@@ -102,19 +102,19 @@ const Roster = ({ match }) => {
                 ))}
             </ul>
 
-            {currentUser.is_instructor ? null :
+            {!currentUser.is_instructor ? null :
                 <>
                     <button onClick={() => getMoreStudents()}>
                         {showMoreStudents ? "Hide" : "Show"} students who are not enrolled in this course.
                     </button>
                     <ul>
-                        {moreStudents.filter(student => !studentIds.includes(student.id)).map(course => (
-                            <li key={course.id}>
+                        {moreStudents.filter(student => !studentIds.includes(student.id)).map(student => (
+                            <li key={student.id}>
                                 <>
-                                    <button onClick={e => createEnrollment(e, course.id)}>
+                                    <button onClick={e => createEnrollment(e, student.id)}>
                                         add
                                     </button>
-                                    {course.name}
+                                    {student.email}
                                 </>
                             </li>
                         ))}
