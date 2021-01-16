@@ -142,7 +142,7 @@ const EditAssignment = ({ match }) => {
                         toggle
                     </button>
                 </span>
-                <button type="submit">Submit Changes</button>
+                <button type="submit">{assignmentId ? "Submit Changes" : "Create Assignment"}</button>
             </form>
             <ol>
                 {questions.map(question => (
@@ -158,7 +158,7 @@ const EditAssignment = ({ match }) => {
 
             <>
                     <button onClick={() => getMoreQuestions()}>
-                        {showMoreQuestions ? "Hide" : "Show"} questions that are not already on this assignment.
+                        {showMoreQuestions ? "Hide" : "Show"} questions which may get added to this assignment.
                     </button>
                     <ul>
                         {moreQuestions.filter(question => !questionIds.includes(question.id)).map(question => (

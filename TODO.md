@@ -15,19 +15,19 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
 
     (2)question (q): t2q > t1q > t1u,
     (5)assignment (as): t2as > t1as > t1u, t2as > t1q
-    (6)appearances (ap): tap > t1q, tap > t1as, 
+    (6)appearances (ap): tap > t1q, tap > t1as,
 
     (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CU (both need datatime)
     (8)submissions (s): deadline > t2s > t1s > t1u, t1s > t1d
 
 Figure out (using list above?) how to seed other students w/a certain number of responses.
 Use html tables to format lists of courses, assignments, and (possibly) questions.
-Insert an is_admin boolean column in Users table
-Insert addition columns (fname, lname, etc) in Users table?
+Insert an is_admin column in User model
+Insert an is_public column in Assignment model
+Insert addition columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
-Create instructor-editors for following tables: Assignment, Course, Deployment
-Improve editor for following tables: Question
+Improve editor for Question model.
 Rename some components to reflect their function rather than first db Query
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
 On back-end, change some for-loops to list comprehensions.
