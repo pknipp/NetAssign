@@ -36,4 +36,3 @@ For course-creation route, simultaneously create a row in the enrollments table?
 Insert ability to duplicate questions and assignments
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
-enable instructor to add/drop student from roster
