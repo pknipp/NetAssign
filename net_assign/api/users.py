@@ -9,9 +9,8 @@ users = Blueprint('users', __name__)
 @users.route('/<id>', methods=['GET', 'PUT', 'DELETE'])
 def index(id):
     user = User.query.filter(User.id == int(id)).one_or_none()
-    user_d= user.to_dict()
     if request.method == "GET":
-        return user_d
+        return user.to_dict()
     if request.method == 'PUT':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
@@ -30,7 +29,7 @@ def index(id):
                         return {"errors": ["That email has already been taken."]}, 500
         else:
             return {"errors": ["Passwords must match."]}, 400
-        user.email = email or user_d["email"]
+        user.email = email or user.email
         user.updated_at = datetime.now()
         db.session.commit()
         return {"current_user": user.to_dict()}
@@ -70,7 +69,4 @@ def me():
         login_user(user)
         return {"current_user": current_user.to_dict()}
     if request.method == 'GET':
-        # users = User.query
-        # students = [user.to_dict() for user in users]
-        # return {"students": students}
         return {"students": [user.to_dict() for user in User.query]}
