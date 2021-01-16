@@ -18,7 +18,7 @@ const EditDeployment = ({ match }) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/deployments/${deploymentId}/`)
+                const res = await fetch(`/api/deployments/${deploymentId}`)
                 if (res.ok) {
                     const data = await res.json();
                     setCourseName(data.course_name);
@@ -35,7 +35,7 @@ const EditDeployment = ({ match }) => {
     const putDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}/`, {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ deadline })
             });
@@ -49,7 +49,7 @@ const EditDeployment = ({ match }) => {
     const postDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF("/api/deployments/", {
+            const response = await fetchWithCSRF("/api/deployments", {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ courseId })
             });
@@ -63,7 +63,7 @@ const EditDeployment = ({ match }) => {
     const deleteDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}/`, {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });

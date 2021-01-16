@@ -13,9 +13,9 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
     (3)course (c): t2c > t1c > t1u,
     (4)enrollment (e): te > t1c, te > t1u,
 
-    (2)question (q): t2q > t1q > t1u, 
+    (2)question (q): t2q > t1q > t1u,
     (5)assignment (as): t2as > t1as > t1u, t2as > t1q
-    (6)appearances (ap): tap > t1q, tap > t1as, C
+    (6)appearances (ap): tap > t1q, tap > t1as, 
 
     (7)deployments (d): t2d > t1d > t1as, t1d > t1c, deadline > t2d, CU (both need datatime)
     (8)submissions (s): deadline > t2s > t1s > t1u, t1s > t1d

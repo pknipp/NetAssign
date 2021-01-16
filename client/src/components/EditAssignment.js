@@ -79,9 +79,10 @@ const EditAssignment = ({ match }) => {
     }
 
     const getMoreQuestions = async () => {
+        console.log("top of getMoreQuestions says that currentUser.id is ", currentUser.id)
         if (!showMoreQuestions) {
             try {
-                const res = await fetch(`/api/questions/${currentUser.id}`)
+                const res = await fetch(`/api/questions/me/${currentUser.id}`)
                 if (res.ok) {
                     const data = await res.json();
                     setMoreQuestions(data.questions);;
@@ -96,7 +97,21 @@ const EditAssignment = ({ match }) => {
         setRerender(!rerender);
     }
 
-    const dropQuestion = (e, qid) => {
+    const postAppearance = (e, qid) => {
+        e.preventDefault();
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
+                method: 'POST', headers: {"Content-Type": "application/json"},
+                credentials: 'include', body: JSON.stringify({})
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            setRerender(!rerender);
+        })();
+    }
+
+    const deleteAppearance = (e, qid) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
@@ -134,7 +149,7 @@ const EditAssignment = ({ match }) => {
                     <li key={question.id}>
                         question: {question.question}<br/>
                         answer: {question.answer}<br/>
-                        <button onClick={e => dropQuestion(e, question.id)}>
+                        <button onClick={e => deleteAppearance(e, question.id)}>
                             drop
                         </button>
                     </li>
@@ -149,9 +164,9 @@ const EditAssignment = ({ match }) => {
                         {moreQuestions.filter(question => !questionIds.includes(question.id)).map(question => (
                             <li key={question.id}>
                                 <>
-                                    {/* <button onClick={e => createAppearance(e, question.id)}>
+                                    <button onClick={e => postAppearance(e, question.id)}>
                                         add
-                                    </button> */}
+                                    </button>
                                     {question.question}
                                 </>
                             </li>
