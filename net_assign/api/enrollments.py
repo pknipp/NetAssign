@@ -34,6 +34,14 @@ def index(student_id_and_course_id):
                 instructor = User.query.filter(User.id == course["instructor_id"]). one_or_none().to_dict()
                 courses.append({"course": course, "instructor": instructor})
             return {"courses": courses}
+        if not student_id:
+            enrollments = Enrollment.query.filter(Enrollment.course_id == course_id)
+            students = list()
+            for enrollment in enrollments:
+                student_id = enrollment.to_dict()["student_id"]
+                student = User.query.filter(User.id == student_id).one_or_none().to_dict  ()
+                students.append(student)
+            return {"students": students}
     if request.method == 'DELETE':
         enrollment = Enrollment.query.filter(Enrollment.course_id == course_id).filter(Enrollment.student_id == student_id).one_or_none()
         db.session.delete(enrollment)

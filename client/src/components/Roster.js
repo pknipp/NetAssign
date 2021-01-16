@@ -90,21 +90,13 @@ const Roster = ({ match }) => {
                 {students.map(student => (
                     <li key={student.id}>
                         <>
-                            {currentUser.is_instructor ?
-                                <>
-                                    <NavLink to={`/courses/edit/${student.id}`}>
-                                        edit
-                                    </NavLink>
-                                    <NavLink to={`/roster/${student.id}`}>
-                                        roster
-                                    </NavLink>
-                                </>
-                            :
-                                <button onClick={e => deleteEnrollment(e, student.id)}>drop</button>
-                            }
-                            <NavLink to={`/courses/${student.id}`}>
-                                {student.email}
-                            </NavLink>
+                            {/* <NavLink to={`/courses/edituser/${student.id}`}>
+                                edit
+                            </NavLink> */}
+                            <button onClick={e => deleteEnrollment(e, student.id)}>drop</button>
+                            {/* <NavLink to={`/courses/${student.id}`}> */}
+                            {student.email}
+                            {/* </NavLink> */}
                         </>
                     </li>
                 ))}
