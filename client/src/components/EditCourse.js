@@ -5,7 +5,7 @@ import AuthContext from '../auth'
 
 const EditCourse = ({ match }) => {
     const courseId = Number(match.params.courseId);
-    const { fetchWithCSRF } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [name, setName] = useState('');
     const [rerender, setRerender] = useState(false);
     const [errors, setErrors] = useState([]);
@@ -44,7 +44,7 @@ const EditCourse = ({ match }) => {
     const postCourse = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF("/api/courses", {
+            const response = await fetchWithCSRF(`/api/courses/me/${currentUser.id}`, {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ name })
             });

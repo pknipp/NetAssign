@@ -6,8 +6,8 @@ from datetime import datetime
 courses = Blueprint('courses', __name__)
 
 
-@courses.route('', methods=['GET', 'POST'])
-def index():
+@courses.route('/me/<instructor_id>', methods=['GET', 'POST'])
+def index(instructor_id):
     if request.method == 'GET':
         courses = Course.query
         courses = [course.to_dict() for course in courses]
@@ -16,7 +16,7 @@ def index():
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
         new_course = Course(
-            instructor_id=instructor_id,
+            instructor_id=int(instructor_id),
             name=request.json.get('name', None),
             created_at=datetime.now(),
             updated_at=datetime.now()
