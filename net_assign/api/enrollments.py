@@ -10,24 +10,21 @@ def index(student_id_and_course_id):
     ids = student_id_and_course_id.split(' ')
     student_id = int(ids[0])
     course_id = int(ids[1])
-    # student_id= current_user.id
     if request.method == 'GET':
         if not course_id:
             enrollments = Enrollment.query.filter(Enrollment.student_id == student_id)
             courses = list()
             for enrollment in enrollments:
-                course_id = enrollment.to_dict()["course_id"]
-                course = Course.query.filter(Course.id == course_id).one_or_none().to_dict  ()
-                instructor = User.query.filter(User.id == course["instructor_id"]). one_or_none().to_dict()
-                courses.append({"course": course, "instructor": instructor})
+                course = Course.query.filter(Course.id == enrollment.course_id).one_or_none()
+                instructor = User.query.filter(User.id == course.instructor_id).one_or_none()
+                courses.append({"course": course.to_dict(), "instructor": instructor.to_dict()})
             return {"courses": courses}
         if not student_id:
             enrollments = Enrollment.query.filter(Enrollment.course_id == course_id)
             students = list()
             for enrollment in enrollments:
-                student_id = enrollment.to_dict()["student_id"]
-                student = User.query.filter(User.id == student_id).one_or_none().to_dict  ()
-                students.append(student)
+                student = User.query.filter(User.id == enrollment.student_id).one_or_none()
+                students.append(student.to_dict())
             return {"students": students}
     if request.method == 'DELETE':
         enrollment = Enrollment.query.filter(Enrollment.course_id == course_id).filter(Enrollment.student_id == student_id).one_or_none()
