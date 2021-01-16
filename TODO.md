@@ -31,7 +31,6 @@ Improve editor for Question model.
 Rename some components to reflect their function rather than first db Query?
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
 On back-end, change some for-loops to list comprehensions.
-For assignment-creation route, simultaneously create one (many?) rows in the appearances table
 For course-creation route, simultaneously create a row in the enrollments table?
 Insert ability to duplicate questions and assignments
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
