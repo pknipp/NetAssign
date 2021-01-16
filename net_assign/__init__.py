@@ -68,7 +68,7 @@ def react_root(path):
 def restore():
     # id = current_user.id if current_user.is_authenticated else None
     print("restore says that current_user is ", current_user)
-    print("restore says that current_user.to_dict() is ", current_user.to_dict())
+    # print("restore says that current_user.to_dict() is ", current_user.to_dict())
     user = None if not current_user.is_authenticated else current_user.to_dict()
     if current_user:
         return {"current_user": user}
