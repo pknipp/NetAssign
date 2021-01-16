@@ -24,7 +24,7 @@ Figure out (using list above?) how to seed other students w/a certain number of 
 Use html tables to format lists of courses, assignments, and (possibly) questions.
 Insert an is_admin column in User model
 Insert an is_public column in Assignment model
-Insert addition columns (fname, lname, etc) in User model.
+Insert additional columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
 Improve editor for Question model.
@@ -36,4 +36,3 @@ Insert ability to duplicate questions and assignments
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
 Come up with consistent naming convention for fetch-functions: CRUD or PoGPuD?
-Figure out whether I REALLY need to use #to_dict() as often as I do.

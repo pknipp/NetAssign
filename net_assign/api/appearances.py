@@ -4,7 +4,7 @@ from datetime import datetime
 
 appearances = Blueprint('appearances', __name__)
 
-@appearances.route('/<aid_and_qid>', methods=['POST', 'GET', 'DELETE'])
+@appearances.route('/<aid_and_qid>', methods=['POST', 'DELETE'])
 def get_deployments(aid_and_qid):
     ids = aid_and_qid.split(" ")
     aid = int(ids[0])

@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, redirect
 from net_assign.models import Question, db, User
 from datetime import datetime
-from flask_login import current_user, LoginManager, login_user, logout_user, login_required
 from sqlalchemy import or_
 from random import random, randint
 import cexprtk

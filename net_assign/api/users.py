@@ -6,9 +6,10 @@ from flask_login import login_required, logout_user, login_user, current_user
 users = Blueprint('users', __name__)
 
 
-@users.route('/<id>', methods=['GET', 'PUT', 'DELETE'])
+@users.route('/me', methods=['GET', 'PUT', 'DELETE'])
 def index(id):
-    user = User.query.filter(User.id == int(id)).one_or_none()
+    # user = User.query.filter(User.id == int(id)).one_or_none()
+    user = current_user
     if request.method == "GET":
         return user.to_dict()
     if request.method == 'PUT':
