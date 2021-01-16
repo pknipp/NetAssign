@@ -8,8 +8,6 @@ import EditUser from './components/EditUser';
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoute from "./components/AuthRoute";
 import AuthContext from './auth';
-// import CourseContext from './CourseContext';
-// import Success from './components/Success';
 import Enrollments from './components/Enrollments';
 import Deployments from './components/Deployments';
 import Submissions from './components/Submissions';
@@ -24,7 +22,6 @@ import Roster from './components/Roster';
 const App = _ => {
     const [fetchWithCSRF] = useState(() => fetch);
     const [currentUser, setCurrentUser] = useState(null);
-    // const [currentCourse, setCurrentCourse]=useState(null);
     const [loading, setLoading] = useState(true)
     const authContextValue = {
         fetchWithCSRF,

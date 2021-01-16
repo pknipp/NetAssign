@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, redirect
 from net_assign.models import Question, db, User
 from datetime import datetime
-from flask_login import current_user
+from flask_login import current_user, LoginManager, login_user, logout_user, login_required
 from sqlalchemy import or_
 from random import random, randint
 import cexprtk
@@ -9,9 +9,9 @@ import json
 
 questions = Blueprint('questions', __name__)
 
-@questions.route('/', methods=['GET', 'POST'])
-def index():
-    user_id = current_user.id
+@questions.route('/me/<user_id>', methods=['GET', 'POST'])
+def index(user_id):
+    user_id = int(user_id)
     if request.method == 'GET':
         q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public == True)).order_by(Question.id)
         questions = list()

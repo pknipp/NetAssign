@@ -17,12 +17,9 @@ const LogIn = _ => {
                 credentials: 'include', body: JSON.stringify({email, password})
             });
             const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else {
-                setCurrentUser(responseData.current_user);
-                history.push('/')
-            }
+            if (!response.ok) return setErrors(responseData.errors);
+            setCurrentUser(responseData.current_user);
+            history.push('/')
         })();
     }
     return (

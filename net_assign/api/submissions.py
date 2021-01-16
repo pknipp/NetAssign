@@ -15,6 +15,7 @@ seed()
 def get_questions(did):
     deployment_id = int(did)
     student_id = current_user.id
+    print("submissions.py says that current_user is ", current_user)
     is_instructor = User.query.filter(User.id == student_id).one_or_none().to_dict()["is_instructor"]
     dec = 4
     if request.method == 'GET':

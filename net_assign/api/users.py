@@ -70,6 +70,7 @@ def me():
         login_user(user)
         return {"current_user": current_user.to_dict()}
     if request.method == 'GET':
-        users = User.query
-        students = [user.to_dict() for user in users]
-        return {"students": students}
+        # users = User.query
+        # students = [user.to_dict() for user in users]
+        # return {"students": students}
+        return {"students": [user.to_dict() for user in User.query]}

@@ -10,7 +10,7 @@ session = Blueprint('session', __name__)
 def index():
     if request.method == 'PUT':
         if not request.is_json:
-            return jsonify({"msg": "Missing JSON in request"}), 400
+            return jsonify({"message": "Missing JSON in request"}), 400
         email = request.json.get('email', None)
         password = request.json.get('password', None)
         if not email or not password:

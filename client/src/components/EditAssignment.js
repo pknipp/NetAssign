@@ -5,11 +5,14 @@ import AuthContext from '../auth'
 
 const EditAssignment = ({ match }) => {
     const assignmentId = Number(match.params.assignmentId)  ;
-    const { fetchWithCSRF } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     // const [assignment, setAssignment] = useState('');
     const [name, setName] = useState('');
     const [isPublic, setIsPublic] = useState(true);
     const [questions, setQuestions] = useState([]);
+    const [questionIds, setQuestionIds] = useState([]);
+    const [moreQuestions, setMoreQuestions] = useState([]);
+    const [showMoreQuestions, setShowMoreQuestions] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -25,6 +28,7 @@ const EditAssignment = ({ match }) => {
                     setName(data.assignment.name);
                     setIsPublic(data.assignment.is_public);
                     setQuestions(data.questions);
+                    setQuestionIds(data.questions.map(question => question.id));
                 }
             } catch (err) {
                 console.error(err)
@@ -49,7 +53,7 @@ const EditAssignment = ({ match }) => {
     const postAssignment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF("/api/assignments/", {
+            const response = await fetchWithCSRF("/api/assignments", {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ name, isPublic })
             });
@@ -72,6 +76,24 @@ const EditAssignment = ({ match }) => {
             if (responseData.messages) setMessages(responseData.messages)
             history.push("/assignments/")
         })();
+    }
+
+    const getMoreQuestions = async () => {
+        if (!showMoreQuestions) {
+            try {
+                const res = await fetch(`/api/questions/${currentUser.id}`)
+                if (res.ok) {
+                    const data = await res.json();
+                    setMoreQuestions(data.questions);;
+                }
+            } catch (err) {
+                console.error(err)
+            }
+        } else {
+            setMoreQuestions([]);
+        }
+        setShowMoreQuestions(!showMoreQuestions);
+        setRerender(!rerender);
     }
 
     const dropQuestion = (e, qid) => {
@@ -118,6 +140,24 @@ const EditAssignment = ({ match }) => {
                     </li>
                 ))}
             </ol>
+
+            <>
+                    <button onClick={() => getMoreQuestions()}>
+                        {showMoreQuestions ? "Hide" : "Show"} questions that are not already on this assignment.
+                    </button>
+                    <ul>
+                        {moreQuestions.filter(question => !questionIds.includes(question.id)).map(question => (
+                            <li key={question.id}>
+                                <>
+                                    {/* <button onClick={e => createAppearance(e, question.id)}>
+                                        add
+                                    </button> */}
+                                    {question.question}
+                                </>
+                            </li>
+                        ))}
+                    </ul>
+                </>
 
 
             {assignmentId ? <form onSubmit={deleteAssignment}>

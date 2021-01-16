@@ -13,12 +13,9 @@ const Submission = ({ qAndR, number, deploymentId }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
 
     const gradeIt = async () => {
-        const res = await fetchWithCSRF(
-            `/api/submissions/${deploymentId + " " + number}`, {
-                method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json"
-                    },
+        const res = await fetchWithCSRF(`/api/submissions/${deploymentId + " " + number}`,
+            {
+                method: 'PUT', headers: {"Content-Type": "application/json"},
                 credentials: 'include',
                 body: JSON.stringify({response: (response === "") ? null : Number(response)})
             }

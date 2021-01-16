@@ -16,25 +16,21 @@ const EditUser = _ => {
     const submitForm = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/`, {
+            const response = await fetchWithCSRF(`/api/users/${currentUser.id}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ email, password, password2 })
             });
             const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else if (responseData.messages) {
-                setMessages(responseData.messages)
-            } else {
-                setCurrentUser(responseData.current_user)
-                history.push('/')
-            }
+            if (!response.ok) return setErrors(responseData.errors);
+            if (responseData.messages) return setMessages(responseData.messages)
+            setCurrentUser(responseData.current_user)
+            history.push('/')
         })();
     }
     const deleteUser = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/`, {
+            const response = await fetchWithCSRF(`/api/users/${currentUser.id}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });

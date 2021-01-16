@@ -5,7 +5,7 @@ import AuthContext from '../auth'
 
 const EditQuestion = ({ match }) => {
     const questionId = Number(match.params.questionId)  ;
-    const { fetchWithCSRF } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [inputs, setInputs] = useState('');
@@ -49,7 +49,7 @@ const EditQuestion = ({ match }) => {
     const postQuestion = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF("/api/questions/", {
+            const response = await fetchWithCSRF(`/api/questions/me/${currentUser.id}`, {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });

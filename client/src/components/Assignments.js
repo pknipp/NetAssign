@@ -5,7 +5,7 @@ import Assignment from './Assignment';
 
 
 const Assignments = () => {
-    const { fetchWithCSRF } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [, setErrors] = useState([]);
     const [, setMessages] = useState([]);
     const [assignments, setAssignments] = useState([]);
