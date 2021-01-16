@@ -33,10 +33,10 @@ def index():
             created_at=datetime.now(),
             updated_at=datetime.now()
         )
-        # After getting new aid, figure out where to create & add a new enrollment
+        # After getting new aid, figure out where to create & add new appearance(s)
         db.session.add(new_assignment)
         db.session.commit()
-        return {"message": "success"}
+        return {"assignment": new_assignment.to_dict()}
 
 @assignments.route('/<aid>', methods=['GET', 'PUT', 'DELETE'])
 def index_one(aid):

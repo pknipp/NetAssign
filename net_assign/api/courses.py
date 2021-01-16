@@ -8,8 +8,6 @@ courses = Blueprint('courses', __name__)
 
 @courses.route('', methods=['GET', 'POST'])
 def index():
-    print("current_user is ", current_user)
-    # instructor_id = current_user.id
     if request.method == 'GET':
         courses = Course.query
         courses = [course.to_dict() for course in courses]

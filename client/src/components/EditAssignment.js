@@ -4,9 +4,9 @@ import AuthContext from '../auth'
 
 
 const EditAssignment = ({ match }) => {
-    const assignmentId = Number(match.params.assignmentId)  ;
+    // const assignmentId = Number(match.params.assignmentId)  ;
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
-    // const [assignment, setAssignment] = useState('');
+    const [assignmentId, setAssignmentId] = useState(Number(match.params.assignmentId));
     const [name, setName] = useState('');
     const [isPublic, setIsPublic] = useState(true);
     const [questions, setQuestions] = useState([]);
@@ -45,8 +45,8 @@ const EditAssignment = ({ match }) => {
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            history.push(`/assignments/${assignmentId}`)
+            if (responseData.messages) setMessages(responseData.messages);
+            history.push(`/assignments`)
         })();
     }
 
@@ -60,7 +60,8 @@ const EditAssignment = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/assignments")
+            setAssignmentId(responseData.assignment.id)
+            history.push(`/assignments/edit/${responseData.assignment.id}`)
         })();
     }
 
@@ -74,12 +75,11 @@ const EditAssignment = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/assignments/")
+            history.push("/assignments")
         })();
     }
 
     const getMoreQuestions = async () => {
-        console.log("top of getMoreQuestions says that currentUser.id is ", currentUser.id)
         if (!showMoreQuestions) {
             try {
                 const res = await fetch(`/api/questions/me/${currentUser.id}`)
@@ -156,7 +156,8 @@ const EditAssignment = ({ match }) => {
                 ))}
             </ol>
 
-            <>
+            {!assignmentId ? null :
+                <>
                     <button onClick={() => getMoreQuestions()}>
                         {showMoreQuestions ? "Hide" : "Show"} questions which may get added to this assignment.
                     </button>
@@ -172,14 +173,13 @@ const EditAssignment = ({ match }) => {
                             </li>
                         ))}
                     </ul>
+                    <form onSubmit={deleteAssignment}>
+                        {messages.map(err => <li key={err}>{err}</li>)}
+                        <h4>Would you like to delete this assignment?</h4>
+                        <button type="submit">Delete Assignment</button>
+                    </form>
                 </>
-
-
-            {assignmentId ? <form onSubmit={deleteAssignment}>
-                {messages.map(err => <li key={err}>{err}</li>)}
-                <h4>Would you like to delete this assignment?</h4>
-                <button type="submit">Delete Assignment</button>
-            </form> : null}
+            }
         </>
     );
 };
