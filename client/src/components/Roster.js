@@ -48,10 +48,10 @@ const Roster = ({ match }) => {
         setRerender(!rerender);
     }
 
-    const deleteEnrollment = (e, courseId) => {
+    const deleteEnrollment = (e, studentId) => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${courseId}/`, {
+            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
@@ -62,10 +62,10 @@ const Roster = ({ match }) => {
         })();
     }
 
-    const createEnrollment = (e, courseId) => {
+    const createEnrollment = (e, studentId) => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${courseId}/`, {
+            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({})
             });
