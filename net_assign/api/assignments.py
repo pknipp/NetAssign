@@ -14,13 +14,12 @@ dec = 4
 def index():
     user_id = current_user.id
     if request.method == 'GET':
-        # Include boolean in re whether or not teacher has scheduled each assignment
-        assignments = Assignment.query.filter(or_(Assignment.instructor_id == user_id, Assignment.is_public == True)).order_by(Assignment.id)
+        # Include boolean in re whether or not instructor has scheduled each assignment
+        assignments = Assignment.query.filter(or_(Assignment.instructor_id == user_id, Assignment.is_public)).order_by(Assignment.id)
         assignment_list = list()
         for assignment in assignments:
-            assignment = assignment.to_dict()
-            author = User.query.filter(User.id == assignment["instructor_id"]).one_or_none().to_dict()
-            assignment_list.append({"author": author, "assignment": assignment})
+            author = User.query.filter(User.id == assignment.instructor_id).one_or_none()
+            assignment_list.append({"author": author.to_dict(), "assignment": assignment.to_dict()})
         return {"assignments": assignment_list}
 
     if request.method == 'POST':
@@ -33,14 +32,13 @@ def index():
             created_at=datetime.now(),
             updated_at=datetime.now()
         )
-        # After getting new aid, figure out where to create & add new appearance(s)
         db.session.add(new_assignment)
         db.session.commit()
         return {"assignment": new_assignment.to_dict()}
 
-@assignments.route('/<aid>', methods=['GET', 'PUT', 'DELETE'])
-def index_one(aid):
-    assignment_id = int(aid)
+@assignments.route('/<assignment_id>', methods=['GET', 'PUT', 'DELETE'])
+def index_one(assignment_id):
+    assignment_id = int(assignment_id)
     assignment = Assignment.query.filter(Assignment.id == assignment_id).one_or_none()
     appearances = Appearance.query.filter(Appearance.assignment_id == assignment_id)
     questions = [Question.query.filter(Question.id == appearance.question_id).one_or_none() for appearance in appearances]
@@ -48,10 +46,9 @@ def index_one(aid):
     if request.method == 'GET':
         question_list = list()
         for q_and_a_and_i in questions:
-            q_and_a_and_i = q_and_a_and_i.to_dict()
-            question = q_and_a_and_i['question']
-            inputs = json.loads(q_and_a_and_i['inputs'])
-            answer = q_and_a_and_i['answer']
+            question = q_and_a_and_i.question
+            inputs = json.loads(q_and_a_and_i.inputs)
+            answer = q_and_a_and_i.answer
             x = list()
             input_d = dict()
             for i in range(len(inputs)):
@@ -59,7 +56,7 @@ def index_one(aid):
                 input_d["x" + str(i)] = x[i]
             question = question.format(*x)
             answer = round(cexprtk.evaluate_expression(answer, input_d),dec)
-            question_list.append({"id": q_and_a_and_i["id"], "question": question, "answer": answer})
+            question_list.append({"id": q_and_a_and_i.id, "question": question, "answer": answer})
         return {"assignment": assignment.to_dict(), "questions": question_list}
     if request.method == 'PUT':
         if not request.is_json:
