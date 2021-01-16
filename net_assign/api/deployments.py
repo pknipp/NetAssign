@@ -4,7 +4,7 @@ from net_assign.models import db, Assignment, Deployment, Course
 
 deployments = Blueprint('deployments', __name__)
 
-@deployments.route('/<deployment_id>/', methods=['GET', 'DELETE', 'PUT'])
+@deployments.route('/<deployment_id>', methods=['GET', 'DELETE', 'PUT'])
 def index(deployment_id):
     deployment = Deployment.query.filter(Deployment.id == int(deployment_id)).one_or_none()
     if request.method == 'GET':
@@ -18,7 +18,7 @@ def index(deployment_id):
         db.session.commit()
         return {"message": "I hope that no one needs that deployment."}
 
-@deployments.route('/courses/<course_id>/', methods=['GET'])
+@deployments.route('/courses/<course_id>', methods=['GET'])
 def get_deployments(course_id):
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == int(course_id)).order_by(Deployment.deadline)

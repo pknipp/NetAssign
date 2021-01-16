@@ -12,7 +12,7 @@ const LogIn = _ => {
     const submitForm = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/session/`, {
+            const response = await fetchWithCSRF(`/api/session`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
                 credentials: 'include', body: JSON.stringify({email, password})
             });

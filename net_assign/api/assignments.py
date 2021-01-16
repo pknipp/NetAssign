@@ -10,7 +10,7 @@ import cexprtk
 assignments = Blueprint('assignments', __name__)
 dec = 4
 
-@assignments.route('/', methods=['GET', 'POST'])
+@assignments.route('', methods=['GET', 'POST'])
 def index():
     user_id = current_user.id
     if request.method == 'GET':

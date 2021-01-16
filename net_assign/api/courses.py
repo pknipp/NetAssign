@@ -6,7 +6,7 @@ from datetime import datetime
 courses = Blueprint('courses', __name__)
 
 
-@courses.route('/', methods=['GET', 'POST'])
+@courses.route('', methods=['GET', 'POST'])
 def index():
     print("current_user is ", current_user)
     # instructor_id = current_user.id

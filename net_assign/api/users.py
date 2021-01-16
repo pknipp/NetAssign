@@ -42,7 +42,7 @@ def index(id):
         logout_user()
         return {"message": "goodbye"}
 
-@users.route('/', methods=['POST', 'GET'])
+@users.route('', methods=['POST', 'GET'])
 def me():
     if request.method == 'POST':
         if not request.is_json:

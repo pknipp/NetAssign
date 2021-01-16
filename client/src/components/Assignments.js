@@ -12,7 +12,7 @@ const Assignments = () => {
 
     useEffect(() => {
         (async () => {
-            const response = await fetchWithCSRF("/api/assignments/");
+            const response = await fetchWithCSRF("/api/assignments");
             const responseData = await response.json();
             if (!response.ok) {
                 setErrors(responseData.errors);

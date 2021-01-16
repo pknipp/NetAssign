@@ -11,7 +11,7 @@ const SignUp = _ => {
     const submitForm = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/users/`, {
+            const response = await fetchWithCSRF(`/api/users`, {
                 method: 'POST', headers: { "Content-Type": "application/json" },
                 credentials: 'include', body: JSON.stringify({ email, password, password2 })
             });

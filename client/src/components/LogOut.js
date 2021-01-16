@@ -9,7 +9,7 @@ const LogOut = () => {
     const submitForm = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF('/api/session/', {
+            const response = await fetchWithCSRF('/api/session', {
                 method: 'DELETE', credentials: 'include'
             });
             if (response.ok) setCurrentUser(null);

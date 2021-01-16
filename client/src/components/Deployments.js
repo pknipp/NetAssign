@@ -11,7 +11,7 @@ const Deployments = ({ match }) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/deployments/courses/${courseId}/`)
+                const res = await fetch(`/api/deployments/courses/${courseId}`)
                 if (res.ok) {
                     const data = await res.json();
                     setAssignments(data.assignments);

@@ -6,7 +6,7 @@ from flask_login import LoginManager, login_required, logout_user, login_user, c
 session = Blueprint('session', __name__)
 
 
-@session.route('/', methods=['PUT', 'DELETE'])
+@session.route('', methods=['PUT', 'DELETE'])
 def index():
     if request.method == 'PUT':
         if not request.is_json:

@@ -5,19 +5,6 @@ from datetime import datetime
 
 enrollments = Blueprint('enrollments', __name__)
 
-# @enrollments.route('/', methods=['GET'])
-# def index():
-#     student_id = current_user.id
-#     if request.method == 'GET':
-#         enrollments = Enrollment.query.filter(Enrollment.student_id == student_id)
-#         courses = list()
-#         for enrollment in enrollments:
-#             course_id = enrollment.to_dict()["course_id"]
-#             course = Course.query.filter(Course.id == course_id).one_or_none().to_dict()
-#             instructor = User.query.filter(User.id == course["instructor_id"]).one_or_none().to_dict()
-#             courses.append({"course": course, "instructor": instructor})
-#         return {"courses": courses}
-
 @enrollments.route('/<student_id_and_course_id>', methods=['GET', 'DELETE', 'POST'])
 def index(student_id_and_course_id):
     ids = student_id_and_course_id.split(' ')
