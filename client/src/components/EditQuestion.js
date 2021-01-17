@@ -50,7 +50,7 @@ const EditQuestion = ({ match }) => {
     const postQuestion = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/questions/me/${currentUser.id}`, {
+            const response = await fetchWithCSRF(`/api/questions/me`, {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });
