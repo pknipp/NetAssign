@@ -5,9 +5,8 @@ import AuthContext from '../auth'
 
 const EditCourse = ({ match }) => {
     const courseId = Number(match.params.courseId);
-    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
+    const { fetchWithCSRF } = useContext(AuthContext);
     const [name, setName] = useState('');
-    const [rerender, setRerender] = useState(false);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
@@ -25,7 +24,7 @@ const EditCourse = ({ match }) => {
                 console.error(err)
             }
         })()}
-    }, [rerender])
+    })
 
     const putCourse = e => {
         e.preventDefault();
@@ -76,7 +75,9 @@ const EditCourse = ({ match }) => {
                 <input
                     type="text" placeholder="Name" value={name}
                     onChange={e => setName(e.target.value)} name="name" />
-                <button type="submit">Submit Change</button>
+                <button type="submit">
+                    {courseId ? "Submit change" : "Create course"}
+                </button>
             </form>
 
             {courseId ? <form onSubmit={deleteCourse}>

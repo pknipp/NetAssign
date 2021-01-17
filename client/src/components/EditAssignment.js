@@ -8,6 +8,7 @@ const EditAssignment = ({ match }) => {
     const [assignmentId, setAssignmentId] = useState(Number(match.params.assignmentId));
     const [name, setName] = useState('');
     const [isPublic, setIsPublic] = useState(true);
+    const [canEdit, setCanEdit] = useState(false);
     const [questions, setQuestions] = useState([]);
     const [questionIds, setQuestionIds] = useState([]);
     const [moreQuestions, setMoreQuestions] = useState([]);
@@ -28,15 +29,15 @@ const EditAssignment = ({ match }) => {
                     setIsPublic(data.assignment.is_public);
                     setQuestions(data.questions);
                     setQuestionIds(data.questions.map(question => question.id));
+                    setCanEdit(data.assignment.instructor_id === currentUser.id);
                 }
             } catch (err) {
                 console.error(err)
             }
         })()}
-    }, [rerender])
+    }, [rerender, assignmentId, currentUser.id])
 
-    const putAssignment = e => {
-        e.preventDefault();
+    const putAssignment = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
@@ -49,8 +50,7 @@ const EditAssignment = ({ match }) => {
         })();
     }
 
-    const postAssignment = e => {
-        e.preventDefault();
+    const postAssignment = () => {
         (async _ => {
             const response = await fetchWithCSRF("/api/assignments", {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
@@ -64,8 +64,22 @@ const EditAssignment = ({ match }) => {
         })();
     }
 
-    const deleteAssignment = e => {
-        e.preventDefault();
+    const duplicateAssignment = () => {
+        // e.preventDefault();
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
+                method: 'POST', headers: {"Content-Type": "application/json"},
+                credentials: 'include', body: JSON.stringify({})
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            history.push("/assignments")
+        })();
+    }
+
+    const deleteAssignment = () => {
+        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
@@ -81,7 +95,7 @@ const EditAssignment = ({ match }) => {
     const getQuestions = async () => {
         if (!showMoreQuestions) {
             try {
-                const res = await fetch(`/api/questions/me`)
+                const res = await fetch(`/api/questions`)
                 if (res.ok) {
                     const data = await res.json();
                     setMoreQuestions(data.questions);;
@@ -96,8 +110,8 @@ const EditAssignment = ({ match }) => {
         setRerender(!rerender);
     }
 
-    const postAppearance = (e, qid) => {
-        e.preventDefault();
+    const postAppearance = qid => {
+        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
@@ -110,8 +124,8 @@ const EditAssignment = ({ match }) => {
         })();
     }
 
-    const deleteAppearance = (e, qid) => {
-        e.preventDefault();
+    const deleteAppearance = qid => {
+        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
@@ -126,29 +140,29 @@ const EditAssignment = ({ match }) => {
 
     return (
         <>
-            <form onSubmit={assignmentId ? putAssignment : postAssignment}>
-                {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
-                <input
-                    type="text" placeholder="Name" value={name}
-                    onChange={e => setName(e.target.value)} name="name" />
-                 <span>
-                    {isPublic ? "Public " : "Private "}
-                    <button onClick={e => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        setIsPublic(!isPublic)
-                    }}>
-                        toggle
+            {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+            <input
+                type="text" placeholder="Name" value={name} name="name"
+                onChange={e => setName(e.target.value)} disabled={!canEdit && assignmentId}
+            />
+
+            {(!canEdit && assignmentId) ? null : (
+                <span>
+                    {isPublic ? "public " : "private "}
+                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                    <br/>
+                    <button onClick={assignmentId ? putAssignment : postAssignment}>
+                        {assignmentId ? "Submit changes" : "Create Assignment"}
                     </button>
                 </span>
-                <button type="submit">{assignmentId ? "Submit Changes" : "Create Assignment"}</button>
-            </form>
+            )}
+
             <ol>
                 {questions.map(question => (
                     <li key={question.id}>
                         question: {question.question}<br/>
                         answer: {question.answer}<br/>
-                        <button onClick={e => deleteAppearance(e, question.id)}>
+                        <button onClick={() => deleteAppearance(question.id)}>
                             drop
                         </button>
                     </li>
@@ -164,7 +178,7 @@ const EditAssignment = ({ match }) => {
                         {moreQuestions.filter(question => !questionIds.includes(question.id)).map(question => (
                             <li key={question.id}>
                                 <>
-                                    <button onClick={e => postAppearance(e, question.id)}>
+                                    <button onClick={() => postAppearance(question.id)}>
                                         add
                                     </button>
                                     {question.question}
@@ -172,11 +186,18 @@ const EditAssignment = ({ match }) => {
                             </li>
                         ))}
                     </ul>
-                    <form onSubmit={deleteAssignment}>
+
+                    {messages.map(err => <li key={err}>{err}</li>)}
+                    <h4>Would you like to duplicate
+                        {canEdit ? " or delete ": " "} this assignment?
+                    </h4>
+                    <span>
+                        <button onClick={() => duplicateAssignment()}>Duplicate it</button>
                         {messages.map(err => <li key={err}>{err}</li>)}
-                        <h4>Would you like to delete this assignment?</h4>
-                        <button type="submit">Delete Assignment</button>
-                    </form>
+                        {!canEdit ? null :
+                            <button onClick={() => deleteAssignment()}>Delete it</button>
+                        }
+                    </span>
                 </>
             }
         </>

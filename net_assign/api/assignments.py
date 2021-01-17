@@ -36,12 +36,33 @@ def index():
         db.session.commit()
         return {"assignment": new_assignment.to_dict()}
 
-@assignments.route('/<assignment_id>', methods=['GET', 'PUT', 'DELETE'])
+@assignments.route('/<assignment_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def one(assignment_id):
     assignment_id = int(assignment_id)
     assignment = Assignment.query.filter(Assignment.id == assignment_id).one_or_none()
     appearances = Appearance.query.filter(Appearance.assignment_id == assignment_id)
     questions = [Question.query.filter(Question.id == appearance.question_id).one_or_none() for appearance in appearances]
+
+# duplicating an assignment
+    if request.method == 'POST':
+        new_assignment = Assignment(
+            instructor_id=current_user.id,
+            name=assignment.name + '(COPY)',
+            is_public=assignment.is_public,
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
+        db.session.add(new_assignment)
+        db.session.commit()
+        for question in questions:
+            new_appearance = Appearance(
+                assignment_id=new_assignment.id,
+                question_id=question.id,
+                created_at=datetime.now()
+            )
+            db.session.add(new_appearance)
+        db.session.commit()
+        return {"message": "success"}
 
     if request.method == 'GET':
         question_list = list()

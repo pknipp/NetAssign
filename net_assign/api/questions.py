@@ -9,7 +9,7 @@ import json
 
 questions = Blueprint('questions', __name__)
 
-@questions.route('/me', methods=['GET', 'POST'])
+@questions.route('', methods=['GET', 'POST'])
 def me():
     user_id = current_user.id
     if request.method == 'GET':
@@ -38,7 +38,7 @@ def me():
         db.session.commit()
         return {"message": "success"}
 
-@questions.route('/<qid>', methods=['GET', 'PUT', 'DELETE', 'POST'])
+@questions.route('/<qid>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def one(qid):
     question = Question.query.filter(Question.id == int(qid)).one_or_none()
     # duplicating a question

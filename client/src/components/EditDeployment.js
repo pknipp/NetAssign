@@ -30,7 +30,7 @@ const EditDeployment = ({ match }) => {
                 console.error(err)
             }
         })()
-    }, [])
+    })
 
     const putDeployment = e => {
         e.preventDefault();

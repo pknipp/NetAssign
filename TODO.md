@@ -23,7 +23,6 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
 Figure out (using list above?) how to seed other students w/a certain number of responses.
 Use html tables to format lists of courses, assignments, and (possibly) questions.
 Insert an is_admin column in User model
-Insert an is_public column in Assignment model
 Insert additional columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
@@ -31,7 +30,7 @@ Improve editor for Question model.
 Rename some components to reflect their function rather than first db Query?
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
 If a course is deleted, then ensure that enrollments are deleted also
-Insert ability to duplicate assignments
+Insert ability to duplicate courses?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
 Tighten up fetch calls.

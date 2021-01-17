@@ -33,7 +33,7 @@ const EditQuestion = ({ match }) => {
                 console.error(err)
             }
         })()}
-    }, [])
+    })
 
     const putQuestion = () => {
         // e.preventDefault();
@@ -52,7 +52,7 @@ const EditQuestion = ({ match }) => {
     const postQuestion = () => {
         // e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/questions/me`, {
+            const response = await fetchWithCSRF(`/api/questions`, {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });
@@ -95,20 +95,22 @@ const EditQuestion = ({ match }) => {
         <>
             {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
             <input
-                type="text" placeholder="Question" value={question}
-                onChange={e => setQuestion(e.target.value)} name="question" disabled={!canEdit}/>
+                type="text" placeholder="Question" value={question} name="question"
+                onChange={e => setQuestion(e.target.value)} disabled={!canEdit && questionId}/>
             <input
-                type="text" placeholder="Answer" value={answer}
-                onChange={e => setAnswer(e.target.value)} name="answer" disabled={!canEdit}/>
+                type="text" placeholder="Answer" value={answer} name="answer"
+                onChange={e => setAnswer(e.target.value)} disabled={!canEdit && questionId}/>
             <input
-                type="text" placeholder="Inputs" value={inputs}
-                onChange={e => setInputs(e.target.value)} name="inputs" disabled={!canEdit} />
-            {!canEdit ? null : (
+                type="text" placeholder="Inputs" value={inputs} name="inputs"
+                onChange={e => setInputs(e.target.value)} disabled={!canEdit && questionId}/>
+            {(!canEdit && questionId) ? null : (
                 <span>
                     {isPublic ? "public " : "private "}
                     <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
                     <br/>
-                    <button onClick={questionId ? putQuestion : postQuestion}>Submit changes</button>
+                    <button onClick={questionId ? putQuestion : postQuestion}>
+                        {questionId ? "Submit changes" : "Create question"}
+                    </button>
                 </span>
             )}
             {!questionId ? null :
@@ -118,13 +120,12 @@ const EditQuestion = ({ match }) => {
                         {canEdit ? " or delete ": " "} this question?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateQuestion()}>Duplicate Question</button>
+                        <button onClick={() => duplicateQuestion()}>Duplicate it</button>
                         {messages.map(err => <li key={err}>{err}</li>)}
                         {!canEdit ? null :
-                        <button onClick={() => deleteQuestion()}>Delete Question</button>
-                    }
-                    {/* </form> */}
-                        </span>
+                            <button onClick={() => deleteQuestion()}>Delete it</button>
+                        }
+                    </span>
                 </>
             }
         </>
