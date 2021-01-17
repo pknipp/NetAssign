@@ -32,7 +32,7 @@ def get_questions(did):
         else:
             appearances = Appearance.query.filter(Appearance.assignment_id == assignment.id)
             for appearance in appearances:
-                q_and_a = Question.query.filter(Question.id == appearance["question_id"]).one_or_none()
+                q_and_a = Question.query.filter(Question.id == appearance.question_id).one_or_none()
                 question = q_and_a.question
                 inputs = json.loads(q_and_a.inputs)
                 answer = q_and_a.answer
