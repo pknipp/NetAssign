@@ -8,7 +8,7 @@ const SignUp = _ => {
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
 
-    const submitForm = e => {
+    const postUser = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
@@ -24,7 +24,7 @@ const SignUp = _ => {
         })();
     }
     return (
-        <form onSubmit={submitForm}>
+        <form onSubmit={postUser}>
             {errors.map(err => <li key={err} >{err}</li>)}
             <input
                 type="text" placeholder="Email" value={email}

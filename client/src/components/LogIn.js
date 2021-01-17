@@ -9,7 +9,7 @@ const LogIn = _ => {
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     let history = useHistory();
 
-    const submitForm = e => {
+    const putSession = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/session`, {
@@ -23,7 +23,7 @@ const LogIn = _ => {
         })();
     }
     return (
-        <form onSubmit={submitForm}>
+        <form onSubmit={putSession}>
             {errors.map(err => <li key={err} color="red">{err}</li>)}
             Email
             <input

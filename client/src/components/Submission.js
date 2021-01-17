@@ -12,7 +12,7 @@ const Submission = ({ qAndR, number, deploymentId }) => {
     const [,setErrors]= useState([]);
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
 
-    const gradeIt = async () => {
+    const putSubmission = async () => {
         const res = await fetchWithCSRF(`/api/submissions/${deploymentId + " " + number}`,
             {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
@@ -21,21 +21,18 @@ const Submission = ({ qAndR, number, deploymentId }) => {
             }
         );
         const responseData = await res.json();
-        if (!res.ok) {
-            setErrors(responseData.errors);
-        } else {
-            if (response !== "") setGrade(responseData.grade);
-            setAnswer(responseData.answer);
-        }
+        if (!res.ok) return setErrors(responseData.errors);
+        if (response !== "") setGrade(responseData.grade);
+        setAnswer(responseData.answer);
     };
 
     useEffect(() => {
-        gradeIt();
+        putSubmission();
     })
 
     const handleSubmit = e => {
         e.preventDefault();
-        gradeIt();
+        putSubmission();
     }
 
     return <li>

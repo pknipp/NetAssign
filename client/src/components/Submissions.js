@@ -30,13 +30,11 @@ const Submissions = ({ match }) => {
             {(!questionsAndResponses.length) ? null :
                 questionsAndResponses.map((questionAndResponse, index) => (
                     <Submission key={questionAndResponse.id} qAndR={questionAndResponse} number={index} deploymentId={deploymentId}/>
-                    // <h3>Hello world</h3>
                 ))
             }
         </ol>
         </>
     )
 }
-
 
 export default Submissions;

@@ -9,8 +9,8 @@ const Roster = ({ match }) => {
     const [moreStudents, setMoreStudents] = useState([]);
     const [rerender, setRerender]=useState(false);
     const [showMoreStudents, setShowMoreStudents] = useState(false);
-    const [messages, setMessages]=useState([]);
-    const [errors, setErrors]   = useState([]);
+    const [, setMessages]=useState([]);
+    const [, setErrors]   = useState([]);
     const { currentUser, fetchWithCSRF } = useContext(AuthContext)
 
     const getMyStudents = async () => {
@@ -62,7 +62,7 @@ const Roster = ({ match }) => {
         })();
     }
 
-    const createEnrollment = (e, studentId) => {
+    const postEnrollment = (e, studentId) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
@@ -106,7 +106,7 @@ const Roster = ({ match }) => {
                         {moreStudents.filter(student => !studentIds.includes(student.id)).map(student => (
                             <li key={student.id}>
                                 <>
-                                    <button onClick={e => createEnrollment(e, student.id)}>
+                                    <button onClick={e => postEnrollment(e, student.id)}>
                                         add
                                     </button>
                                     {student.email}

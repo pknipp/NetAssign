@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
-// import EditAssignment from './EditAssignment';
 
 const Assignment = ({ assignment }) => {
     const { currentUser } = useContext(AuthContext);

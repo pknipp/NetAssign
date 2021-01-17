@@ -6,7 +6,7 @@ const LogOut = () => {
     // const history = useHistory();
     // const [errors, setErrors] = useState("");
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
-    const submitForm = e => {
+    const deleteSession = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF('/api/session', {
@@ -16,7 +16,7 @@ const LogOut = () => {
         })();
     }
     return (
-        <form onSubmit={submitForm}>
+        <form onSubmit={deleteSession}>
             <button type="submit">Logout</button>
         </form>
     );

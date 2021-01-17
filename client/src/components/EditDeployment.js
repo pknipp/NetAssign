@@ -9,7 +9,7 @@ const EditDeployment = ({ match }) => {
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState(null);
-    const [rerender, setRerender] = useState(false);
+    // const [rerender, setRerender] = useState(false);
     const [courseId, setCourseId] = useState(null);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);

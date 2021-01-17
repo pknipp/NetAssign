@@ -8,13 +8,13 @@ const Enrollments = () => {
     const [moreCourses, setMoreCourses] = useState([]);
     const [rerender, setRerender]=useState(false);
     const [showMoreCourses, setShowMoreCourses] = useState(false);
-    const [messages, setMessages]=useState([]);
-    const [errors, setErrors]   = useState([]);
+    const [, setMessages]=useState([]);
+    const [, setErrors]   = useState([]);
     const { currentUser, fetchWithCSRF } = useContext(AuthContext)
 
     const getMyCourses = async () => {
         try {
-            const res = await fetch(`/api/enrollments/${currentUser.id + ' ' + '0'}`)
+            const res = await fetch(`/api/enrollments/${currentUser.id + ' 0'}`)
             if (res.ok) {
                 const data = await res.json();
                 setCourses(data.courses);
@@ -61,7 +61,7 @@ const Enrollments = () => {
         })();
     }
 
-    const createEnrollment = (e, studentId, courseId) => {
+    const postEnrollment = (e, studentId, courseId) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
@@ -121,7 +121,7 @@ const Enrollments = () => {
                         {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
                             <li key={course.id}>
                                 <>
-                                    <button onClick={e => createEnrollment(e, currentUser.id, course.id)}>
+                                    <button onClick={e => postEnrollment(e, currentUser.id, course.id)}>
                                         add
                                     </button>
                                     {course.name}

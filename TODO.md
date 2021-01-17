@@ -34,4 +34,6 @@ If a course is deleted, then ensure that enrollments are deleted also
 Insert ability to duplicate questions and assignments
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
-Come up with consistent naming convention for fetch-functions: CRUD or PoGPuD?
+Tighten up fetch calls.
+In question editor (and other places) widen the input field.
+Increase # of Question seeds.

@@ -13,7 +13,7 @@ const EditUser = _ => {
     const [messages, setMessages] = useState([]);
     let history = useHistory();
 
-    const submitForm = e => {
+    const putUser = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users/me`, {
@@ -47,7 +47,7 @@ const EditUser = _ => {
 
     return (
         <>
-            <form onSubmit={submitForm}>
+            <form onSubmit={putUser}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <input
                     type="email" placeholder="Email" value={email}

@@ -4,7 +4,6 @@ import AuthContext from '../auth'
 
 
 const EditAssignment = ({ match }) => {
-    // const assignmentId = Number(match.params.assignmentId)  ;
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [assignmentId, setAssignmentId] = useState(Number(match.params.assignmentId));
     const [name, setName] = useState('');
@@ -79,7 +78,7 @@ const EditAssignment = ({ match }) => {
         })();
     }
 
-    const getMoreQuestions = async () => {
+    const getQuestions = async () => {
         if (!showMoreQuestions) {
             try {
                 const res = await fetch(`/api/questions/me`)
@@ -158,7 +157,7 @@ const EditAssignment = ({ match }) => {
 
             {!assignmentId ? null :
                 <>
-                    <button onClick={() => getMoreQuestions()}>
+                    <button onClick={() => getQuestions()}>
                         {showMoreQuestions ? "Hide" : "Show"} questions which may get added to this assignment.
                     </button>
                     <ul>

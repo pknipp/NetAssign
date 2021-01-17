@@ -26,17 +26,17 @@ const Assignments = () => {
 
     return (
         <>
-        <NavLink exact to={"/assignments/edit/0"} className="nav" activeClassName="active">
-            create new assignment
-        </NavLink>
-        {assignments.map(assignment => {
-            return (
-                <ul>
-                    <Assignment
-                        key={`aid${assignment.assignment.id}`} assignment={assignment} />
-                </ul>
-            )
-        })}
+            <NavLink exact to={"/assignments/edit/0"} className="nav" activeClassName="active">
+                create new assignment
+            </NavLink>
+            {assignments.map(assignment => {
+                return (
+                    <ul>
+                        <Assignment
+                            key={`aid${assignment.assignment.id}`} assignment={assignment} />
+                    </ul>
+                )
+            })}
         </>
     )
 };

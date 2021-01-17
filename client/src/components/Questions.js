@@ -9,19 +9,14 @@ const Questions = () => {
     const [, setErrors] = useState([]);
     const [, setMessages] = useState([]);
     const [questions, setQuestions] = useState([]);
-    // let history = useHistory();
 
     useEffect(() => {
         (async () => {
             const response = await fetchWithCSRF(`/api/questions/me`);
             const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else if (responseData.messages) {
-                setMessages(responseData.messages);
-            } else {
-                setQuestions(responseData.questions);
-            }
+            if (!response.ok) return setErrors(responseData.errors);
+            if (responseData.messages) return setMessages(responseData.messages);
+            setQuestions(responseData.questions);
         })();
     }, [])
 

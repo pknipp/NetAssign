@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
-// import EditQuestion from './EditQuestion';
 
 const Question = ({ question }) => {
     const { currentUser } = useContext(AuthContext);
