@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, redirect
+from flask_login import current_user
 from net_assign.models import Question, db, User
 from datetime import datetime
 from sqlalchemy import or_
@@ -8,9 +9,9 @@ import json
 
 questions = Blueprint('questions', __name__)
 
-@questions.route('/me/<user_id>', methods=['GET', 'POST'])
-def index(user_id):
-    user_id = int(user_id)
+@questions.route('/me', methods=['GET', 'POST'])
+def me():
+    user_id = current_user.id
     if request.method == 'GET':
         q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public)).order_by(Question.id)
         questions = list()
@@ -38,7 +39,7 @@ def index(user_id):
         return {"message": "success"}
 
 @questions.route('/<qid>', methods=['GET', 'PUT', 'DELETE'])
-def index_one(qid):
+def one(qid):
     question = Question.query.filter(Question.id == int(qid)).one_or_none()
     if request.method == 'GET':
         return({"question_answer_inputs": question.to_dict()})

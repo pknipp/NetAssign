@@ -13,7 +13,7 @@ const Questions = () => {
 
     useEffect(() => {
         (async () => {
-            const response = await fetchWithCSRF(`/api/questions/me/${currentUser.id}`);
+            const response = await fetchWithCSRF(`/api/questions/me`);
             const responseData = await response.json();
             if (!response.ok) {
                 setErrors(responseData.errors);

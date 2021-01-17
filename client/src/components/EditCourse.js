@@ -44,7 +44,7 @@ const EditCourse = ({ match }) => {
     const postCourse = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/courses/me/${currentUser.id}`, {
+            const response = await fetchWithCSRF(`/api/courses/me`, {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
                 body: JSON.stringify({ name })
             });

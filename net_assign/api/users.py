@@ -7,7 +7,7 @@ users = Blueprint('users', __name__)
 
 
 @users.route('/me', methods=['GET', 'PUT', 'DELETE'])
-def index(id):
+def me():
     # user = User.query.filter(User.id == int(id)).one_or_none()
     user = current_user
     if request.method == "GET":
@@ -43,7 +43,7 @@ def index(id):
         return {"message": "goodbye"}
 
 @users.route('', methods=['POST', 'GET'])
-def me():
+def index():
     if request.method == 'POST':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400

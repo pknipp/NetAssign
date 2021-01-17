@@ -82,7 +82,7 @@ const EditAssignment = ({ match }) => {
     const getMoreQuestions = async () => {
         if (!showMoreQuestions) {
             try {
-                const res = await fetch(`/api/questions/me/${currentUser.id}`)
+                const res = await fetch(`/api/questions/me`)
                 if (res.ok) {
                     const data = await res.json();
                     setMoreQuestions(data.questions);;

@@ -37,7 +37,7 @@ def index():
         return {"assignment": new_assignment.to_dict()}
 
 @assignments.route('/<assignment_id>', methods=['GET', 'PUT', 'DELETE'])
-def index_one(assignment_id):
+def one(assignment_id):
     assignment_id = int(assignment_id)
     assignment = Assignment.query.filter(Assignment.id == assignment_id).one_or_none()
     appearances = Appearance.query.filter(Appearance.assignment_id == assignment_id)
