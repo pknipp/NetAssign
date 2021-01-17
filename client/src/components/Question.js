@@ -16,7 +16,7 @@ const Question = ({ question }) => {
                 }
             </ul>
             <NavLink exact to={`/questions/${question.id}`} className="nav" activeClassName="active">
-                {(currentUser.id === question.author.id) ? "edit" : "view"} question
+                {(currentUser.id === question.author.id) ? "edit" : "view"}/duplicate question
             </NavLink>
         </li>
     )

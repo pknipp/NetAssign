@@ -7,6 +7,7 @@ const EditQuestion = ({ match }) => {
     const questionId = Number(match.params.questionId)  ;
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [question, setQuestion] = useState('');
+    const [canEdit, setCanEdit] = useState(false);
     const [answer, setAnswer] = useState('');
     const [inputs, setInputs] = useState('');
     const [isPublic, setIsPublic] = useState(true);
@@ -21,10 +22,12 @@ const EditQuestion = ({ match }) => {
                 const res = await fetch(`/api/questions/${questionId}`)
                 if (res.ok) {
                     const data = await res.json();
+                    // console.log("author = data.question_answer_inputs.instuctor_id")
                     setQuestion(data.question_answer_inputs.question);
                     setAnswer(data.question_answer_inputs.answer);
                     setInputs(data.question_answer_inputs.inputs);
                     setIsPublic(data.question_answer_inputs.is_public);
+                    setCanEdit(data.question_answer_inputs.instructor_id === currentUser.id);
                 }
             } catch (err) {
                 console.error(err)
@@ -32,9 +35,8 @@ const EditQuestion = ({ match }) => {
         })()}
     }, [])
 
-    const putQuestion = e => {
-        console.log("top of putQuestion");
-        e.preventDefault();
+    const putQuestion = () => {
+        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
@@ -47,8 +49,8 @@ const EditQuestion = ({ match }) => {
         })();
     }
 
-    const postQuestion = e => {
-        e.preventDefault();
+    const postQuestion = () => {
+        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/me`, {
                 method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
@@ -61,8 +63,8 @@ const EditQuestion = ({ match }) => {
         })();
     }
 
-    const duplicateQuestion = e => {
-        e.preventDefault();
+    const duplicateQuestion = () => {
+        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
@@ -75,8 +77,8 @@ const EditQuestion = ({ match }) => {
         })();
     }
 
-    const deleteQuestion = e => {
-        e.preventDefault();
+    const deleteQuestion = () => {
+        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
@@ -91,42 +93,38 @@ const EditQuestion = ({ match }) => {
 
     return (
         <>
-            {/* <form onSubmit={questionId ? putQuestion : postQuestion}> */}
-                {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
-                <input
-                    type="text" placeholder="Question" value={question}
-                    onChange={e => setQuestion(e.target.value)} name="question" />
-                <input
-                    type="text" placeholder="Answer" value={answer}
-                    onChange={e => setAnswer(e.target.value)} name="answer" />
-                <input
-                    type="text" placeholder="Inputs" value={inputs}
-                    onChange={e => setInputs(e.target.value)} name="inputs" />
+            {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+            <input
+                type="text" placeholder="Question" value={question}
+                onChange={e => setQuestion(e.target.value)} name="question" disabled={!canEdit}/>
+            <input
+                type="text" placeholder="Answer" value={answer}
+                onChange={e => setAnswer(e.target.value)} name="answer" disabled={!canEdit}/>
+            <input
+                type="text" placeholder="Inputs" value={inputs}
+                onChange={e => setInputs(e.target.value)} name="inputs" disabled={!canEdit} />
+            {!canEdit ? null : (
                 <span>
-                    <>
-                    {(currentUser.id === question.instructor_id) ? null : (
-                        <span>
-                            {isPublic ? "public " : "private "}
-                            <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
-                        </span>
-                    )
-                    }
-                    </>
+                    {isPublic ? "public " : "private "}
+                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                    <br/>
+                    <button onClick={questionId ? putQuestion : postQuestion}>Submit changes</button>
                 </span>
-                <button onClick={questionId ? putQuestion : postQuestion}>Submit changes</button>
-            {/* </form> */}
+            )}
             {!questionId ? null :
                 <>
-                    <form onSubmit={duplicateQuestion} >
+                    {messages.map(err => <li key={err}>{err}</li>)}
+                    <h4>Would you like to duplicate
+                        {canEdit ? " or delete ": " "} this question?
+                    </h4>
+                    <span>
+                        <button onClick={() => duplicateQuestion()}>Duplicate Question</button>
                         {messages.map(err => <li key={err}>{err}</li>)}
-                        <h4>Would you like to duplicate this question?</h4>
-                        <button type="submit">Duplicate Question</button>
-                    </form>
-                    <form onSubmit={deleteQuestion}>
-                        {messages.map(err => <li key={err}>{err}</li>)}
-                        <h4>Would you like to delete this question?</h4>
-                        <button type="submit">Delete Question</button>
-                    </form>
+                        {!canEdit ? null :
+                        <button onClick={() => deleteQuestion()}>Delete Question</button>
+                    }
+                    {/* </form> */}
+                        </span>
                 </>
             }
         </>
