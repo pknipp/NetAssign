@@ -33,6 +33,7 @@ const EditQuestion = ({ match }) => {
     }, [])
 
     const putQuestion = e => {
+        console.log("top of putQuestion");
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
@@ -60,6 +61,20 @@ const EditQuestion = ({ match }) => {
         })();
     }
 
+    const duplicateQuestion = e => {
+        e.preventDefault();
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
+                method: 'POST', headers: {"Content-Type": "application/json"},
+                credentials: 'include', body: JSON.stringify({})
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            history.push("/questions")
+        })();
+    }
+
     const deleteQuestion = e => {
         e.preventDefault();
         (async _ => {
@@ -76,7 +91,7 @@ const EditQuestion = ({ match }) => {
 
     return (
         <>
-            <form onSubmit={questionId ? putQuestion : postQuestion}>
+            {/* <form onSubmit={questionId ? putQuestion : postQuestion}> */}
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <input
                     type="text" placeholder="Question" value={question}
@@ -88,22 +103,32 @@ const EditQuestion = ({ match }) => {
                     type="text" placeholder="Inputs" value={inputs}
                     onChange={e => setInputs(e.target.value)} name="inputs" />
                 <span>
-                    {isPublic ? "public " : "private "}
-                    <button onClick={e => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        setIsPublic(!isPublic)
-                    }}>
-                        change
-                    </button>
+                    <>
+                    {(currentUser.id === question.instructor_id) ? null : (
+                        <span>
+                            {isPublic ? "public " : "private "}
+                            <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                        </span>
+                    )
+                    }
+                    </>
                 </span>
-                <button type="submit">Submit</button>
-            </form>
-            {questionId ? <form onSubmit={deleteQuestion}>
-                {messages.map(err => <li key={err}>{err}</li>)}
-                <h4>Would you like to delete this question?</h4>
-                <button type="submit">Delete Question</button>
-            </form> : null}
+                <button onClick={questionId ? putQuestion : postQuestion}>Submit changes</button>
+            {/* </form> */}
+            {!questionId ? null :
+                <>
+                    <form onSubmit={duplicateQuestion} >
+                        {messages.map(err => <li key={err}>{err}</li>)}
+                        <h4>Would you like to duplicate this question?</h4>
+                        <button type="submit">Duplicate Question</button>
+                    </form>
+                    <form onSubmit={deleteQuestion}>
+                        {messages.map(err => <li key={err}>{err}</li>)}
+                        <h4>Would you like to delete this question?</h4>
+                        <button type="submit">Delete Question</button>
+                    </form>
+                </>
+            }
         </>
     );
 };

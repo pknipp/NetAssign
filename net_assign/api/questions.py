@@ -38,9 +38,23 @@ def me():
         db.session.commit()
         return {"message": "success"}
 
-@questions.route('/<qid>', methods=['GET', 'PUT', 'DELETE'])
+@questions.route('/<qid>', methods=['GET', 'PUT', 'DELETE', 'POST'])
 def one(qid):
     question = Question.query.filter(Question.id == int(qid)).one_or_none()
+    # duplicating a question
+    if request.method == 'POST':
+        new_question = Question(
+            instructor_id=current_user.id,
+            question=question.question,
+            answer=question.answer,
+            inputs=question.inputs,
+            is_public=question.is_public,
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
+        db.session.add(new_question)
+        db.session.commit()
+        return {"message": "success"}
     if request.method == 'GET':
         return({"question_answer_inputs": question.to_dict()})
     if request.method == 'PUT':
