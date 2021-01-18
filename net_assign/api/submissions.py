@@ -1,15 +1,12 @@
 import json
-import cexprtk
-from random import random, randint, seed
 from datetime import date, datetime, timedelta
 from sqlalchemy import and_
 from flask_login import current_user
 from flask import Blueprint, request, redirect
+from . import version #as version
 from net_assign.models import db, Assignment, Deployment, Submission, Appearance, Question, User
 
 submissions = Blueprint('submissions', __name__)
-
-seed()
 
 @submissions.route('/<did>', methods=['GET'])
 def get_questions(did):
@@ -27,24 +24,21 @@ def get_questions(did):
             qars = json.loads(submission.questions_and_answers_and_responses)
             for qar in qars:
                 if not is_instructor:
-                    qar.answer = None
+                    qar["answer"] = None
                 qrs.append(qar)
         else:
             appearances = Appearance.query.filter(Appearance.assignment_id == assignment.id)
             for appearance in appearances:
                 q_and_a = Question.query.get(appearance.question_id)
+                id = q_and_a.id
                 question = q_and_a.question
                 inputs = json.loads(q_and_a.inputs)
                 answer = q_and_a.answer
-                x = list()
-                input = dict()
-                for i in range(len(inputs)):
-                    x.append(round(inputs[i][0]+(inputs[i][1]-inputs[i][0])*randint(0, inputs[i][2])/inputs[i][2],dec))
-                    input["x" + str(i)] = x[i]
-                question = question.format(*x)
-                answer = round(cexprtk.evaluate_expression(answer, input),dec)
+                q_and_a = version.version(question, inputs, answer)
+                question = q_and_a["question"]
+                answer = q_and_a["answer"]
                 response = None
-                question_and_answer_and_response = {"id": q_and_a.id, "question": question,"answer": answer, "response": response}
+                question_and_answer_and_response = {"id": id, "question": question, "answer": answer, "response": response}
                 qars.append(question_and_answer_and_response)
                 # Do not include answer in list to be sent to front-end, except for instructors
                 if not is_instructor:

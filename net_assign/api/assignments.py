@@ -1,14 +1,13 @@
 from flask import Blueprint, jsonify, request, redirect
 from net_assign.models import Question, db, User, Assignment, Deployment, Appearance
+from . import version
 from datetime import datetime
 from flask_login import current_user
 from sqlalchemy import or_
-from random import random, randint
 import json
 import cexprtk
 
 assignments = Blueprint('assignments', __name__)
-dec = 4
 
 @assignments.route('', methods=['POST', 'GET'])
 def index():
@@ -68,18 +67,15 @@ def one(assignment_id):
 
     if request.method == 'GET':
         question_list = list()
-        for q_and_a_and_i in questions:
-            question = q_and_a_and_i.question
-            inputs = json.loads(q_and_a_and_i.inputs)
-            answer = q_and_a_and_i.answer
-            x = list()
-            input_d = dict()
-            for i in range(len(inputs)):
-                x.append(round(inputs[i][0]+(inputs[i][1]-inputs[i][0])*randint(0, inputs[i][2])/inputs[i][2],dec))
-                input_d["x" + str(i)] = x[i]
-            question = question.format(*x)
-            answer = round(cexprtk.evaluate_expression(answer, input_d),dec)
-            question_list.append({"id": q_and_a_and_i.id, "question": question, "answer": answer})
+        for q_and_a in questions:
+            id = q_and_a.id
+            question = q_and_a.question
+            inputs = json.loads(q_and_a.inputs)
+            answer = q_and_a.answer
+            q_and_a = version.version(question, inputs, answer)
+            question = q_and_a["question"]
+            answer = q_and_a["answer"]
+            question_list.append({"id": id, "question": question, "answer": answer})
         return {"assignment": assignment.to_dict(), "questions": question_list}
 
     if request.method == 'PUT':
