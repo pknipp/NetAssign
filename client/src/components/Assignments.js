@@ -24,7 +24,7 @@ const Assignments = () => {
             }
         })();
     }, [])
-    console.log("assignments = ", assignments);
+
     return (
         <>
             <h3>My assignments:</h3>

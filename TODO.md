@@ -5,7 +5,7 @@ introduce MC questions
 Get 'x<sup>2</sup>' to render properly (using npm react-innertext package?)
 For models.py, insert the many-to-many relationships?
 Use eager loading rather than lazy loading
-Go back and minimize amount of data in all fetches
+Ensure that answer is NEVER fetched for a student
 Muse upon rationale for putting routes in different blueprints (and naming components)
 In database.py, control created_at (= t1), updated_at (t2), and is_public (for both
     questions and assignments) and deadline as follows:
@@ -30,7 +30,6 @@ Improve editor for Question model (after broadening question format?)
 Parse questions in a function which is imported into several back-end routes
 Rename some components to reflect their function rather than first db Query?
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
-Insert ability to duplicate courses?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
 In question editor (and other places) widen the input field.

@@ -35,7 +35,7 @@ const EditAssignment = ({ match }) => {
                 console.error(err)
             }
         })()}
-    }, [rerender, assignmentId, currentUser.id])
+    }, [rerender])
 
     const putAssignment = () => {
         (async _ => {
@@ -60,15 +60,14 @@ const EditAssignment = ({ match }) => {
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
             setAssignmentId(responseData.assignment.id)
-            history.push(`/assignments/edit/${responseData.assignment.id}`)
+            history.push(`/assignments/${responseData.assignment.id}`)
         })();
     }
 
     const duplicateAssignment = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
-                method: 'POST', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'POST',
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -81,8 +80,6 @@ const EditAssignment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
                 method: 'DELETE',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -113,8 +110,6 @@ const EditAssignment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'POST',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -127,8 +122,6 @@ const EditAssignment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'DELETE',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

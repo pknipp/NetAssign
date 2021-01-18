@@ -52,8 +52,6 @@ const Enrollments = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'DELETE',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -62,10 +60,21 @@ const Enrollments = () => {
         })();
     }
 
-    const postEnrollment = (e, studentId, courseId) => {
-        e.preventDefault();
+    const postEnrollment = (studentId, courseId) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
+                method: 'POST',
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            setRerender(!rerender);
+        })();
+    }
+
+    const duplicateCourse = courseId => {
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
                 method: 'POST',
                 // headers: {"Content-Type": "application/json"},
                 // credentials: 'include', body: JSON.stringify({})
@@ -74,6 +83,7 @@ const Enrollments = () => {
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
             setRerender(!rerender);
+            // history.push("/")
         })();
     }
 
@@ -101,7 +111,9 @@ const Enrollments = () => {
                                     </NavLink>
                                 </>
                             :
-                                <button onClick={e => deleteEnrollment(e, currentUser.id, course.course.id)}>drop</button>
+                                <button onClick={e => deleteEnrollment(e, currentUser.id, course.course.id)}>
+                                    "Drop"
+                                </button>
                             }
                             <NavLink to={`/courses/${course.course.id}`}>
                                 {course.course.name}
@@ -114,18 +126,27 @@ const Enrollments = () => {
                 ))}
             </ul>
 
-            {currentUser.is_instructor ? null :
+
                 <>
-                    <button onClick={() => getMoreCourses()}>
-                        {showMoreCourses ? "Hide" : "Show"} classes in which I am not enrolled.
-                    </button>
-                    <h3>Other classes:</h3>
+                    <span>
+                        <button onClick={() => getMoreCourses()}>
+                            {showMoreCourses ? "Hide" : "Show"}
+                        </button>
+                        <> other classes.</>
+                    </span>
+                    {showMoreCourses ? <h3>Other classes:</h3> : null}
                     <ul>
                         {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
                             <li key={course.id}>
                                 <>
-                                    <button onClick={e => postEnrollment(e, currentUser.id, course.id)}>
-                                        add
+                                    <button onClick={() => {
+                                        currentUser.is_instructor ? (
+                                            duplicateCourse(course.id)
+                                        ) : (
+                                            postEnrollment(currentUser.id, course.id)
+                                        )
+                                    }}>
+                                        {currentUser.is_instructor ? "Duplicate" : "Add"}
                                     </button>
                                     {course.name}
                                 </>
@@ -133,7 +154,7 @@ const Enrollments = () => {
                         ))}
                     </ul>
                 </>
-            }
+
         </>
     )
 }

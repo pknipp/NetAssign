@@ -104,6 +104,7 @@ with app.app_context():
         db.session.add(Course(
             instructor_id=instructor_id,
             name=courses[i][1],
+            is_public=True,
             created_at=created_at,
             updated_at=created_at,
         ))

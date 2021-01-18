@@ -126,6 +126,7 @@ class Course(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     instructor_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     name = db.Column(db.String(63), nullable=False)
+    is_public = db.Column(db.Boolean, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)
 
@@ -134,6 +135,7 @@ class Course(db.Model, UserMixin):
             "id": self.id,
             "instructor_id": self.instructor_id,
             "name": self.name,
+            "is_public": self.is_public,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
