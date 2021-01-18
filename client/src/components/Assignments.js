@@ -5,10 +5,11 @@ import Assignment from './Assignment';
 
 
 const Assignments = () => {
-    const { fetchWithCSRF } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [, setErrors] = useState([]);
     const [, setMessages] = useState([]);
     const [assignments, setAssignments] = useState([]);
+    const [showMoreAssignments, setShowMoreAssignments] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -23,20 +24,34 @@ const Assignments = () => {
             }
         })();
     }, [])
-
+    console.log("assignments = ", assignments);
     return (
         <>
-            <NavLink exact to={"/assignments/edit/0"} className="nav" activeClassName="active">
+            <h3>Assignments owned by me:</h3>
+            <NavLink exact to={"/assignments/0"} className="nav" activeClassName="active">
                 create new assignment
             </NavLink>
-            {assignments.map(assignment => {
-                return (
+            <ul>
+                {assignments.filter(assignment => assignment.owner.id === currentUser.id).map(assignment => {
+                    return <li><Assignment key={`aid${assignment.id}`} assignment={assignment}/></li>
+                })}
+            </ul>
+            <span>
+                <button onClick={() => setShowMoreAssignments(!showMoreAssignments)}>
+                    {showMoreAssignments ? "Hide " : "Show "}
+                </button>
+                <span padding-left={"10px"}> assignments owned by other instructors.</span>
+            </span>
+            {!showMoreAssignments ? null :
+                <>
+                    <h3>Other's assignments:</h3>
                     <ul>
-                        <Assignment
-                            key={`aid${assignment.assignment.id}`} assignment={assignment} />
+                        {assignments.filter(assignment => assignment.owner.id !== currentUser.id).map(assignment => {
+                            return <li><Assignment key={assignment.id} assignment={assignment}/></li>
+                        })}
                     </ul>
-                )
-            })}
+                </>
+            }
         </>
     )
 };

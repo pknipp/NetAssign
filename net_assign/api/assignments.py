@@ -33,8 +33,9 @@ def index():
         assignments = Assignment.query.filter(or_(Assignment.instructor_id == user_id, Assignment.is_public)).order_by(Assignment.id)
         assignment_list = list()
         for assignment in assignments:
-            author = User.query.get(assignment.instructor_id)
-            assignment_list.append({"author": author.to_dict(), "assignment": assignment.to_dict()})
+            assignment = assignment.to_dict()
+            assignment["owner"] = User.query.get(assignment["instructor_id"]).to_dict()
+            assignment_list.append(assignment)
         return {"assignments": assignment_list}
 
 @assignments.route('/<assignment_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])

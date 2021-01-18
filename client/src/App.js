@@ -55,7 +55,7 @@ const App = _ => {
                             <Route exact path="/questions/:questionId" component={EditQuestion} />
                             {/* instructor: all assignments available */}
                             <ProtectedRoute exact path="/assignments" component={Assignments} />
-                            <Route exact path="/assignments/edit/:assignmentId" component={EditAssignment} />
+                            <Route exact path="/assignments/:assignmentId" component={EditAssignment} />
 
                             {/*  self-explanatory*/}
                             <Route exact path="/courses/edit/:courseId" component={EditCourse} />

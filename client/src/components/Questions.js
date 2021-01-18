@@ -27,14 +27,11 @@ const Questions = () => {
             <NavLink exact to={"/questions/0"} className="nav" activeClassName="active">
                 create new question
             </NavLink>
-            {questions.filter(question => question.owner.id === currentUser.id).map(question => {
-                return (
-                    <ul>
-                        <Question
-                            key={question.id} question={question} />
-                    </ul>
-                )
-            })}
+            <ul>
+                {questions.filter(question => question.owner.id === currentUser.id).map(question => {
+                    return <li><Question key={question.id} question={question} /></li>
+                })}
+            </ul>
             <span>
                 <button onClick={() => setShowMoreQuestions(!showMoreQuestions)}>
                     {showMoreQuestions ? "Hide " : "Show "}
@@ -46,12 +43,7 @@ const Questions = () => {
                     <h3>Other's questions:</h3>
                     <ul>
                         {questions.filter(question => question.owner.id !== currentUser.id).map(question => {
-                            return (
-                                <ul>
-                                    <Question
-                                        key={question.id} question={question} />
-                                </ul>
-                            )
+                            return <li><Question key={question.id} question={question} /></li>
                         })}
                     </ul>
                 </>
