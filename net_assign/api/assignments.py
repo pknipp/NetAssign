@@ -10,17 +10,9 @@ import cexprtk
 assignments = Blueprint('assignments', __name__)
 dec = 4
 
-@assignments.route('', methods=['GET', 'POST'])
+@assignments.route('', methods=['POST', 'GET'])
 def index():
     user_id = current_user.id
-    if request.method == 'GET':
-        # Include boolean in re whether or not instructor has scheduled each assignment
-        assignments = Assignment.query.filter(or_(Assignment.instructor_id == user_id, Assignment.is_public)).order_by(Assignment.id)
-        assignment_list = list()
-        for assignment in assignments:
-            author = User.query.filter(User.id == assignment.instructor_id).one_or_none()
-            assignment_list.append({"author": author.to_dict(), "assignment": assignment.to_dict()})
-        return {"assignments": assignment_list}
 
     if request.method == 'POST':
         if not request.is_json:
@@ -35,6 +27,15 @@ def index():
         db.session.add(new_assignment)
         db.session.commit()
         return {"assignment": new_assignment.to_dict()}
+
+    if request.method == 'GET':
+        # Include boolean in re whether or not instructor has scheduled each assignment
+        assignments = Assignment.query.filter(or_(Assignment.instructor_id == user_id, Assignment.is_public)).order_by(Assignment.id)
+        assignment_list = list()
+        for assignment in assignments:
+            author = User.query.filter(User.id == assignment.instructor_id).one_or_none()
+            assignment_list.append({"author": author.to_dict(), "assignment": assignment.to_dict()})
+        return {"assignments": assignment_list}
 
 @assignments.route('/<assignment_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def one(assignment_id):
@@ -79,6 +80,7 @@ def one(assignment_id):
             answer = round(cexprtk.evaluate_expression(answer, input_d),dec)
             question_list.append({"id": q_and_a_and_i.id, "question": question, "answer": answer})
         return {"assignment": assignment.to_dict(), "questions": question_list}
+
     if request.method == 'PUT':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
@@ -87,6 +89,7 @@ def one(assignment_id):
         assignment.updated_at = datetime.now()
         db.session.commit()
         return {"message": "success"}
+        
     if request.method == 'DELETE':
         db.session.delete(assignment)
         db.session.commit()

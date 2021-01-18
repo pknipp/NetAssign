@@ -9,19 +9,10 @@ import json
 
 questions = Blueprint('questions', __name__)
 
-@questions.route('', methods=['GET', 'POST'])
+@questions.route('', methods=['POST', 'GET'])
 def me():
     user_id = current_user.id
-    if request.method == 'GET':
-        q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public)).order_by(Question.id)
-        questions = list()
-        for q_and_a_and_i in q_and_a_and_is:
-            author = User.query.filter(User.id == q_and_a_and_i.instructor_id).one_or_none()
-            question = q_and_a_and_i.question
-            answer   = q_and_a_and_i.answer
-            inputs = q_and_a_and_i.inputs
-            questions.append({"id": q_and_a_and_i.id, "author": author.to_dict(), "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i.is_public})
-        return {"questions": questions}
+
     if request.method == 'POST':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
@@ -38,9 +29,21 @@ def me():
         db.session.commit()
         return {"message": "success"}
 
+    if request.method == 'GET':
+        q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public)).order_by(Question.id)
+        questions = list()
+        for q_and_a_and_i in q_and_a_and_is:
+            author = User.query.filter(User.id == q_and_a_and_i.instructor_id).one_or_none()
+            question = q_and_a_and_i.question
+            answer   = q_and_a_and_i.answer
+            inputs = q_and_a_and_i.inputs
+            questions.append({"id": q_and_a_and_i.id, "author": author.to_dict(), "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i.is_public})
+        return {"questions": questions}
+
 @questions.route('/<qid>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def one(qid):
     question = Question.query.filter(Question.id == int(qid)).one_or_none()
+
     # duplicating a question
     if request.method == 'POST':
         new_question = Question(
@@ -55,8 +58,10 @@ def one(qid):
         db.session.add(new_question)
         db.session.commit()
         return {"message": "success"}
+
     if request.method == 'GET':
         return({"question_answer_inputs": question.to_dict()})
+
     if request.method == 'PUT':
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
@@ -67,6 +72,7 @@ def one(qid):
         question.updated_at = datetime.now()
         db.session.commit()
         return ({"message": "success"})
+
     if request.method == 'DELETE':
         db.session.delete(question)
         db.session.commit()

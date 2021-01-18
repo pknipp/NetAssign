@@ -5,11 +5,9 @@ from datetime import datetime
 
 courses = Blueprint('courses', __name__)
 
-
-@courses.route('/me', methods=['GET', 'POST'])
+@courses.route('', methods=['POST', 'GET'])
 def index():
-    if request.method == 'GET':
-        return {"courses": [course.to_dict() for course in Course.query]}
+
     if request.method == 'POST':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
@@ -30,15 +28,16 @@ def index():
         db.session.commit()
         return {"message": "successfully added a course"}
 
+    if request.method == 'GET':
+        return {"courses": [course.to_dict() for course in Course.query]}
+
 @courses.route('/<course_id>', methods=['GET', 'DELETE', 'PUT'])
 def one(course_id):
     course = Course.query.filter(Course.id == int(course_id)).one_or_none()
+
     if request.method == 'GET':
         return {"course": course.to_dict()}
-    if request.method == 'DELETE':
-        db.session.delete(course)
-        db.session.commit()
-        return {"message": "I hope that you no longer need this course."}
+
     if request.method == 'PUT':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
@@ -46,3 +45,8 @@ def one(course_id):
         course.updated_at = datetime.now()
         db.session.commit()
         return {"message": "I hope that you like the new name for this course."}
+
+    if request.method == 'DELETE':
+        db.session.delete(course)
+        db.session.commit()
+        return {"message": "I hope that you no longer need this course."}

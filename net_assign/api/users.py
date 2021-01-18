@@ -8,10 +8,7 @@ users = Blueprint('users', __name__)
 
 @users.route('', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def index():
-    # user = User.query.filter(User.id == int(id)).one_or_none()
     user = current_user
-    # if request.method == "GET":
-    #     return user.to_dict()
 
     if request.method == 'POST':
         if not request.is_json:
