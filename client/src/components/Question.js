@@ -7,16 +7,19 @@ const Question = ({ question }) => {
     return (
         <li>
             <ul>
-                <li> author: {question.author.email} </li>
                 <li> question: {question.question} </li>
                 <li> answer: {question.answer} </li>
                 <li> inputs: {question.inputs} </li>
-                {(currentUser.id !== question.author.id) ? null :
-                    <li> is public? {question.is_public ? "yes" : "no"}</li>
-                }
+                <li>
+                    {(currentUser.id === question.owner.id) ? (
+                        <>is public? {question.is_public ? "yes" : "no"}</>
+                    ) : (
+                        <>author: {question.owner.email}</>
+                    )}
+                </li>
             </ul>
             <NavLink exact to={`/questions/${question.id}`} className="nav" activeClassName="active">
-                {(currentUser.id === question.author.id) ? "edit" : "view"}/duplicate question
+                {(currentUser.id === question.owner.id) ? "edit" : "view"}/duplicate question
             </NavLink>
         </li>
     )

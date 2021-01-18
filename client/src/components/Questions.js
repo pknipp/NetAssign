@@ -5,10 +5,11 @@ import Question from './Question';
 
 
 const Questions = () => {
-    const { fetchWithCSRF } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [, setErrors] = useState([]);
     const [, setMessages] = useState([]);
     const [questions, setQuestions] = useState([]);
+    const [showMoreQuestions, setShowMoreQuestions] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -22,17 +23,39 @@ const Questions = () => {
 
     return (
         <>
-        <NavLink exact to={"/questions/0"} className="nav" activeClassName="active">
-            create new question
-        </NavLink>
-        {questions.map(question => {
-            return (
-                <ul>
-                    <Question
-                        key={question.id} question={question} />
-                </ul>
-            )
-        })}
+            <h3>Questions authored by me:</h3>
+            <NavLink exact to={"/questions/0"} className="nav" activeClassName="active">
+                create new question
+            </NavLink>
+            {questions.filter(question => question.owner.id === currentUser.id).map(question => {
+                return (
+                    <ul>
+                        <Question
+                            key={question.id} question={question} />
+                    </ul>
+                )
+            })}
+            <span>
+                <button onClick={() => setShowMoreQuestions(!showMoreQuestions)}>
+                    {showMoreQuestions ? "Hide " : "Show "}
+                </button>
+                <span padding-left={"10px"}> questions authored by other instructors.</span>
+            </span>
+            {!showMoreQuestions ? null :
+                <>
+                    <h3>Other's questions:</h3>
+                    <ul>
+                        {questions.filter(question => question.owner.id !== currentUser.id).map(question => {
+                            return (
+                                <ul>
+                                    <Question
+                                        key={question.id} question={question} />
+                                </ul>
+                            )
+                        })}
+                    </ul>
+                </>
+            }
         </>
     )
 };

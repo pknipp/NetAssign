@@ -33,11 +33,11 @@ def me():
         q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public)).order_by(Question.id)
         questions = list()
         for q_and_a_and_i in q_and_a_and_is:
-            author = User.query.get(q_and_a_and_i.instructor_id)
+            owner = User.query.get(q_and_a_and_i.instructor_id)
             question = q_and_a_and_i.question
             answer   = q_and_a_and_i.answer
             inputs = q_and_a_and_i.inputs
-            questions.append({"id": q_and_a_and_i.id, "author": author.to_dict(), "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i.is_public})
+            questions.append({"id": q_and_a_and_i.id, "owner": owner.to_dict(), "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i.is_public})
         return {"questions": questions}
 
 @questions.route('/<qid>', methods=['POST', 'GET', 'PUT', 'DELETE'])
