@@ -33,7 +33,7 @@ const EditQuestion = ({ match }) => {
                 console.error(err)
             }
         })()}
-    })
+    }, [])
 
     const putQuestion = () => {
         // e.preventDefault();

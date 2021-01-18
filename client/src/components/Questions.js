@@ -18,7 +18,7 @@ const Questions = () => {
             if (responseData.messages) return setMessages(responseData.messages);
             setQuestions(responseData.questions);
         })();
-    })
+    }, [])
 
     return (
         <>

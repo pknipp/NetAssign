@@ -15,12 +15,12 @@ seed()
 def get_questions(did):
     deployment_id = int(did)
     student_id = current_user.id
-    is_instructor = User.query.filter(User.id == student_id).one_or_none().is_instructor
+    is_instructor = User.query.get(student_id).is_instructor
     dec = 4
     if request.method == 'GET':
         submission = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).one_or_none()
-        deployment = Deployment.query.filter(Deployment.id == deployment_id).one_or_none()
-        assignment = Assignment.query.filter(Assignment.id == deployment.assignment_id).one_or_none()
+        deployment = Deployment.query.get(deployment_id)
+        assignment = Assignment.query.get(deployment.assignment_id)
         qars = list()
         qrs = list()
         if submission:
@@ -32,7 +32,7 @@ def get_questions(did):
         else:
             appearances = Appearance.query.filter(Appearance.assignment_id == assignment.id)
             for appearance in appearances:
-                q_and_a = Question.query.filter(Question.id == appearance.question_id).one_or_none()
+                q_and_a = Question.query.get(appearance.question_id)
                 question = q_and_a.question
                 inputs = json.loads(q_and_a.inputs)
                 answer = q_and_a.answer
@@ -67,7 +67,7 @@ def put_question(did_and_qindex):
     ids = did_and_qindex.split(" ")
     deployment_id = int(ids[0])
     student_id = current_user.id
-    is_instructor = User.query.filter(User.id == student_id).one_or_none().is_instructor
+    is_instructor = User.query.get(student_id).is_instructor
     question_index = int(ids[1])
     if request.method == 'PUT':
         submission = Submission.query.filter(and_(Submission.deployment_id == deployment_id, Submission.student_id == student_id)).one_or_none()

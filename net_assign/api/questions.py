@@ -33,7 +33,7 @@ def me():
         q_and_a_and_is = Question.query.filter(or_(Question.instructor_id == user_id, Question.is_public)).order_by(Question.id)
         questions = list()
         for q_and_a_and_i in q_and_a_and_is:
-            author = User.query.filter(User.id == q_and_a_and_i.instructor_id).one_or_none()
+            author = User.query.get(q_and_a_and_i.instructor_id)
             question = q_and_a_and_i.question
             answer   = q_and_a_and_i.answer
             inputs = q_and_a_and_i.inputs
@@ -42,7 +42,7 @@ def me():
 
 @questions.route('/<qid>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def one(qid):
-    question = Question.query.filter(Question.id == int(qid)).one_or_none()
+    question = Question.query.get(int(qid))
 
     # duplicating a question
     if request.method == 'POST':

@@ -33,7 +33,7 @@ def index():
 
 @courses.route('/<course_id>', methods=['GET', 'DELETE', 'PUT'])
 def one(course_id):
-    course = Course.query.filter(Course.id == int(course_id)).one_or_none()
+    course = Course.query.get(int(course_id))
 
     if request.method == 'GET':
         return {"course": course.to_dict()}

@@ -22,7 +22,7 @@ const Assignments = () => {
                 setAssignments(responseData.assignments);
             }
         })();
-    })
+    }, [])
 
     return (
         <>

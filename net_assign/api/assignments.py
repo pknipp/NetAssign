@@ -33,16 +33,16 @@ def index():
         assignments = Assignment.query.filter(or_(Assignment.instructor_id == user_id, Assignment.is_public)).order_by(Assignment.id)
         assignment_list = list()
         for assignment in assignments:
-            author = User.query.filter(User.id == assignment.instructor_id).one_or_none()
+            author = User.query.get(assignment.instructor_id)
             assignment_list.append({"author": author.to_dict(), "assignment": assignment.to_dict()})
         return {"assignments": assignment_list}
 
 @assignments.route('/<assignment_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def one(assignment_id):
     assignment_id = int(assignment_id)
-    assignment = Assignment.query.filter(Assignment.id == assignment_id).one_or_none()
+    assignment = Assignment.query.get(assignment_id)
     appearances = Appearance.query.filter(Appearance.assignment_id == assignment_id)
-    questions = [Question.query.filter(Question.id == appearance.question_id).one_or_none() for appearance in appearances]
+    questions = [Question.query.get(appearance.question_id) for appearance in appearances]
 
 # duplicating an assignment
     if request.method == 'POST':
@@ -89,7 +89,7 @@ def one(assignment_id):
         assignment.updated_at = datetime.now()
         db.session.commit()
         return {"message": "success"}
-        
+
     if request.method == 'DELETE':
         db.session.delete(assignment)
         db.session.commit()

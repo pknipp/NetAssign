@@ -65,7 +65,6 @@ const EditAssignment = ({ match }) => {
     }
 
     const duplicateAssignment = () => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
@@ -79,7 +78,6 @@ const EditAssignment = ({ match }) => {
     }
 
     const deleteAssignment = () => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},
@@ -111,7 +109,6 @@ const EditAssignment = ({ match }) => {
     }
 
     const postAppearance = qid => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
@@ -125,7 +122,6 @@ const EditAssignment = ({ match }) => {
     }
 
     const deleteAppearance = qid => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'DELETE', headers: {"Content-Type": "application/json"},

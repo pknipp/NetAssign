@@ -15,15 +15,15 @@ def index(student_id_and_course_id):
             enrollments = Enrollment.query.filter(Enrollment.student_id == student_id)
             courses = list()
             for enrollment in enrollments:
-                course = Course.query.filter(Course.id == enrollment.course_id).one_or_none()
-                instructor = User.query.filter(User.id == course.instructor_id).one_or_none()
+                course = Course.query.get(enrollment.course_id)
+                instructor = User.query.get(course.instructor_id)
                 courses.append({"course": course.to_dict(), "instructor": instructor.to_dict()})
             return {"courses": courses}
         if not student_id:
             enrollments = Enrollment.query.filter(Enrollment.course_id == course_id)
             students = list()
             for enrollment in enrollments:
-                student = User.query.filter(User.id == enrollment.student_id).one_or_none()
+                student = User.query.get(enrollment.student_id)
                 students.append(student.to_dict())
             return {"students": students}
     if request.method == 'DELETE':
