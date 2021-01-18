@@ -27,7 +27,7 @@ const Assignments = () => {
     console.log("assignments = ", assignments);
     return (
         <>
-            <h3>Assignments owned by me:</h3>
+            <h3>My assignments:</h3>
             <NavLink exact to={"/assignments/0"} className="nav" activeClassName="active">
                 create new assignment
             </NavLink>

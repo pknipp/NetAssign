@@ -22,7 +22,6 @@ const EditQuestion = ({ match }) => {
                 const res = await fetch(`/api/questions/${questionId}`)
                 if (res.ok) {
                     const data = await res.json();
-                    // console.log("author = data.question_answer_inputs.instuctor_id")
                     setQuestion(data.question_answer_inputs.question);
                     setAnswer(data.question_answer_inputs.answer);
                     setInputs(data.question_answer_inputs.inputs);
@@ -36,11 +35,9 @@ const EditQuestion = ({ match }) => {
     }, [])
 
     const putQuestion = () => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                // credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });
             const responseData = await response.json();
@@ -51,11 +48,9 @@ const EditQuestion = ({ match }) => {
     }
 
     const postQuestion = () => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
-                // credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });
             const responseData = await response.json();
@@ -66,12 +61,9 @@ const EditQuestion = ({ match }) => {
     }
 
     const duplicateQuestion = () => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'POST',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -81,12 +73,9 @@ const EditQuestion = ({ match }) => {
     }
 
     const deleteQuestion = () => {
-        // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'DELETE',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

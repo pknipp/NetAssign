@@ -23,7 +23,7 @@ const Questions = () => {
 
     return (
         <>
-            <h3>Questions authored by me:</h3>
+            <h3>My questions:</h3>
             <NavLink exact to={"/questions/0"} className="nav" activeClassName="active">
                 create new question
             </NavLink>

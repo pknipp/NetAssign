@@ -84,9 +84,9 @@ const Enrollments = () => {
                     create new course
                 </NavLink>
             }
-            <p align="center">
-                {courses.length ? `My current classes:` : `I have no classes now.`}
-            </p>
+            <h3>
+                {courses.length ? `My classes:` : `I have no classes now.`}
+            </h3>
             <ul>
                 {courses.map(course => (
                     <li key={course.course.id}>
@@ -119,6 +119,7 @@ const Enrollments = () => {
                     <button onClick={() => getMoreCourses()}>
                         {showMoreCourses ? "Hide" : "Show"} classes in which I am not enrolled.
                     </button>
+                    <h3>Other classes:</h3>
                     <ul>
                         {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
                             <li key={course.id}>
