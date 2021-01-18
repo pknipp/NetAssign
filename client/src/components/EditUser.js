@@ -17,7 +17,8 @@ const EditUser = _ => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                method: 'PUT', headers: {"Content-Type": "application/json"},
+                // credentials: 'include',
                 body: JSON.stringify({ email, password, password2 })
             });
             const responseData = await response.json();
@@ -31,8 +32,9 @@ const EditUser = _ => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
-                method: 'DELETE', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'DELETE',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) {

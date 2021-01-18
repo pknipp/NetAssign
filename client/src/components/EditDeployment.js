@@ -36,7 +36,8 @@ const EditDeployment = ({ match }) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                method: 'PUT', headers: {"Content-Type": "application/json"},
+                // credentials: 'include',
                 body: JSON.stringify({ deadline })
             });
             const responseData = await response.json();
@@ -50,7 +51,8 @@ const EditDeployment = ({ match }) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF("/api/deployments", {
-                method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                method: 'POST', headers: {"Content-Type": "application/json"},
+                // credentials: 'include',
                 body: JSON.stringify({ courseId })
             });
             const responseData = await response.json();
@@ -64,8 +66,9 @@ const EditDeployment = ({ match }) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
-                method: 'DELETE', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'DELETE',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

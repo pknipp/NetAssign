@@ -39,7 +39,8 @@ const EditQuestion = ({ match }) => {
         // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                method: 'PUT', headers: {"Content-Type": "application/json"},
+                // credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });
             const responseData = await response.json();
@@ -53,7 +54,8 @@ const EditQuestion = ({ match }) => {
         // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions`, {
-                method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                method: 'POST', headers: {"Content-Type": "application/json"},
+                // credentials: 'include',
                 body: JSON.stringify({ question, answer, inputs, isPublic })
             });
             const responseData = await response.json();
@@ -67,8 +69,9 @@ const EditQuestion = ({ match }) => {
         // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
-                method: 'POST', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'POST',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -81,8 +84,9 @@ const EditQuestion = ({ match }) => {
         // e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
-                method: 'DELETE', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'DELETE',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

@@ -13,7 +13,8 @@ const SignUp = _ => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
                 method: 'POST', headers: { "Content-Type": "application/json" },
-                credentials: 'include', body: JSON.stringify({ email, password, password2 })
+                // credentials: 'include',
+                body: JSON.stringify({ email, password, password2 })
             });
             const responseData = await response.json();
             if (!response.ok) {

@@ -80,8 +80,9 @@ const EditAssignment = ({ match }) => {
     const deleteAssignment = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
-                method: 'DELETE', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'DELETE',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -111,8 +112,9 @@ const EditAssignment = ({ match }) => {
     const postAppearance = qid => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
-                method: 'POST', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'POST',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -124,8 +126,9 @@ const EditAssignment = ({ match }) => {
     const deleteAppearance = qid => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
-                method: 'DELETE', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'DELETE',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

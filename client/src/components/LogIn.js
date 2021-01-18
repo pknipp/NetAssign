@@ -14,7 +14,8 @@ const LogIn = _ => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/session`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({email, password})
+                // credentials: 'include',
+                body: JSON.stringify({email, password})
             });
             const responseData = await response.json();
             if (!response.ok) return setErrors(responseData.errors);

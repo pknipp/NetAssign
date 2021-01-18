@@ -26,13 +26,12 @@ Insert an is_admin column in User model
 Insert additional columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext
 Create a gradebook (for students AND teachers).
-Improve editor for Question model.
+Improve editor for Question model (after broadening question format?)
+Parse questions in a function which is imported into several back-end routes
 Rename some components to reflect their function rather than first db Query?
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
-If a course is deleted, then ensure that enrollments are deleted also
 Insert ability to duplicate courses?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
-Tighten up fetch calls.
 In question editor (and other places) widen the input field.
 Increase # of Question seeds (but not until after broadening question format?)

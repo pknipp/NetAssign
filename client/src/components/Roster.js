@@ -52,8 +52,9 @@ const Roster = ({ match }) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
-                method: 'DELETE', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'DELETE',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -66,8 +67,9 @@ const Roster = ({ match }) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
-                method: 'POST', headers: {"Content-Type": "application/json"},
-                credentials: 'include', body: JSON.stringify({})
+                method: 'POST',
+                // headers: {"Content-Type": "application/json"},
+                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -78,11 +80,6 @@ const Roster = ({ match }) => {
 
     return (
         <>
-            {!currentUser.is_instructor ? null :
-                <NavLink exact to={"/courses/edit/0"} className="nav" activeClassName="active">
-                    create new course
-                </NavLink>
-            }
             <p align="center">
                 {students.length ? `My current students:` : `I have no students now.`}
             </p>
