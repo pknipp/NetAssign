@@ -6,8 +6,8 @@ const Question = ({ question }) => {
     const { currentUser } = useContext(AuthContext);
     return (
         <ul>
-            <li> question: {question.question} </li>
-            <li> answer: {question.answer} </li>
+            <li> encoded question string: {question.question} </li>
+            <li> encoded answer string: {question.answer} </li>
             <li> inputs: {question.inputs} </li>
             <li>
                 {(currentUser.id === question.owner.id) ? (

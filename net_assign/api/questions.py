@@ -20,7 +20,7 @@ def me():
             instructor_id=user_id,
             question=request.json.get('question'),
             answer=request.json.get('answer'),
-            inputs=request.json.get('inputs'),
+            inputs=json.dumps(request.json.get('inputs')),
             is_public=request.json.get('isPublic'),
             created_at=datetime.now(),
             updated_at=datetime.now()
@@ -36,7 +36,7 @@ def me():
             owner = User.query.get(q_and_a_and_i.instructor_id)
             question = q_and_a_and_i.question
             answer   = q_and_a_and_i.answer
-            inputs = q_and_a_and_i.inputs
+            inputs = json.loads(q_and_a_and_i.inputs)
             questions.append({"id": q_and_a_and_i.id, "owner": owner.to_dict(), "question": question, "answer": answer, "inputs": inputs, "is_public": q_and_a_and_i.is_public})
         return {"questions": questions}
 
@@ -60,6 +60,7 @@ def one(qid):
         return {"message": "success"}
 
     if request.method == 'GET':
+        question.inputs = json.loads(question.inputs)
         return({"question_answer_inputs": question.to_dict()})
 
     if request.method == 'PUT':
@@ -67,7 +68,7 @@ def one(qid):
             return jsonify({"msg": "Missing JSON in request"}), 400
         question.question = request.json.get('question', None)
         question.answer = request.json.get('answer', None)
-        question.inputs = request.json.get('inputs', None)
+        question.inputs = json.dumps(request.json.get('inputs', None))
         question.is_public = request.json.get('isPublic', None)
         question.updated_at = datetime.now()
         db.session.commit()

@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import AuthContext from '../auth';
-import Input from './Input';
+import AuthContext from '../auth'
 
 
 const EditQuestion = ({ match }) => {
@@ -10,10 +9,9 @@ const EditQuestion = ({ match }) => {
     const [question, setQuestion] = useState('');
     const [canEdit, setCanEdit] = useState(false);
     const [answer, setAnswer] = useState('');
-    const [inputLength, setInputLength] = useState(0);
-    const [inputs, setInputs] = useState([]);
+    const [inputs, setInputs] = useState('');
     const [isPublic, setIsPublic] = useState(true);
-    const [, setErrors] = useState([]);
+    const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
 
@@ -27,7 +25,6 @@ const EditQuestion = ({ match }) => {
                     setQuestion(data.question_answer_inputs.question);
                     setAnswer(data.question_answer_inputs.answer);
                     setInputs(data.question_answer_inputs.inputs);
-                    setInputLength(data.question_answer_inputs.inputs.length);
                     setIsPublic(data.question_answer_inputs.is_public);
                     setCanEdit(data.question_answer_inputs.instructor_id === currentUser.id);
                 }
@@ -86,50 +83,19 @@ const EditQuestion = ({ match }) => {
             history.push("/questions")
         })();
     }
-    debugger
+
     return (
         <>
-            <span>Number of inputs (not yet working)</span>
+            {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
             <input
-                type="text" value={inputLength}
-                onChange={e => setInputLength(e.target.value)}
-            />
-            <table>
-                <thead>
-                    <tr>
-                         <th>variable</th>
-                         <th>min value</th>
-                         <th>max value</th>
-                         <th># of values</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {!(inputs.length) ? null : (
-                        inputs.map((input, row, inputs) => (
-                            <tr>
-                                <Input key={row} row={row} input={input} inputs={inputs} setInputs={setInputs} />
-                            </tr>
-                        ))
-                    )}
-                </tbody>
-            </table>
-            <span>
-                encoded question string:
-                <textarea
-                    placeholder="Question" value={question} name="question" rows="3" cols="50"
-                    onChange={e => setQuestion(e.target.value)} disabled={!canEdit && questionId}
-                />
-            </span>
-            <span>
-                encoded answer string:
-                <input
-                    type="text" placeholder="Answer" value={answer} name="answer"
-                    onChange={e => setAnswer(e.target.value)} disabled={!canEdit && questionId}
-                />
-            </span>
-            {/* <input
+                type="text" placeholder="Question" value={question} name="question"
+                onChange={e => setQuestion(e.target.value)} disabled={!canEdit && questionId}/>
+            <input
+                type="text" placeholder="Answer" value={answer} name="answer"
+                onChange={e => setAnswer(e.target.value)} disabled={!canEdit && questionId}/>
+            <input
                 type="text" placeholder="Inputs" value={inputs} name="inputs"
-                onChange={e => setInputs(e.target.value)} disabled={!canEdit && questionId}/> */}
+                onChange={e => setInputs(e.target.value)} disabled={!canEdit && questionId}/>
             {(!canEdit && questionId) ? null : (
                 <span>
                     {isPublic ? "public " : "private "}

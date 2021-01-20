@@ -33,3 +33,4 @@ Figure out how to input deadline (type="datetime-local", for Deployment CU route
 When fetching lists from back-end, sort them in the most logical manner
 In question editor (and other places) widen the input field.
 Increase # of Question seeds (but not until after broadening question format?)
+Question editor: enable instructor to change the number of variables

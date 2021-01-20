@@ -5,7 +5,7 @@ import AuthContext from '../auth'
 
 const EditCourse = ({ match }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
-    const [courseId, setCourseId] = useState(Number(match.params.courseId));
+    const courseId = Number(match.params.courseId);
     const [name, setName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [rerender, setRerender] = useState(false);
