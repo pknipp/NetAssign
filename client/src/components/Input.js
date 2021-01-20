@@ -9,7 +9,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
     return (
         <>
         <td>
-            <input type="text" value={varName}
+            <input type="text" value={varName} size={6}
                 onChange={e => {
                     setVarName(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
@@ -19,7 +19,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
             />
         </td>
         <td>
-            <input type="number" value={min}
+            <input type="number" value={min} 
                 onChange={e => {
                     setMin(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
