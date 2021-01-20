@@ -86,7 +86,6 @@ const EditQuestion = ({ match }) => {
             history.push("/questions")
         })();
     }
-    debugger
     return (
         <>
             <span>

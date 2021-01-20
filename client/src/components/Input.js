@@ -39,7 +39,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
             />
         </td>
         <td>
-            <input type="number" value={n}
+            <input type="number" value={n} min={1} max={1000000} step={1}
                 onChange={e => {
                     setN(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
