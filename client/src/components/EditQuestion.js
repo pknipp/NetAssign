@@ -90,7 +90,7 @@ const EditQuestion = ({ match }) => {
         <>
             <span>
                 <button onClick={
-                    inputLength => {
+                    () => {
                     let newInputLength = inputLength + 1;
                     let newInputs = [...JSON.parse(JSON.stringify(inputs)), []];
                     setInputLength(newInputLength)
@@ -98,24 +98,24 @@ const EditQuestion = ({ match }) => {
                 }}>
                     increase
                 </button>
-                <button onClick={
-                    inputLength => {
+                {!inputLength ? null : <button onClick={
+                    () => {
                     let newInputLength = inputLength - 1;
                     let newInputs = JSON.parse(JSON.stringify(inputs)).slice(0, -1);
                     setInputLength(newInputLength)
                     setInputs(newInputs);
                 }}>
                     decrease
-                </button>
-                <>number of variables</>
+                </button>}
+                <> (from <>{inputLength}</>) the number of randomized variables in this question</>
             </span>
-            <table>
+            {!inputLength ? null : <table>
                 <thead>
                     <tr>
                          <th>variable</th>
-                         <th>min value</th>
-                         <th>max value</th>
-                         <th># of values</th>
+                         <th>min<br/> value</th>
+                         <th>max<br/> value</th>
+                         <th># of<br/> divisions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -127,7 +127,7 @@ const EditQuestion = ({ match }) => {
                         ))
                     )}
                 </tbody>
-            </table>
+            </table>}
             <span>
                 encoded question string:
                 <textarea
