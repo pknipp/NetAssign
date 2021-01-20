@@ -89,21 +89,27 @@ const EditQuestion = ({ match }) => {
     debugger
     return (
         <>
-            <span>Number of inputs</span>
-            <input
-                type="number" value={inputLength}
-                onChange={e => {
-                    setInputLength(e.target.value);
-                    let myInputs = JSON.parse(JSON.stringify(inputs));
-                    if (e.target.value < myInputs.length) {
-                        myInputs.splice(e.target.value, myInputs.length - e.target.value);
-                    }
-                    if (e.target.value > myInputs.length) {
-                        myInputs.splice(myInputs.length, 0, ...new Array(e.target.value - inputs.length).fill([]))
-                    }
-                    setInputs(myInputs);
-                }}
-            />
+            <span>
+                <button onClick={
+                    inputLength => {
+                    let newInputLength = inputLength + 1;
+                    let newInputs = [...JSON.parse(JSON.stringify(inputs)), []];
+                    setInputLength(newInputLength)
+                    setInputs(newInputs);
+                }}>
+                    increase
+                </button>
+                <button onClick={
+                    inputLength => {
+                    let newInputLength = inputLength - 1;
+                    let newInputs = JSON.parse(JSON.stringify(inputs)).slice(0, -1);
+                    setInputLength(newInputLength)
+                    setInputs(newInputs);
+                }}>
+                    decrease
+                </button>
+                <>number of variables</>
+            </span>
             <table>
                 <thead>
                     <tr>
