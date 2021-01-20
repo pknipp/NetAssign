@@ -19,11 +19,11 @@ const Input = ({ row, input, inputs, setInputs }) => {
             />
         </td>
         <td>
-            <input type="number" value={min} 
+            <input type="number" value={min}
                 onChange={e => {
                     setMin(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
-                    myInputs[row][1] = e.target.value;
+                    myInputs[row][1] = Number(e.target.value);
                     setInputs(myInputs);
                 }}
             />
@@ -33,7 +33,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
                 onChange={e => {
                     setMax(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
-                    myInputs[row][2] = e.target.value;
+                    myInputs[row][2] = Number(e.target.value);
                     setInputs(myInputs);
                 }}
             />
@@ -43,7 +43,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
                 onChange={e => {
                     setN(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
-                    myInputs[row][3] = e.target.value;
+                    myInputs[row][3] = Number(e.target.value);
                     setInputs(myInputs);
                 }}
             />
