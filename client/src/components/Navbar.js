@@ -28,7 +28,8 @@ const NavBar = () => {
                 </>
             :
                 <>
-                    <NavLink to="/login" className="nav" activeClassName="active">Log In (instructor)</NavLink>
+                    <NavLink to="/logininstructor" className="nav" activeClassName="active">Log In (instructor)</NavLink>
+                    <NavLink to="/loginstudent" className="nav" activeClassName="active">Log In (Student)</NavLink>
                     <NavLink to="/signup" className="nav" activeClassName="active">Sign Up</NavLink>
                 </>
             }

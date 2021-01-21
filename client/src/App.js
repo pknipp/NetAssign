@@ -5,8 +5,8 @@ import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import LogOut from './components/LogOut';
 import EditUser from './components/EditUser';
-import ProtectedRoute from "./components/ProtectedRoute";
-import StudentProtectedRoute from "./components/StudentProtectedRoute"
+import ProtectedInstructorRoute from "./components/ProtectedInstructorRoute";
+import ProtectedRoute from "./components/ProtectedRoute"
 import AuthRoute from "./components/AuthRoute";
 import AuthContext from './auth';
 import Enrollments from './components/Enrollments';
@@ -46,27 +46,24 @@ const App = _ => {
                     <NavBar />
                     <div className="switch">
                         <Switch>
-                            {/* <AuthRoute exact path="/login" render={() => <LogIn defaultUser={"demoTeacher@aol.com"} />} /> */}
-                            <AuthRoute exact path="/login" defaultUser={"demoInstructor@aol.com"} component={LogIn} />
+                            <AuthRoute exact path="/logininstructor" defaultUser={"demoInstructor@aol.com"} component={LogIn} />
+                            <AuthRoute exact path="/loginstudent" defaultUser={"demoStudent@aol.com"} component={LogIn} />
                             <AuthRoute exact path="/signup" component={SignUp} />
-                            <StudentProtectedRoute exact path="/logout" component={LogOut} />
-                            <StudentProtectedRoute exact path="/edituser" component={EditUser} />
-                            <StudentProtectedRoute exact path="/" component={Enrollments} />
+                            <ProtectedRoute exact path="/logout" component={LogOut} />
+                            <ProtectedRoute exact path="/edituser" component={EditUser} />
+                            <ProtectedRoute exact path="/" component={Enrollments} />
                             {/* instructor: all questions available */}
-                            <ProtectedRoute exact path="/questions" component={Questions} />
+                            <ProtectedInstructorRoute exact path="/questions" component={Questions} />
                             <Route exact path="/questions/:questionId" component={EditQuestion} />
                             {/* instructor: all assignments available */}
-                            <ProtectedRoute exact path="/assignments" component={Assignments} />
+                            <ProtectedInstructorRoute exact path="/assignments" component={Assignments} />
                             <Route exact path="/assignments/:assignmentId" component={EditAssignment} />
-
                             {/*  self-explanatory*/}
                             <Route exact path="/courses/edit/:courseId" component={EditCourse} />
                             {/* all DID's for a particular course*/}
                             <Route exact path="/courses/:courseId" component={Deployments} />
                             <Route exact path="/roster/:courseId" component={Roster} />
-
                             <Route exact path="/submissions/:deploymentId" component={Submissions} />
-
                             <Route exact path="/deployments/:deploymentId" component={EditDeployment} />
                         </Switch>
                     </div>

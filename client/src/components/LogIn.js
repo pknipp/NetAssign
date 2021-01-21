@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom'
 import AuthContext from '../auth'
 
@@ -9,6 +9,8 @@ const LogIn = ({ defaultUser }) => {
     const [errors, setErrors] = useState([]);
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     let history = useHistory();
+
+    useEffect(() => (() => setEmail(defaultUser))(), [defaultUser])
 
     const putSession = e => {
         e.preventDefault();
@@ -28,7 +30,7 @@ const LogIn = ({ defaultUser }) => {
             {errors.map(err => <li key={err} className="error">{err}</li>)}
             Email
             <input
-                type="text" placeholder="Email" value={email} size="48"
+                type="text" placeholder="Email" value={email} size="25"
                 onChange={(e) => setEmail(e.target.value)} name="email"
             />
             Password

@@ -24,7 +24,7 @@ Figure out (using list above?) how to seed other students w/a certain number of 
 Use html tables to format lists of courses, assignments, and (possibly) questions.
 Insert an is_admin column in User model
 Insert additional columns (fname, lname, etc) in User model.
-Make sure that all front-end routes are protected by authContext
+Make sure that all front-end routes are protected by authContext or back-end fetch
 Create a gradebook (for students AND teachers).
 Improve editor for Question model (after broadening question format?)
 Rename some components to reflect their function rather than first db Query?
@@ -33,3 +33,4 @@ Figure out how to input deadline (type="datetime-local", for Deployment CU route
 When fetching lists from back-end, sort them in the most logical manner
 Increase # of Question seeds (but not until after broadening question format?)
 Determine how to handle a situation in which question is edited after assignment w/it is downloaded.
+Bisect Signup front-end path: one for student and one for instructor (differing by value of is_instructor)
