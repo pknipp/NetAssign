@@ -48,7 +48,8 @@ const App = _ => {
                         <Switch>
                             <AuthRoute exact path="/logininstructor" defaultUser={"demoInstructor@aol.com"} component={LogIn} />
                             <AuthRoute exact path="/loginstudent" defaultUser={"demoStudent@aol.com"} component={LogIn} />
-                            <AuthRoute exact path="/signup" component={SignUp} />
+                            <AuthRoute exact path="/signupInstructor" isInstructor={true} component={SignUp} />
+                            <AuthRoute exact path="/signupStudent" isInstructor={false} component={SignUp} />
                             <ProtectedRoute exact path="/logout" component={LogOut} />
                             <ProtectedRoute exact path="/edituser" component={EditUser} />
                             <ProtectedRoute exact path="/" component={Enrollments} />

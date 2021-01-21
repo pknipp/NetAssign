@@ -26,7 +26,7 @@ def index():
         new_user = User(
             email=email,
             password=password,
-            is_instructor=False,
+            is_instructor=request.json.get('isInstructor', False),
             created_at=datetime.now(),
             updated_at=datetime.now()
         )

@@ -36,9 +36,13 @@ pipenv install --dev -r dev-requirements.txt --python=python3 && pipenv install 
    This should be the full URL of your Heroku app: i.e. "https://flask-react-aa.herokuapp.com"
 7. Push your docker container to heroku from the root directory of your project.
    This will build the dockerfile and push the image to your heroku container registry
+
    heroku container:push web -a {NAME_OF_HEROKU_APP}
+
 8. Release your docker container to heroku
+
    heroku container:release web -a {NAME_OF_HEROKU_APP}
+
 9. set up your database:
    heroku run -a {NAME_OF_HEROKU_APP} python -m database
 10. Under Settings find "Config Vars" and add any additional/secret .env variables.

@@ -30,7 +30,8 @@ const NavBar = () => {
                 <>
                     <NavLink to="/logininstructor" className="nav" activeClassName="active">Log In (instructor)</NavLink>
                     <NavLink to="/loginstudent" className="nav" activeClassName="active">Log In (Student)</NavLink>
-                    <NavLink to="/signup" className="nav" activeClassName="active">Sign Up</NavLink>
+                    <NavLink to="/signupinstructor" className="nav" activeClassName="active">Sign Up (instructor)</NavLink>
+                    <NavLink to="/signupstudent" className="nav" activeClassName="active">Sign Up (student)</NavLink>
                 </>
             }
         </div>

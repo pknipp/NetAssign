@@ -1,19 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../auth';
 
-const SignUp = _ => {
+const SignUp = props => {
     const [email, setEmail] = useState('');
+    const [isInstructor, setIsInstructor] = useState(props.isInstructor)
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('')
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     const [errors, setErrors] = useState([]);
+
+    useEffect(() => (() => setIsInstructor(isInstructor))(), [isInstructor])
 
     const postUser = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
                 method: 'POST', headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password, password2 })
+                body: JSON.stringify({ email, password, password2, isInstructor })
             });
             const responseData = await response.json();
             if (!response.ok) {
