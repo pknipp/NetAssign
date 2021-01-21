@@ -28,8 +28,7 @@ const NavBar = () => {
                 </>
             :
                 <>
-                    {/* <span className="nav">you</span> */}
-                    <NavLink to="/login" className="nav" activeClassName="active">Log In</NavLink>
+                    <NavLink to="/login" className="nav" activeClassName="active">Log In (instructor)</NavLink>
                     <NavLink to="/signup" className="nav" activeClassName="active">Sign Up</NavLink>
                 </>
             }

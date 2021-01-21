@@ -46,7 +46,8 @@ const App = _ => {
                     <NavBar />
                     <div className="switch">
                         <Switch>
-                            <AuthRoute exact path="/login" component={LogIn} />
+                            {/* <AuthRoute exact path="/login" render={() => <LogIn defaultUser={"demoTeacher@aol.com"} />} /> */}
+                            <AuthRoute exact path="/login" defaultUser={"demoInstructor@aol.com"} component={LogIn} />
                             <AuthRoute exact path="/signup" component={SignUp} />
                             <StudentProtectedRoute exact path="/logout" component={LogOut} />
                             <StudentProtectedRoute exact path="/edituser" component={EditUser} />

@@ -2,8 +2,9 @@ import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom'
 import AuthContext from '../auth'
 
-const LogIn = _ => {
-    const [email, setEmail] = useState("demoInstructor@aol.com or demoStudent@aol.com");
+const LogIn = ({ defaultUser }) => {
+    console.log("defaultUser = ", defaultUser);
+    const [email, setEmail] = useState(defaultUser);
     const [password, setPassword] = useState("password");
     const [errors, setErrors] = useState([]);
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
