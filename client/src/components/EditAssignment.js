@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import AuthContext from '../auth'
 
 
@@ -23,8 +23,11 @@ const EditAssignment = ({ match }) => {
         (async () => {
             try {
                 const res = await fetch(`/api/assignments/${assignmentId}`)
-                if (res.ok) {
-                    const data = await res.json();
+                const data = await res.json();
+
+                if (!res.ok) {
+                    setErrors(data.errors);
+                } else {
                     setName(data.assignment.name);
                     setIsPublic(data.assignment.is_public);
                     setQuestions(data.questions);
@@ -57,10 +60,13 @@ const EditAssignment = ({ match }) => {
                 body: JSON.stringify({ name, isPublic })
             });
             const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            setAssignmentId(responseData.assignment.id)
-            history.push(`/assignments/${responseData.assignment.id}`)
+            if (!response.ok) {
+                setErrors(responseData.errors);
+            } else {
+                if (responseData.messages) setMessages(responseData.messages)
+                setAssignmentId(responseData.assignment.id)
+                history.push(`/assignments/${responseData.assignment.id}`)
+            }
         })();
     }
 
@@ -70,9 +76,12 @@ const EditAssignment = ({ match }) => {
                 method: 'POST',
             });
             const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            history.push("/assignments")
+            if (!response.ok) {
+                setErrors(responseData.errors);
+            } else {
+                if (responseData.messages) setMessages(responseData.messages)
+                history.push("/assignments")
+            }
         })();
     }
 
@@ -130,9 +139,9 @@ const EditAssignment = ({ match }) => {
         })();
     }
 
-    return (
+    return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
-            {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+            {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
             <input
                 type="text" placeholder="Name of new assignment" value={name} className="larger"
                 onChange={e => setName(e.target.value)} disabled={!canEdit && assignmentId}
@@ -155,18 +164,20 @@ const EditAssignment = ({ match }) => {
                     <li key={question.id}>
                         question: {question.question}<br/>
                         answer: {question.answer}<br/>
-                        <button onClick={() => deleteAppearance(question.id)}>
+                        {!canEdit && assignmentId ? null :
+                           <button onClick={() => deleteAppearance(question.id)}>
                             drop
-                        </button>
+                        </button>}
                     </li>
                 ))}
             </ol>
 
             {!assignmentId ? null :
                 <>
+                    {!canEdit && assignmentId ? null :
                     <button onClick={() => getQuestions()}>
                         {showMoreQuestions ? "Hide" : "Show"} questions which may get added to this assignment.
-                    </button>
+                    </button>}
                     <ul>
                         {moreQuestions.filter(question => !questionIds.includes(question.id)).map(question => (
                             <li key={question.id}>

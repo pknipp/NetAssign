@@ -47,6 +47,11 @@ def me():
 @questions.route('/<qid>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def one(qid):
     question = Question.query.get(int(qid))
+    if not question.instructor_id == current_user.id:
+        if not question.is_public:
+            return {"errors": ["You are not authorized to access this question."]}, 401
+        if request.method == 'PUT' or request.method == 'DELETE':
+            return {"errors": ["You are not authorized to mutate this question."]}, 401
 
     # duplicating a question
     if request.method == 'POST':

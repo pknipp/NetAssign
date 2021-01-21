@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import AuthContext from '../auth';
 import Input from './Input';
 
@@ -15,7 +15,7 @@ const EditQuestion = ({ match }) => {
     const [inputLength, setInputLength] = useState(0);
     const [inputs, setInputs] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
-    const [, setErrors] = useState([]);
+    const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
 
@@ -24,8 +24,10 @@ const EditQuestion = ({ match }) => {
         (async () => {
             try {
                 const res = await fetch(`/api/questions/${questionId}`)
-                if (res.ok) {
-                    const data = await res.json();
+                const data = await res.json();
+                if (!res.ok) {
+                    setErrors(data.errors);
+                } else {
                     setQuestionCode(data.question_code);
                     setAnswerCode(data.answer_code);
                     setInputs(data.inputs);
@@ -90,9 +92,10 @@ const EditQuestion = ({ match }) => {
             history.push("/questions")
         })();
     }
-    return (
+    return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
-            <span>
+            {errors.map(err => <li key={err} className="error">{err}</li>)}
+            {!canEdit && questionId ? null : <span>
                 <button onClick={
                     () => {
                     let newInputLength = inputLength + 1;
@@ -102,7 +105,7 @@ const EditQuestion = ({ match }) => {
                 }}>
                     increase
                 </button>
-                {!inputLength ? null : <button onClick={
+                {!inputLength ? null : <button disabled={!canEdit && questionId} onClick={
                     () => {
                     let newInputLength = inputLength - 1;
                     let newInputs = JSON.parse(JSON.stringify(inputs)).slice(0, -1);
@@ -112,7 +115,7 @@ const EditQuestion = ({ match }) => {
                     decrease
                 </button>}
                 <> (from <>{inputLength}</>) the number of randomized variables in this question</>
-            </span>
+            </span>}
             {!inputLength ? null : <table>
                 <thead>
                     <tr>
@@ -126,7 +129,7 @@ const EditQuestion = ({ match }) => {
                     {!(inputs.length) ? null : (
                         inputs.map((input, row, inputs) => (
                             <tr>
-                                <Input key={row} row={row} input={input} inputs={inputs} setInputs={setInputs} />
+                                <Input key={row} row={row} input={input} inputs={inputs} setInputs={setInputs} canEdit={canEdit || !questionId} />
                             </tr>
                         ))
                     )}
@@ -150,7 +153,7 @@ const EditQuestion = ({ match }) => {
                 randomized question: {question}
             </span>
             <span>
-                corrensponding answer: {answer}
+                corresponding answer: {answer}
                 <br/> (Refresh browser in order to see other versions.)
             </span>
             {(!canEdit && questionId) ? null : (

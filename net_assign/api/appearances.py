@@ -9,6 +9,10 @@ def get_deployments(aid_and_qid):
     ids = aid_and_qid.split(" ")
     aid = int(ids[0])
     qid = int(ids[1])
+    instructor_id = Assignment.query.get(aid).instructor_id
+    if not instructor_id == current_user.id:
+        return {"errors": ["You are not authorized to this."]}, 401
+
     if request.method == 'POST':
         new_appearance = Appearance(
             assignment_id=aid,

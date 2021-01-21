@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import { NavLink } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import AuthContext from '../auth';
 
 const Roster = ({ match }) => {
@@ -78,7 +78,7 @@ const Roster = ({ match }) => {
         })();
     }
 
-    return (
+    return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
             <p align="center">
                 {students.length ? `My current students:` : `I have no students now.`}

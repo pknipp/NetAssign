@@ -112,7 +112,7 @@ const Enrollments = () => {
                                 </>
                             :
                                 <button onClick={e => deleteEnrollment(e, currentUser.id, course.course.id)}>
-                                    "Drop"
+                                    Drop
                                 </button>
                             }
                             <NavLink to={`/courses/${course.course.id}`}>

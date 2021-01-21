@@ -5,7 +5,7 @@ import AuthContext from "../auth"
 const ProtectedRoute = ({ component: Component, path, exact }) => {
     const { currentUser } = useContext(AuthContext)
     return (
-        <Route path={path} exact={exact} render={props => currentUser ? <Component currentUser={currentUser} /> : <Redirect to="/login" />} />
+        <Route path={path} exact={exact} render={props => (currentUser && currentUser.is_instructor) ? <Component currentUser={currentUser} /> : <Redirect to="/login" />} />
     )
 }
 export default ProtectedRoute

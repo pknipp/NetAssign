@@ -14,7 +14,6 @@ const LogIn = _ => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/session`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                // credentials: 'include',
                 body: JSON.stringify({email, password})
             });
             const responseData = await response.json();
@@ -25,7 +24,7 @@ const LogIn = _ => {
     }
     return (
         <form onSubmit={putSession}>
-            {errors.map(err => <li key={err} color="red">{err}</li>)}
+            {errors.map(err => <li key={err} className="error">{err}</li>)}
             Email
             <input
                 type="text" placeholder="Email" value={email} size="48"

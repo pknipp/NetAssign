@@ -13,7 +13,6 @@ const SignUp = _ => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
                 method: 'POST', headers: { "Content-Type": "application/json" },
-                // credentials: 'include',
                 body: JSON.stringify({ email, password, password2 })
             });
             const responseData = await response.json();
@@ -26,7 +25,7 @@ const SignUp = _ => {
     }
     return (
         <form onSubmit={postUser}>
-            {errors.map(err => <li key={err} >{err}</li>)}
+            {errors.map(err => <li key={err} className="error">{err}</li>)}
             <input
                 type="text" placeholder="Email" value={email}
                 onChange={e => setEmail(e.target.value)} name="email"

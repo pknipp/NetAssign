@@ -41,6 +41,13 @@ def index():
 def one(assignment_id):
     assignment_id = int(assignment_id)
     assignment = Assignment.query.get(assignment_id)
+
+    if not assignment.instructor_id == current_user.id:
+        if not assignment.is_public:
+            return {"errors": ["You are not authorized to access this assignment."]}, 401
+        if request.method == 'PUT' or request.method == 'DELETE':
+            return {"errors": ["You are not authorized to mutate this assignment."]}, 401
+
     appearances = Appearance.query.filter(Appearance.assignment_id == assignment_id)
     questions = [Question.query.get(appearance.question_id) for appearance in appearances]
 

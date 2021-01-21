@@ -6,6 +6,7 @@ import LogIn from './components/LogIn';
 import LogOut from './components/LogOut';
 import EditUser from './components/EditUser';
 import ProtectedRoute from "./components/ProtectedRoute";
+import StudentProtectedRoute from "./components/StudentProtectedRoute"
 import AuthRoute from "./components/AuthRoute";
 import AuthContext from './auth';
 import Enrollments from './components/Enrollments';
@@ -47,9 +48,9 @@ const App = _ => {
                         <Switch>
                             <AuthRoute exact path="/login" component={LogIn} />
                             <AuthRoute exact path="/signup" component={SignUp} />
-                            <ProtectedRoute exact path="/logout" component={LogOut} />
-                            <ProtectedRoute exact path="/edituser" component={EditUser} />
-                            <ProtectedRoute exact path="/" component={Enrollments} />
+                            <StudentProtectedRoute exact path="/logout" component={LogOut} />
+                            <StudentProtectedRoute exact path="/edituser" component={EditUser} />
+                            <StudentProtectedRoute exact path="/" component={Enrollments} />
                             {/* instructor: all questions available */}
                             <ProtectedRoute exact path="/questions" component={Questions} />
                             <Route exact path="/questions/:questionId" component={EditQuestion} />

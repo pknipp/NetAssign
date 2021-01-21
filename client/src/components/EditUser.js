@@ -45,7 +45,7 @@ const EditUser = _ => {
     return (
         <>
             <form onSubmit={putUser}>
-                {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+                {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
                 <input
                     type="email" placeholder="Email" value={email}
                     onChange={e => setEmail(e.target.value)} className="larger" />

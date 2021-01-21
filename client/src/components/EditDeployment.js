@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import AuthContext from '../auth'
 
 
 const EditDeployment = ({ match }) => {
     const deploymentId = Number(match.params.deploymentId);
-    const { fetchWithCSRF } = useContext(AuthContext);
+    const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState(null);
@@ -77,7 +77,7 @@ const EditDeployment = ({ match }) => {
         })();
     }
 
-    return (
+    return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
             <form onSubmit={deploymentId ? putDeployment : postDeployment}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}

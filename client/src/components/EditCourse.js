@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import AuthContext from '../auth'
 
 
@@ -19,10 +19,11 @@ const EditCourse = ({ match }) => {
         if (courseId > 0) {
         (async () => {
             try {
-                const res = await fetch(`/api/courses/${courseId}`)
-                if (res.ok) {
-                    debugger
-                    const data = await res.json();
+                const res = await fetch(`/api/courses/${courseId}`);
+                const data = await res.json();
+                if (!res.ok) {
+                    setErrors(data.errors);
+                } else {
                     setName(data.course.name);
                     setIsPublic(data.course.is_public);
                     setCanEdit(data.course.instructor_id === currentUser.id);
@@ -63,15 +64,14 @@ const EditCourse = ({ match }) => {
 
     const duplicateCourse = () => {
         (async _ => {
-            const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
-                method: 'POST',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
-            });
+            const response = await fetchWithCSRF(`/api/courses/${courseId}`, {method: 'POST'});
             const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            history.push("/")
+            if (!response.ok) {
+                setErrors(responseData.errors);
+            } else {
+                if (responseData.messages) setMessages(responseData.messages);
+                history.push("/");
+            }
         })();
     }
 
@@ -88,12 +88,13 @@ const EditCourse = ({ match }) => {
         })();
     }
 
-    return (
+    return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
-            {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+            {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
             <input
                 type="text" placeholder="Name of new course" value={name}
                 onChange={e => setName(e.target.value)} className="larger"
+                disabled={!canEdit && courseId}
             />
             {(!canEdit && courseId) ? null : (
                 <span>
@@ -111,10 +112,14 @@ const EditCourse = ({ match }) => {
             {!courseId ? null :
                 <>
                     <>{messages.map(err => <li key={err}>{err}</li>)}</>
-                    <h4>Would you like to duplicate or delete this course?</h4>
+                    <h4>Would you like to duplicate
+                        {!canEdit && courseId ? " " :
+                        " or delete "}
+                        this course?</h4>
                     <span>
                         <button onClick={() => duplicateCourse()}>Duplicate it</button>
-                        <button onClick={() => deleteCourse()}>Delete it</button>
+                        {!canEdit && courseId ? null :
+                        <button onClick={() => deleteCourse()}>Delete it</button>}
                     </span>
                 </>
             }

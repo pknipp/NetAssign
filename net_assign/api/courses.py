@@ -34,6 +34,13 @@ def index():
 @courses.route('/<course_id>', methods=['POST', 'GET', 'DELETE', 'PUT'])
 def one(course_id):
     course = Course.query.get(int(course_id))
+
+    if not course.instructor_id == current_user.id:
+        if not course.is_public:
+            return {"errors": ["You are not authorized to access this course."]}, 401
+        if request.method == 'PUT' or request.method == 'DELETE':
+            return {"errors": ["You are not authorized to mutate this course."]}, 401
+
     deployments = Deployment.query.filter(Deployment.course_id == course_id)
 
     # duplicating a course
