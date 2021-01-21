@@ -27,6 +27,7 @@ const Questions = () => {
             <NavLink exact to={"/questions/0"} className="nav" activeClassName="active">
                 create new question
             </NavLink>
+            (Refresh browser in order to see different versions of questions.)
             <ul>
                 {questions.filter(question => question.owner.id === currentUser.id).map(question => {
                     return <li><Question key={question.id} question={question} /></li>

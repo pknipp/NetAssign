@@ -50,7 +50,7 @@ const Submission = ({ qAndR, number, deploymentId }) => {
                 </button>
                 {(grade === null) ? null : <img src={grade ? correct : incorrect} alt={grade ? "correct" : "incorrect"}/>}
             </span>
-            {(currentUser.is_instructor) ? answer : null}
+            {(currentUser.is_instructor) ? `answer: ${answer}` : null}
         </form>
     </li>
 }

@@ -134,13 +134,13 @@ const EditAssignment = ({ match }) => {
         <>
             {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
             <input
-                type="text" placeholder="Name" value={name} name="name"
+                type="text" placeholder="Name of new assignment" value={name} className="larger"
                 onChange={e => setName(e.target.value)} disabled={!canEdit && assignmentId}
             />
 
             {(!canEdit && assignmentId) ? null : (
                 <span>
-                    {isPublic ? "public " : "private "}
+                    sharing: {isPublic ? "public " : "private "}
                     <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
                     <br/>
                     <button onClick={assignmentId ? putAssignment : postAssignment}>
@@ -148,6 +148,7 @@ const EditAssignment = ({ match }) => {
                     </button>
                 </span>
             )}
+            {!assignmentId ? null : "Refresh browser in order to see different versions of questions."}
 
             <ol>
                 {questions.map(question => (

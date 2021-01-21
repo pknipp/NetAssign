@@ -85,13 +85,13 @@ const EditDeployment = ({ match }) => {
                 Assignment: {assignmentName}
                 <input
                     type="text" placeholder="deadline" value={deadline}
-                    onChange={e => setDeadline(e.target.value)} name="deadline" />
+                    onChange={e => setDeadline(e.target.value)} className="larger" />
                 <button type="submit">submit change</button>
             </form>
 
             {deploymentId ? <form onSubmit={deleteDeployment}>
                 {messages.map(err => <li key={err}>{err}</li>)}
-                <h4>Would you like to unschedule this assignment?</h4>
+                <h3>Would you like to unschedule this assignment?</h3>
                 <button type="submit">Unschedule</button>
             </form> : null}
         </>

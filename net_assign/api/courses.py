@@ -33,7 +33,6 @@ def index():
 
 @courses.route('/<course_id>', methods=['POST', 'GET', 'DELETE', 'PUT'])
 def one(course_id):
-    print("top of courses/course_id route, with method = ", request.method, " and course_id = ", course_id)
     course = Course.query.get(int(course_id))
     deployments = Deployment.query.filter(Deployment.course_id == course_id)
 
@@ -75,7 +74,6 @@ def one(course_id):
             return jsonify({"message": "Missing JSON in request"}), 400
         course.name = request.json.get('name', None)
         course.is_public = request.json.get('isPublic', None)
-        print("course.is_public = ", course.is_public)
         course.updated_at = datetime.now()
         db.session.commit()
         return {"message": "I hope that you like the new name for this course."}

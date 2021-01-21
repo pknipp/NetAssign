@@ -69,10 +69,10 @@ def one(assignment_id):
         question_list = list()
         for q_and_a in questions:
             id = q_and_a.id
-            question = q_and_a.question
+            question_code = q_and_a.question_code
             inputs = json.loads(q_and_a.inputs)
-            answer = q_and_a.answer
-            q_and_a = version.version(question, inputs, answer)
+            answer_code = q_and_a.answer_code
+            q_and_a = version.version(question_code, inputs, answer_code)
             question = q_and_a["question"]
             answer = q_and_a["answer"]
             question_list.append({"id": id, "question": question, "answer": answer})

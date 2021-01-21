@@ -7,8 +7,10 @@ import Input from './Input';
 const EditQuestion = ({ match }) => {
     const questionId = Number(match.params.questionId)  ;
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
+    const [questionCode, setQuestionCode] = useState('');
     const [question, setQuestion] = useState('');
     const [canEdit, setCanEdit] = useState(false);
+    const [answerCode, setAnswerCode] = useState('');
     const [answer, setAnswer] = useState('');
     const [inputLength, setInputLength] = useState(0);
     const [inputs, setInputs] = useState([]);
@@ -24,12 +26,14 @@ const EditQuestion = ({ match }) => {
                 const res = await fetch(`/api/questions/${questionId}`)
                 if (res.ok) {
                     const data = await res.json();
-                    setQuestion(data.question_answer_inputs.question);
-                    setAnswer(data.question_answer_inputs.answer);
-                    setInputs(data.question_answer_inputs.inputs);
-                    setInputLength(data.question_answer_inputs.inputs.length);
-                    setIsPublic(data.question_answer_inputs.is_public);
-                    setCanEdit(data.question_answer_inputs.instructor_id === currentUser.id);
+                    setQuestionCode(data.question_code);
+                    setAnswerCode(data.answer_code);
+                    setInputs(data.inputs);
+                    setInputLength(data.inputs.length);
+                    setIsPublic(data.is_public);
+                    setQuestion(data.question);
+                    setAnswer(data.answer);
+                    setCanEdit(data.instructor_id === currentUser.id);
                 }
             } catch (err) {
                 console.error(err)
@@ -41,7 +45,7 @@ const EditQuestion = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ question, answer, inputs, isPublic })
+                body: JSON.stringify({ questionCode, answerCode, inputs, isPublic })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -54,7 +58,7 @@ const EditQuestion = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ question, answer, inputs, isPublic })
+                body: JSON.stringify({ questionCode, answerCode, inputs, isPublic })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -92,7 +96,7 @@ const EditQuestion = ({ match }) => {
                 <button onClick={
                     () => {
                     let newInputLength = inputLength + 1;
-                    let newInputs = [...JSON.parse(JSON.stringify(inputs)), []];
+                    let newInputs = [...JSON.parse(JSON.stringify(inputs)), [String.fromCharCode(96 + newInputLength), 2, 3, 10]];
                     setInputLength(newInputLength)
                     setInputs(newInputs);
                 }}>
@@ -131,23 +135,27 @@ const EditQuestion = ({ match }) => {
             <span>
                 encoded question string:
                 <textarea
-                    placeholder="Question" value={question} name="question" rows="3" cols="50"
-                    onChange={e => setQuestion(e.target.value)} disabled={!canEdit && questionId}
+                    placeholder="Question code" value={questionCode} rows="3" cols="50"
+                    onChange={e => setQuestionCode(e.target.value)} disabled={!canEdit && questionId}
                 />
             </span>
             <span>
                 encoded answer string:
                 <input
-                    type="text" placeholder="Answer" value={answer} name="answer"
-                    onChange={e => setAnswer(e.target.value)} disabled={!canEdit && questionId}
+                    type="text" placeholder="Answer code" value={answerCode} className="larger"
+                    onChange={e => setAnswerCode(e.target.value)} disabled={!canEdit && questionId}
                 />
             </span>
-            {/* <input
-                type="text" placeholder="Inputs" value={inputs} name="inputs"
-                onChange={e => setInputs(e.target.value)} disabled={!canEdit && questionId}/> */}
+            <span>
+                randomized question: {question}
+            </span>
+            <span>
+                corrensponding answer: {answer}
+                <br/> (Refresh browser in order to see other versions.)
+            </span>
             {(!canEdit && questionId) ? null : (
                 <span>
-                    {isPublic ? "public " : "private "}
+                    sharing: {isPublic ? "public " : "private "}
                     <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
                     <br/>
                     <button onClick={questionId ? putQuestion : postQuestion}>

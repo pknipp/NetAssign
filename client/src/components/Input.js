@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 
 const Input = ({ row, input, inputs, setInputs }) => {
-    const [varName, setVarName] = useState(input[0] || String.fromCharCode(97 + row));
-    const [min, setMin] = useState(input[1] || 0);
-    const [max, setMax] = useState(input[2] || 1);
-    const [n, setN] = useState(input[3] || 10);
+    const [varName, setVarName] = useState(input[0]);
+    const [min, setMin] = useState(input[1]);
+    const [max, setMax] = useState(input[2]);
+    const [n, setN] = useState(input[3]);
     return (
         <>
         <td>
@@ -13,7 +13,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
                 onChange={e => {
                     setVarName(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
-                    myInputs[row][0] = e.target.value;
+                    myInputs[row][0] = e.target.value || varName;
                     setInputs(myInputs);
                 }}
             />
@@ -23,7 +23,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
                 onChange={e => {
                     setMin(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
-                    myInputs[row][1] = Number(e.target.value);
+                    myInputs[row][1] = Number(e.target.value) || min;
                     setInputs(myInputs);
                 }}
             />
@@ -33,7 +33,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
                 onChange={e => {
                     setMax(e.target.value);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
-                    myInputs[row][2] = Number(e.target.value);
+                    myInputs[row][2] = Number(e.target.value) || max;
                     setInputs(myInputs);
                 }}
             />
@@ -44,7 +44,7 @@ const Input = ({ row, input, inputs, setInputs }) => {
                     let newN = Math.max(1, Math.floor(Number(e.target.value)));
                     setN(newN);
                     let myInputs = JSON.parse(JSON.stringify(inputs))
-                    myInputs[row][3] = newN;
+                    myInputs[row][3] = newN || n;
                     setInputs(myInputs);
                 }}
             />

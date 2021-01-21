@@ -92,12 +92,12 @@ const EditCourse = ({ match }) => {
         <>
             {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
             <input
-                type="text" placeholder="Name" value={name}
-                onChange={e => setName(e.target.value)} name="name"
+                type="text" placeholder="Name of new course" value={name}
+                onChange={e => setName(e.target.value)} className="larger"
             />
             {(!canEdit && courseId) ? null : (
                 <span>
-                    {isPublic ? "public " : "private "}
+                    sharing: {isPublic ? "public " : "private "}
                     <button onClick={() => {setIsPublic(!isPublic)}}>
                         toggle
                     </button>

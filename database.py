@@ -43,8 +43,8 @@ questions = [
     (1, True, "{a} times {b} plus {c} equals ... ", "a * b + c", [['a', 2,7,5], ['b', 2,9,7], ['c', 2,15,13]]),
     (1, True, "The natural logarithm of {a} equals ... ", "log(a)", [['a', 2, 99, 97]]),
     (3, True, "The common logarithm of {a} equals ... ", "log(a)/log(10)", [['a', 2, 99, 97]]),
-    (1, True, "The cosine {a} rads equals ... ", "cos(a)", [['a', -3, 3, 60]]),
-    (3, False, "The arctangent of {a} equals (when expressed answer) ...", "atan(a)", [['a', -4, 4, 80]]),
+    (1, True, "The cosine of {a} rads equals ... ", "cos(a)", [['a', -3, 3, 60]]),
+    (3, False, "The arctangent of {a} equals (when expressed in radians) ...", "atan(a)", [['a', -4, 4, 80]]),
     (1, True, "If a girl runs at {a} m/s for {b} hours, how many km does she travel?", "a * b * 3.6", [["a", 4, 7, 30], ['b', 2, 3, 10]]),
     # (1, "[{0}, 2][1]", "[x0, 2][1]", [[3, 4, 10]])
     ]
@@ -55,8 +55,8 @@ with app.app_context():
         db.session.add(Question(
             instructor_id=question[0],
             is_public=question[1],
-            question=question[2],
-            answer=question[3],
+            question_code=question[2],
+            answer_code=question[3],
             inputs=json.dumps(question[4]),
             created_at=created_at,
             updated_at=fake.date_time_between(start_date=created_at)

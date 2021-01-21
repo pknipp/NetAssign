@@ -31,7 +31,6 @@ Rename some components to reflect their function rather than first db Query?
 Presently, Signup defaults to #is_instructor = False.  Figure out a way to deal with this.
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
-In question editor (and other places) widen the input field.
+In question editor (and other places widen the input field.
 Increase # of Question seeds (but not until after broadening question format?)
 Determine how to handle a situation in which question is edited after assignment w/it is downloaded.
-Figure out how - in question editor - to contrain the last element of "inputs" array to be a natural number.
