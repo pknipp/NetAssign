@@ -11,9 +11,9 @@ def index(student_id_and_course_id):
     ids = student_id_and_course_id.split(' ')
     student_id = int(ids[0])
     course_id = int(ids[1])
-    instructor_id = Course.query.get(course_id).instructor_id
-    if not instructor_id == current_user.id:
-        return {"errors": ["You are not authorized to this."]}, 401
+    # instructor_id = Course.query.get(course_id).instructor_id
+    # if not instructor_id == current_user.id:
+    #     return {"errors": ["You are not authorized to this."]}, 401
 
     if request.method == 'POST':
         new_enrollment = Enrollment(
