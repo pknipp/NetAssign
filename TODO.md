@@ -33,3 +33,9 @@ Figure out how to input deadline (type="datetime-local", for Deployment CU route
 When fetching lists from back-end, sort them in the most logical manner
 Increase # of Question seeds (but not until after broadening question format?)
 Determine how to handle a situation in which question is edited after assignment w/it is downloaded.
+Enable elements of subinputs to be either a number, string, or boolean, as follows:
+    a) split on commas
+    b) map
+    c) 'F' -> false, 'T' -> true
+    d) Number(#).  If isNaN(#) -> string it.  Otherwise, leave it.
+    e) Don't forget to reverse this when going in the other direction.

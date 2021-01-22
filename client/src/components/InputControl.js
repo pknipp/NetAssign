@@ -10,7 +10,7 @@ const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs,
                 let j = 0;
                 while (varNames.has("x" + j)) j++;
                 let varName = "x" + j;
-                let addedArray = varArray ? [[varName, 2, "green", "F"]] : [varName, 2, 3, 10];
+                let addedArray = varArray ? [[varName, 2, 3, 5, 7]] : [varName, 2, 3, 10];
                 let newInputs = [...JSON.parse(JSON.stringify(inputs)), addedArray];
                 varNames.add(varName);
                 setVarNames(varNames);
