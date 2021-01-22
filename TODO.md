@@ -27,7 +27,8 @@ Make sure that all front-end routes are protected by authContext or back-end fet
 Create a gradebook (for students AND teachers).
 Improve editor for Question model
 Put validations in Question editor, such as ...
-    for type-2 question, lengths of CS-strings must be the same (and nonzero length)
+    for type-2 question, lengths of CS-strings must be the same (and length > 2?)
+    make list of prohibited keywords
 Rename some components to reflect their function rather than first db Query?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
@@ -40,3 +41,4 @@ Enable elements of subinputs to be either a number, string, or boolean, as follo
     d) Number(#).  If isNaN(#) -> string it.  Otherwise, leave it.
     e) Don't forget to reverse this when going in the other direction.
 In instructions for question editor, provide list of prohibited (ie, key-) strings
+Somewhere in question editor, insert desired number of decimal places.
