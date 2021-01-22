@@ -17,7 +17,8 @@ const EditQuestion = ({ match }) => {
     const [input1Length, setInput1Length] = useState(0);
     const [input2Length, setInput2Length] = useState(0);
     const [inputs1, setInputs1] = useState([]);
-    const [inputs2, setInputs2] = useState([[]]);
+    const [inputs2, setInputs2] = useState([]);
+    const [varNames, setVarNames] = useState(new Set())
     // const [inputLength, setInputLength] = useState(0);
     // const [inputs, setInputs] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
@@ -34,16 +35,35 @@ const EditQuestion = ({ match }) => {
                 if (!res.ok) {
                     setErrors(data.errors);
                 } else {
+                    let inputs = data.inputs;
+                    let inputs1 = [];
+                    let inputs2 = [];
+                    let varNames = new Set();
+                    inputs.forEach(input => {
+                        if (typeof(input[0]) === "string") {
+                            debugger
+                            inputs1.push(input);
+                            varNames.add(input[0]);
+                        } else {
+                            inputs2.push(input);
+                            input.forEach(subinput => {
+                                varNames.add(subinput[0]);
+                            });
+                        }
+                    })
+                    debugger
                     setQuestionCode(data.question_code);
                     setAnswerCode(data.answer_code);
-                    setInputs1(data.inputs.filter(input => typeof(input[0]) === "string"));
-                    setInput1Length(data.inputs.filter(input => typeof(input[0]) === "string").length);
-                    setInputs2(data.inputs.filter(input => typeof(input[0]) !== "string"));
-                    setInput2Length(data.inputs.filter(input => typeof(input[0]) !== "string").length);
+                    setInputs1(inputs1);
+                    setInput1Length(inputs1.length);
+                    setInputs2(inputs2);
+                    setInput2Length(inputs2.length);
+                    setVarNames(varNames);
                     setIsPublic(data.is_public);
                     setQuestion(data.question);
                     setAnswer(data.answer);
                     setCanEdit(data.instructor_id === currentUser.id);
+
                 }
             } catch (err) {
                 console.error(err)
@@ -114,6 +134,8 @@ const EditQuestion = ({ match }) => {
                             setInputLength={setInput1Length}
                             inputs={inputs1}
                             setInputs={setInputs1}
+                            varNames={varNames}
+                            setVarNames={setVarNames}
                         />}
                     {!input1Length ? null : <table>
                         <thead>

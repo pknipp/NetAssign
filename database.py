@@ -37,7 +37,7 @@ with app.app_context():
 questions = [
     (1, True, "What is the {a}th prime number?", "b", [[['a', 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
                                                           ['b', 7,11,13,17,19,23, 29, 31, 37, 41]]]),
-    (1, True, "What is the {a}th power of the {b}th prime number?", "c^a", [['a', 4, 5, 1], [['b', 4, 5, 6], ['c', 7, 11, 13]]]),
+    (1, True, "What is the {a}th power of the {x2}th prime number?", "c^a", [['a', 4, 5, 1], [['x2', 4, 5, 6], ['c', 7, 11, 13]]]),
     (1, True, "{a} plus {b} equals ... ", "a + b", [['a', 2, 3, 10], ['b', 5, 7, 20]]),
     (1, True, "{a} times {b} equals ... ","a * b", [['a', -3, -1, 20], ['b', 2, 3, 10]]),
     (1, True, "{a} divided by {b} equals ... ","a/b", [['a', 2, 4, 20], ['b', 1, 3, 20]]),

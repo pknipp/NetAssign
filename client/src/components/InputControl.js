@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 
-const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs }) => { 
+const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs, varNames, setVarNames }) => {
 
     return (
         <span>
             <button onClick={
                 () => {
                 let newInputLength = inputLength + 1;
-                let newInputs = [...JSON.parse(JSON.stringify(inputs)), [String.fromCharCode(96 + newInputLength), 2, 3, 10]];
+                let j = 0;
+                while (varNames.has("x" + j)) j++;
+                let varName = "x" + j;
+                let newInputs = [...JSON.parse(JSON.stringify(inputs)), [varName, 2, 3, 10]];
+                varNames.add(varName);
+                setVarNames(varNames);
                 setInputLength(newInputLength)
                 setInputs(newInputs);
             }}>
