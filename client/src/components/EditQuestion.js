@@ -178,7 +178,7 @@ const EditQuestion = ({ match }) => {
                     {!input2Length ? null : <table>
                         <thead>
                             <tr>
-                                <th>set</th>
+                                <th></th>
                                  <th>variable</th>
                                  <th> comma-separated list from which to pick values</th>
                             </tr>
@@ -188,7 +188,7 @@ const EditQuestion = ({ match }) => {
                                 inputs2.map((input, row, inputs) => (
                                     input.map((subinput, subrow) => (
                                         <tr>
-                                            {subrow ? null : <td rowSpan={input.length} key={row}>{subrow + 1}</td>}
+                                            {/* {subrow ? null : <td rowSpan={input.length} key={row}>{subrow + 1}</td>} */}
                                             <Input2
                                                 key={`sub${subrow}`}
                                                 row={row}
