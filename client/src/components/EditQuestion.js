@@ -3,6 +3,7 @@ import { useHistory, Redirect } from 'react-router-dom';
 import AuthContext from '../auth';
 import Input1 from './Input1';
 import Input2 from './Input2';
+import InputControl from './InputControl';
 
 
 const EditQuestion = ({ match }) => {
@@ -100,75 +101,98 @@ const EditQuestion = ({ match }) => {
         })();
     }
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
-        <>
-            {errors.map(err => <li key={err} className="error">{err}</li>)}
-            {!canEdit && questionId ? null : <span>
-                <button onClick={
-                    () => {
-                    let newInputLength = inputLength + 1;
-                    let newInputs = [...JSON.parse(JSON.stringify(inputs)), [String.fromCharCode(96 + newInputLength), 2, 3, 10]];
-                    setInputLength(newInputLength)
-                    setInputs(newInputs);
-                }}>
-                    increase
-                </button>
-                {!inputLength ? null : <button disabled={!canEdit && questionId} onClick={
-                    () => {
-                    let newInputLength = inputLength - 1;
-                    let newInputs = JSON.parse(JSON.stringify(inputs)).slice(0, -1);
-                    setInputLength(newInputLength)
-                    setInputs(newInputs);
-                }}>
-                    decrease
-                </button>}
-                <> (from <>{inputLength}</>) the number of randomized variables in this question</>
-            </span>}
-            {!input1Length ? null : <table>
-                <thead>
-                    <tr>
-                         <th>variable</th>
-                         <th>min<br/> value</th>
-                         <th>max<br/> value</th>
-                         <th># of<br/> divisions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        {inputs1.map((input, row, inputs) => (
+        <div className="qeditor">
+            <span><h1>Question Editor</h1></span>
+            <ul>{errors.map(err => <li key={err} className="error">{err}</li>)}</ul>
+            <div className="qinputs">
+                <div className="qinputs1">
+                    <h2>Inputs chosen randomly from a number range</h2>
+                    {!canEdit && questionId ? null : <span>
+                        <InputControl
+                            canEdit={canEdit}
+                            inputLength={input1Length}
+                            setInputLength={setInputLength}
+                            inputs={inputs1}
+                            setInputs={setInputs1}
+                        />
+                        {/* <button onClick={
+                            () => {
+                            let inputLength = input1Length + 1;
+                            let inputs = [...JSON.parse(JSON.stringify(inputs1)), [String.fromCharCode(96 + inputLength), 2, 3, 10]];
+                            setInput1Length(inputLength)
+                            setInputs1(inputs);
+                        }}>
+                            increase
+                        </button>
+                        {!input1Length ? null : <button disabled={!canEdit && questionId} onClick={
+                            () => {
+                            let inputLength = input1Length - 1;
+                            let inputs = JSON.parse(JSON.stringify(inputs1)).slice(0, -1);
+                            setInput1Length(inputLength)
+                            setInputs1(inputs);
+                        }}>
+                            decrease
+                        </button>}
+                        <> (from <>{input1Length}</>) the number of this type</> */}
+                    </span>}
+                    {!input1Length ? null : <table>
+                        <thead>
                             <tr>
-                                <Input1 key={row} row={row} input={input} inputs={inputs} setInputs={setInputs1} canEdit={canEdit || !questionId} />
+                                 <th>variable</th>
+                                 <th>min<br/> value</th>
+                                 <th>max<br/> value</th>
+                                 <th># of<br/> divisions</th>
                             </tr>
-                        ))}
-                </tbody>
-            </table>}
-            {!input2Length ? null : <table>
-                <thead>
-                    <tr>
-                        <th>set</th>
-                         <th>variable</th>
-                         <th> comma-separated list from which to pick values</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {!(inputs2.length) ? null : (
-                        inputs2.map((input, row, inputs) => (
-                            input.map((subinput, subrow) => (
-                                <tr>
-                                    {subrow ? null : <td rowSpan={input.length} key={row}>{subrow + 1}</td>}
-                                    <Input2
-                                        key={`sub${subrow}`}
-                                        row={row}
-                                        subrow={subrow}
-                                        input={subinput}
-                                        inputs={inputs}
-                                        setInputs={setInputs2}
-                                        canEdit={canEdit || !questionId}
-                                    />
-                                </tr>
-                            ))
-                        ))
-                    )}
-                </tbody>
-            </table>}
+                        </thead>
+                        <tbody>
+                                {inputs1.map((input, row, inputs) => (
+                                    <tr>
+                                        <Input1
+                                            key={row}
+                                            row={row}
+                                            input={input}
+                                            inputs={inputs}
+                                            setInputs={setInputs1}
+                                            canEdit={canEdit || !questionId}
+                                        />
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </table>}
+                </div>
+                <div className="qinputs2">
+                    <h2>Inputs chosen from arrays in correlated manners</h2>
+                    {!input2Length ? null : <table>
+                        <thead>
+                            <tr>
+                                <th>set</th>
+                                 <th>variable</th>
+                                 <th> comma-separated list from which to pick values</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {!(inputs2.length) ? null : (
+                                inputs2.map((input, row, inputs) => (
+                                    input.map((subinput, subrow) => (
+                                        <tr>
+                                            {subrow ? null : <td rowSpan={input.length} key={row}>{subrow + 1}</td>}
+                                            <Input2
+                                                key={`sub${subrow}`}
+                                                row={row}
+                                                subrow={subrow}
+                                                input={subinput}
+                                                inputs={inputs}
+                                                setInputs={setInputs2}
+                                                canEdit={canEdit || !questionId}
+                                            />
+                                        </tr>
+                                    ))
+                                ))
+                            )}
+                        </tbody>
+                    </table>}
+                </div>
+            </div>
             <span>
                 encoded question string:
                 <textarea
@@ -215,7 +239,7 @@ const EditQuestion = ({ match }) => {
                     </span>
                 </>
             }
-        </>
+        </div>
     );
 };
 
