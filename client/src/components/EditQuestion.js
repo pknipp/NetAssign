@@ -123,10 +123,11 @@ const EditQuestion = ({ match }) => {
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <div className="qeditor">
             <span><h1>Question Editor</h1></span>
+            <h2>Specifications of random inputs</h2>
             <ul>{errors.map(err => <li key={err} className="error">{err}</li>)}</ul>
             <div className="qinputs">
                 <div className="qinputs1">
-                    <h2>Inputs chosen randomly from a number range</h2>
+                    <h3>chosen from a number range</h3>
                     {!canEdit && questionId ? null :
                         <InputControl key="inputs1"
                             canEdit={canEdit || !questionId}
@@ -163,7 +164,7 @@ const EditQuestion = ({ match }) => {
                     </table>}
                 </div>
                 <div className="qinputs2">
-                    <h2>Inputs chosen from arrays in correlated manners</h2>
+                    <h3>correlated choices from arrays</h3>
                     {!canEdit && questionId ? null :
                         <InputControl key="inputs2"
                         canEdit={canEdit || !questionId}

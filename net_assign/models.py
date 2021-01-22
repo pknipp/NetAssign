@@ -56,7 +56,7 @@ class Question(db.Model, UserMixin):
     instructor_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     is_public = db.Column(db.Boolean, nullable=False)
     question_code = db.Column(db.String(127), nullable=False)
-    inputs = db.Column(db.String(127), nullable=False)
+    inputs = db.Column(db.Text, nullable=False)
     answer_code = db.Column(db.String(63), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
     updated_at = db.Column(db.DateTime, nullable=False)

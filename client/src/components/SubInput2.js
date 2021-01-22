@@ -22,9 +22,22 @@ const SubInput2 = ({ row, subrow, input, inputs, setInputs, canEdit, varNames, s
                     setInputLength(newInputLength)
                     setInputs(newInputs);
                 }}>
-                     increase
+                     inc
                 </button>
-                {inputs[row].length}
+                <button onClick={
+                    () => {
+                    let newInputLength = inputLength - 1;
+                    let newInputs = [...JSON.parse(JSON.stringify(inputs))];
+                    varNames.delete(newInputs[row][newInputs[row].length - 1][0]);
+                    newInputs[row] = newInputs[row].slice(0, -1);
+                    setVarNames(varNames);
+                    setInputLength(newInputLength)
+                    setInputs(newInputs);
+                }}>
+                     dec
+                </button>
+                <br/>
+                number (from {inputs[row].length})
             </td>}
             <td>
                 <input type="text" value={varName} size={6} className="smaller"
