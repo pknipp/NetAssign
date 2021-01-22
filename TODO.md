@@ -39,3 +39,4 @@ Enable elements of subinputs to be either a number, string, or boolean, as follo
     c) 'F' -> false, 'T' -> true
     d) Number(#).  If isNaN(#) -> string it.  Otherwise, leave it.
     e) Don't forget to reverse this when going in the other direction.
+In instructions for question editor, provide list of prohibited (ie, key-) strings
