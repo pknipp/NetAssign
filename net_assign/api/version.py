@@ -11,9 +11,10 @@ def version(question_code, inputs, answer_code):
                 if isinstance(input, list):
                     n2 = len(input) - 1
                     n1 = len(inputs[i])
+                    index = randint(1, n2)
                     for j in range(n1):
                         key = inputs[i][j][0]
-                        value = inputs[i][j][randint(1, n2)]
+                        value = inputs[i][j][index]
                         kwargs[key] = value
                 else:
                     key = inputs[i][0]

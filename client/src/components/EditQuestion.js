@@ -13,7 +13,9 @@ const EditQuestion = ({ match }) => {
     const [answerCode, setAnswerCode] = useState('');
     const [answer, setAnswer] = useState('');
     const [inputLength, setInputLength] = useState(0);
+    const [input2Length, setInput2Length] = useState(0);
     const [inputs, setInputs] = useState([]);
+    const [inputs2, setInputs2] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -127,7 +129,7 @@ const EditQuestion = ({ match }) => {
                 </thead>
                 <tbody>
                     {!(inputs.length) ? null : (
-                        inputs.map((input, row, inputs) => (
+                        inputs.filter(input => typeof(input[0] === "string")).map((input, row, inputs) => (
                             <tr>
                                 <Input key={row} row={row} input={input} inputs={inputs} setInputs={setInputs} canEdit={canEdit || !questionId} />
                             </tr>
