@@ -150,7 +150,7 @@ const EditQuestion = ({ match }) => {
                                 {inputs1.map((input, row, inputs) => (
                                     <tr>
                                         <Input1
-                                            key={row}
+                                            key={`${row}1`}
                                             row={row}
                                             input={input}
                                             inputs={inputs}
@@ -186,20 +186,16 @@ const EditQuestion = ({ match }) => {
                         <tbody>
                             {!(inputs2.length) ? null : (
                                 inputs2.map((input, row, inputs) => (
-                                    input.map((subinput, subrow) => (
-                                        <tr>
-                                            {/* {subrow ? null : <td rowSpan={input.length} key={row}>{subrow + 1}</td>} */}
-                                            <Input2
-                                                key={`sub${subrow}`}
-                                                row={row}
-                                                subrow={subrow}
-                                                input={subinput}
-                                                inputs={inputs}
-                                                setInputs={setInputs2}
-                                                canEdit={canEdit || !questionId}
-                                            />
-                                        </tr>
-                                    ))
+                                    <Input2
+                                        key={`${row}2`}
+                                        row={row}
+                                        input={input}
+                                        inputs={inputs}
+                                        setInputs={setInputs2}
+                                        canEdit={canEdit || !questionId}
+                                        varNames={varNames}
+                                        setVarNames={setVarNames}
+                                    />
                                 ))
                             )}
                         </tbody>
