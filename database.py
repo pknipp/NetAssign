@@ -35,6 +35,7 @@ with app.app_context():
     db.session.commit()
 
 questions = [
+    (1, True, "The square root of {a} equals ...", "sqrt(a)", [[['a', 0, 1, 4, 9]]]),
     (1, True, "{a} plus {b} equals ... ", "a + b", [['a', 2, 3, 10], ['b', 5, 7, 20]]),
     (1, True, "{a} times {b} equals ... ","a * b", [['a', -3, -1, 20], ['b', 2, 3, 10]]),
     (1, True, "{a} divided by {b} equals ... ","a/b", [['a', 2, 4, 20], ['b', 1, 3, 20]]),
