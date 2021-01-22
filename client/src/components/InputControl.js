@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs }) => {
-    useEffect(() => (() => {
-        console.log(inputLength)
-        setInputLength(inputLength);
-        setInputs(inputs)
-    })(), [inputLength, inputs]);
+const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs }) => { 
 
     return (
         <span>
@@ -13,7 +8,6 @@ const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs 
                 () => {
                 let newInputLength = inputLength + 1;
                 let newInputs = [...JSON.parse(JSON.stringify(inputs)), [String.fromCharCode(96 + newInputLength), 2, 3, 10]];
-                // let newInputs = [...JSON.parse(JSON.stringify(inputs)), [String.fromChar, 2, 3, 10]];
                 setInputLength(newInputLength)
                 setInputs(newInputs);
             }}>

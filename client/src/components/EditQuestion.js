@@ -109,31 +109,12 @@ const EditQuestion = ({ match }) => {
                     <h2>Inputs chosen randomly from a number range</h2>
                     {!canEdit && questionId ? null : <span>
                         <InputControl
-                            canEdit={canEdit}
+                            canEdit={canEdit || !questionId}
                             inputLength={input1Length}
-                            setInputLength={setInputLength}
+                            setInputLength={setInput1Length}
                             inputs={inputs1}
                             setInputs={setInputs1}
                         />
-                        {/* <button onClick={
-                            () => {
-                            let inputLength = input1Length + 1;
-                            let inputs = [...JSON.parse(JSON.stringify(inputs1)), [String.fromCharCode(96 + inputLength), 2, 3, 10]];
-                            setInput1Length(inputLength)
-                            setInputs1(inputs);
-                        }}>
-                            increase
-                        </button>
-                        {!input1Length ? null : <button disabled={!canEdit && questionId} onClick={
-                            () => {
-                            let inputLength = input1Length - 1;
-                            let inputs = JSON.parse(JSON.stringify(inputs1)).slice(0, -1);
-                            setInput1Length(inputLength)
-                            setInputs1(inputs);
-                        }}>
-                            decrease
-                        </button>}
-                        <> (from <>{input1Length}</>) the number of this type</> */}
                     </span>}
                     {!input1Length ? null : <table>
                         <thead>
