@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 
-const Input = ({ row, input, inputs, setInputs, canEdit }) => {
+const Input1 = ({ row, input, inputs, setInputs, canEdit }) => {
     const [varName, setVarName] = useState(input[0]);
     const [min, setMin] = useState(input[1]);
     const [max, setMax] = useState(input[2]);
@@ -53,4 +53,4 @@ const Input = ({ row, input, inputs, setInputs, canEdit }) => {
     )
 }
 
-export default Input;
+export default Input1;

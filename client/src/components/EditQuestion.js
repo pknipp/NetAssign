@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
 import AuthContext from '../auth';
-import Input from './Input';
+import Input1 from './Input1';
+import Input2 from './Input2';
 
 
 const EditQuestion = ({ match }) => {
@@ -12,10 +13,12 @@ const EditQuestion = ({ match }) => {
     const [canEdit, setCanEdit] = useState(false);
     const [answerCode, setAnswerCode] = useState('');
     const [answer, setAnswer] = useState('');
-    const [inputLength, setInputLength] = useState(0);
+    const [input1Length, setInput1Length] = useState(0);
     const [input2Length, setInput2Length] = useState(0);
-    const [inputs, setInputs] = useState([]);
+    const [inputs1, setInputs1] = useState([]);
     const [inputs2, setInputs2] = useState([]);
+    const [inputLength, setInputLength] = useState(0);
+    const [inputs, setInputs] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -32,8 +35,10 @@ const EditQuestion = ({ match }) => {
                 } else {
                     setQuestionCode(data.question_code);
                     setAnswerCode(data.answer_code);
-                    setInputs(data.inputs);
-                    setInputLength(data.inputs.length);
+                    setInputs1(data.inputs.filter(input => typeof(input[0]) === "string"));
+                    setInput1Length(data.inputs.filter(input => typeof(input[0]) === "string").length);
+                    setInputs2(data.inputs.filter(input => typeof(input[0]) !== "string"));
+                    setInput2Length(data.inputs.filter(input => typeof(input[0]) !== "string").length);
                     setIsPublic(data.is_public);
                     setQuestion(data.question);
                     setAnswer(data.answer);
@@ -49,7 +54,7 @@ const EditQuestion = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ questionCode, answerCode, inputs, isPublic })
+                body: JSON.stringify({ questionCode, answerCode, inputs: [...inputs1, ...inputs2], isPublic })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -62,7 +67,7 @@ const EditQuestion = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ questionCode, answerCode, inputs, isPublic })
+                body: JSON.stringify({ questionCode, answerCode, inputs: [...inputs1, ...inputs2], isPublic })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -118,7 +123,7 @@ const EditQuestion = ({ match }) => {
                 </button>}
                 <> (from <>{inputLength}</>) the number of randomized variables in this question</>
             </span>}
-            {!inputLength ? null : <table>
+            {!input1Length ? null : <table>
                 <thead>
                     <tr>
                          <th>variable</th>
@@ -128,10 +133,31 @@ const EditQuestion = ({ match }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {!(inputs.length) ? null : (
-                        inputs.filter(input => typeof(input[0] === "string")).map((input, row, inputs) => (
+                        {inputs1.map((input, row, inputs) => (
                             <tr>
-                                <Input key={row} row={row} input={input} inputs={inputs} setInputs={setInputs} canEdit={canEdit || !questionId} />
+                                <Input1 key={row} row={row} input={input} inputs={inputs} setInputs={setInputs1} canEdit={canEdit || !questionId} />
+                            </tr>
+                        ))}
+                </tbody>
+            </table>}
+            {!input2Length ? null : <table>
+                <thead>
+                    <tr>
+                        <th>set</th>
+                         <th>variable</th>
+                         <th> CS list from which to pick values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {!(inputs2.length) ? null : (
+                        inputs2.map((input, row, inputs) => (
+                            <tr>
+                                <td rowSpan={input.length} key={row}></td>
+                                {input.map((subinput, subrow) => (
+                                    <tr>
+                                    <Input2 key={`sub${subrow}`} row={row} subrow={subrow} input={subinput} inputs={inputs} setInputs={setInputs2} canEdit={canEdit || !questionId} />
+                                    </tr>
+                                ))}
                             </tr>
                         ))
                     )}
