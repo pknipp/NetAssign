@@ -1,6 +1,5 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/my_assign#)
 synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
-for questions, incorporate something like pickone/picksame (will require bracket look-up)
 introduce MC questions
 Get 'x<sup>2</sup>' to render properly (using npm react-innertext package?)
 For models.py, insert the many-to-many relationships?
@@ -26,7 +25,10 @@ Insert an is_admin column in User model (and provide oversight of is_instructor 
 Insert additional columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext or back-end fetch
 Create a gradebook (for students AND teachers).
-Improve editor for Question model (after broadening question format?)
+Improve editor for Question model
+Put validations in Question editor, such as ...
+    no repeats of variable names
+    for type-2 question, lengths of CS-strings must be the same (and nonzero length)
 Rename some components to reflect their function rather than first db Query?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
