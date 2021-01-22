@@ -17,9 +17,9 @@ const EditQuestion = ({ match }) => {
     const [input1Length, setInput1Length] = useState(0);
     const [input2Length, setInput2Length] = useState(0);
     const [inputs1, setInputs1] = useState([]);
-    const [inputs2, setInputs2] = useState([]);
-    const [inputLength, setInputLength] = useState(0);
-    const [inputs, setInputs] = useState([]);
+    const [inputs2, setInputs2] = useState([[]]);
+    // const [inputLength, setInputLength] = useState(0);
+    // const [inputs, setInputs] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -107,15 +107,14 @@ const EditQuestion = ({ match }) => {
             <div className="qinputs">
                 <div className="qinputs1">
                     <h2>Inputs chosen randomly from a number range</h2>
-                    {!canEdit && questionId ? null : <span>
+                    {!canEdit && questionId ? null :
                         <InputControl
                             canEdit={canEdit || !questionId}
                             inputLength={input1Length}
                             setInputLength={setInput1Length}
                             inputs={inputs1}
                             setInputs={setInputs1}
-                        />
-                    </span>}
+                        />}
                     {!input1Length ? null : <table>
                         <thead>
                             <tr>
@@ -143,6 +142,14 @@ const EditQuestion = ({ match }) => {
                 </div>
                 <div className="qinputs2">
                     <h2>Inputs chosen from arrays in correlated manners</h2>
+                    {!canEdit && questionId ? null :
+                        <InputControl
+                        canEdit={canEdit || !questionId}
+                        inputLength={input2Length}
+                        setInputLength={setInput2Length}
+                        inputs={inputs2}
+                        setInputs={setInputs2}
+                    />}
                     {!input2Length ? null : <table>
                         <thead>
                             <tr>
