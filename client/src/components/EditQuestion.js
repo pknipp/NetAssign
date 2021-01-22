@@ -128,7 +128,7 @@ const EditQuestion = ({ match }) => {
                 <div className="qinputs1">
                     <h2>Inputs chosen randomly from a number range</h2>
                     {!canEdit && questionId ? null :
-                        <InputControl
+                        <InputControl key="inputs1"
                             canEdit={canEdit || !questionId}
                             inputLength={input1Length}
                             setInputLength={setInput1Length}
@@ -165,12 +165,15 @@ const EditQuestion = ({ match }) => {
                 <div className="qinputs2">
                     <h2>Inputs chosen from arrays in correlated manners</h2>
                     {!canEdit && questionId ? null :
-                        <InputControl
+                        <InputControl key="inputs2"
                         canEdit={canEdit || !questionId}
                         inputLength={input2Length}
                         setInputLength={setInput2Length}
                         inputs={inputs2}
                         setInputs={setInputs2}
+                        varNames={varNames}
+                        setVarNames={setVarNames}
+                        varArray={true}
                     />}
                     {!input2Length ? null : <table>
                         <thead>
