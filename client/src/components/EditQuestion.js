@@ -145,20 +145,26 @@ const EditQuestion = ({ match }) => {
                     <tr>
                         <th>set</th>
                          <th>variable</th>
-                         <th> CS list from which to pick values</th>
+                         <th> comma-separated list from which to pick values</th>
                     </tr>
                 </thead>
                 <tbody>
                     {!(inputs2.length) ? null : (
                         inputs2.map((input, row, inputs) => (
-                            <tr>
-                                <td rowSpan={input.length} key={row}></td>
-                                {input.map((subinput, subrow) => (
-                                    <tr>
-                                    <Input2 key={`sub${subrow}`} row={row} subrow={subrow} input={subinput} inputs={inputs} setInputs={setInputs2} canEdit={canEdit || !questionId} />
-                                    </tr>
-                                ))}
-                            </tr>
+                            input.map((subinput, subrow) => (
+                                <tr>
+                                    {subrow ? null : <td rowSpan={input.length} key={row}>{subrow + 1}</td>}
+                                    <Input2
+                                        key={`sub${subrow}`}
+                                        row={row}
+                                        subrow={subrow}
+                                        input={subinput}
+                                        inputs={inputs}
+                                        setInputs={setInputs2}
+                                        canEdit={canEdit || !questionId}
+                                    />
+                                </tr>
+                            ))
                         ))
                     )}
                 </tbody>
