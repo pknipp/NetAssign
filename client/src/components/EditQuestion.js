@@ -5,6 +5,8 @@ import Input1 from './Input1';
 import Input2 from './Input2';
 import InputControl from './InputControl';
 import ToggleInfo from './ToggleInfo';
+import info from "../info.png";
+import cancel from "../cancel.jpeg";
 
 
 const EditQuestion = ({ match }) => {
@@ -142,6 +144,7 @@ const EditQuestion = ({ match }) => {
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <div className="qeditor">
             <span><h1>Question Editor</h1></span>
+            <span>(Click '<img src={info} alt="Show information." />/<img src={cancel} alt="Hide information." />' below in order to toggle the display of information about various details.</span>
             <span>
                 <h2>Specifications of random inputs
                 <ToggleInfo onClick={handleToggle} name="randomization" toggle={showInfo.randomization} />

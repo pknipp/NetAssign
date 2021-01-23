@@ -25,7 +25,7 @@ Insert an is_admin column in User model (and provide oversight of is_instructor 
 Insert additional columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext or back-end fetch
 Create a gradebook (for students AND teachers).
-Improve styling of question editor (and include info capsules)
+Improve styling of question editor thru the use of grid - rather than flex - display.
 Rename some components to reflect their function rather than first db Query?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
