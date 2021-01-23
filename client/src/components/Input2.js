@@ -18,8 +18,6 @@ const Input2 = ({ row, input, inputs, setInputs, canEdit, varNames, setVarNames 
                 canEdit={canEdit}
                 varNames={varNames}
                 setVarNames={setVarNames}
-                // inputLength={inputLength}
-                // setInputLength={setInputLength}
             />
         ))
     )

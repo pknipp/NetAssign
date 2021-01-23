@@ -18,17 +18,23 @@ def me():
     if request.method == 'POST':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
-
         question_code=request.json.get('questionCode', None)
-        inputs=request.json.get('inputs', None)
-        errors = parse.parse(question_code, inputs)
-        if errors["errors"]:
-            return errors, 400
+        if not question_code:
+            return {"errors": ["You neglected to submit the question code."]}, 400
+        answer_code=request.json.get('answerCode', None)
+        if not answer_code:
+            return {"errors": ["You neglected to submit the answer code."]}, 400
+        inputs_in=request.json.get('inputs', None)
+        parse_out = parse.parse(question_code, inputs_in)
+        inputs = parse_out["inputs"]
+        errors = parse_out["errors"]
+        if errors:
+            return {"errors": errors}, 400
         new_question = Question(
             instructor_id=user_id,
             question_code=question_code,
             inputs=json.dumps(inputs),
-            answer_code=request.json.get('answerCode', None),
+            answer_code=answer_code,
             is_public=request.json.get('isPublic', None),
             created_at=datetime.now(),
             updated_at=datetime.now()
@@ -87,14 +93,19 @@ def one(qid):
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
         question_code = request.json.get('questionCode', None)
-        inputs = request.json.get('inputs', None)
-        # Here subject question_code and inputs to validation
-        errors = parse.parse(question_code, inputs)
-        if errors["errors"]:
-            return errors, 400
+        if not question_code:
+            return {"errors": ["You neglected to submit the question code."]}, 400
+        answer_code=request.json.get('answerCode', None)
+        if not answer_code:
+            return {"errors": ["You neglected to submit the answer code."]}, 400
+        inputs_in=request.json.get('inputs', None)
+        parse_out = parse.parse(question_code, inputs_in)
+        errors = parse_out["errors"]
+        if errors:
+            return {"errors": errors}, 400
         question.question_code = question_code
-        question.inputs = json.dumps(inputs)
-        question.answer_code = request.json.get('answerCode', None)
+        question.inputs = json.dumps(parse_out["inputs"])
+        question.answer_code = answer_code
         question.is_public = request.json.get('isPublic', None)
         question.updated_at = datetime.now()
         db.session.commit()
