@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 
 const SubInput2 = ({ row, subrow, subinput, inputs, setInputs, canEdit, varNames, setVarNames }) => {
-    console.log(subinput);
     const [varName, setVarName] = useState(subinput[0]);
     const [list, setList] = useState(subinput.slice(1).join(','));
     const [inputLength, setInputLength] = useState(inputs[row].length);

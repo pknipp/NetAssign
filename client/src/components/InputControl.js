@@ -22,6 +22,11 @@ const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs,
             {!inputLength ? null : <button disabled={!canEdit} onClick={
                 () => {
                 let newInputLength = inputLength - 1;
+                if (!varArray) {
+                    varNames.delete(inputs[inputLength - 1][0]);
+                } else {
+                    inputs[inputs.length - 1].forEach(subinput => varNames.delete(subinput[0]))
+                }
                 let newInputs = JSON.parse(JSON.stringify(inputs)).slice(0, -1);
                 setInputLength(newInputLength)
                 setInputs(newInputs);

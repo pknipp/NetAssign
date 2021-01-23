@@ -19,8 +19,6 @@ const EditQuestion = ({ match }) => {
     const [inputs1, setInputs1] = useState([]);
     const [inputs2, setInputs2] = useState([]);
     const [varNames, setVarNames] = useState(new Set())
-    // const [inputLength, setInputLength] = useState(0);
-    // const [inputs, setInputs] = useState([]);
     const [isPublic, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -61,7 +59,6 @@ const EditQuestion = ({ match }) => {
                     setQuestion(data.question);
                     setAnswer(data.answer);
                     setCanEdit(data.instructor_id === currentUser.id);
-
                 }
             } catch (err) {
                 console.error(err)
@@ -87,7 +84,6 @@ const EditQuestion = ({ match }) => {
 
     const postQuestion = () => {
         (async _ => {
-            console.log(questionCode)
             const response = await fetchWithCSRF(`/api/questions`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ questionCode, answerCode, inputs: [...inputs1, ...inputs2], isPublic })
