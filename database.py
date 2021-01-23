@@ -35,21 +35,22 @@ with app.app_context():
     db.session.commit()
 
 questions = [
-    (1, True, "What is the {a}th prime number?", "b", [[['a', 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-                                                          ['b', 7,11,13,17,19,23, 29, 31, 37, 41]]]),
-    (1, True, "What is the {power}th power of the {ordinal}th prime number?", "prime^power", [['power', 4, 5, 1], [['ordinal', 4, 5, 6], ['prime', 7, 11, 13]]]),
     (1, True, "{a} plus {b} equals ... ", "a + b", [['a', 2, 3, 10], ['b', 5, 7, 20]]),
+    (1, True, "What is the capitol of {state}?", "capital", [[['state','Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'],['capital','Montgomery','Juneau','Phoenix','Little Rock','Sacramento','Denver','Hartford','Dover','Tallahassee','Atlanta','Honolulu','Boise','Springfield','Indianapolis','Des Moines','Topeka','Frankfort','Baton Rouge','Augusta','Annapolis','Boston','Lansing','St. Paul','Jackson','Jefferson City','Helena','Lincoln','Carson City','Concord','Trenton','Santa Fe','Albany','Raleigh','Bismarck','Columbus','Oklahoma City','Salem','Harrisburg','Providence','Columbia','Pierre','Nashville','Austin','Salt Lake City','Montpelier','Richmond','Olympia','Charleston','Madison','Cheyenne']]]),
+    (1, True, "T or F: {animal} have four legs?", "TorF", [[["animal","fish", "birds", "lizards", "snakes", "dogs", "humans", "ants"], ["TorF", "F", "F", "T", "F", "T", "F", "F"]]]),
     (1, True, "{a} times {b} equals ... ","a * b", [['a', -3, -1, 20], ['b', 2, 3, 10]]),
-    (1, True, "{a} divided by {b} equals ... ","a/b", [['a', 2, 4, 20], ['b', 1, 3, 20]]),
+    # (1, True, "{a} divided by {b} equals ... ","a/b", [['a', 2, 4, 20], ['b', 1, 3, 20]]),
     (1, True, "{a} raised to the power of {b} equals ... ", "a^b", [['a', 2, 6, 4], ['b', 2, 5, 3]]),
     (1, False, "The square root of {a} equals ... ", "sqrt(a)", [['a', 2, 99, 97]]),
     (1, True, "{a} times {b} plus {c} equals ... ", "a * b + c", [['a', 2,7,5], ['b', 2,9,7], ['c', 2,15,13]]),
-    (1, True, "The natural logarithm of {a} equals ... ", "log(a)", [['a', 2, 99, 97]]),
+    # (1, True, "The natural logarithm of {a} equals ... ", "log(a)", [['a', 2, 99, 97]]),
     (3, True, "The common logarithm of {a} equals ... ", "log(a)/log(10)", [['a', 2, 99, 97]]),
-    (1, True, "The cosine of {a} rads equals ... ", "cos(a)", [['a', -3, 3, 60]]),
+    # (1, True, "The cosine of {a} rads equals ... ", "cos(a)", [['a', -3, 3, 60]]),
     (3, False, "The arctangent of {a} equals (when expressed in radians) ...", "atan(a)", [['a', -4, 4, 80]]),
     (1, True, "If a girl runs at {a} m/s for {b} hours, how many km does she travel?", "a * b * 3.6", [["a", 4, 7, 30], ['b', 2, 3, 10]]),
-    (1, True, "What is the capitol of {state}?", "capital", [[['state','Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'],['capital','Montgomery','Juneau','Phoenix','Little Rock','Sacramento','Denver','Hartford','Dover','Tallahassee','Atlanta','Honolulu','Boise','Springfield','Indianapolis','Des Moines','Topeka','Frankfort','Baton Rouge','Augusta','Annapolis','Boston','Lansing','St. Paul','Jackson','Jefferson City','Helena','Lincoln','Carson City','Concord','Trenton','Santa Fe','Albany','Raleigh','Bismarck','Columbus','Oklahoma City','Salem','Harrisburg','Providence','Columbia','Pierre','Nashville','Austin','Salt Lake City','Montpelier','Richmond','Olympia','Charleston','Madison','Cheyenne']]]),
+    (1, True, "What is the {a}th prime number?", "b", [[['a', 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                                          ['b', 7,11,13,17,19,23, 29, 31, 37, 41]]]),
+    (1, True, "What is the {power}th power of the {ordinal}th prime number?", "prime^power", [['power', 4, 5, 1], [['ordinal', 4, 5, 6], ['prime', 7, 11, 13]]]),
     ]
 
 with app.app_context():
