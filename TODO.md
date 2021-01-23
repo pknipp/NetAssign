@@ -25,10 +25,7 @@ Insert an is_admin column in User model (and provide oversight of is_instructor 
 Insert additional columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext or back-end fetch
 Create a gradebook (for students AND teachers).
-Improve editor for Question model
-Put validations in Question editor, such as ...
-    for type-2 question, lengths of CS-strings must be the same (and length > 2?)
-    make list of prohibited keywords
+Improve styling of question editor (and include info capsules)
 Rename some components to reflect their function rather than first db Query?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
@@ -40,5 +37,5 @@ Enable elements of subinputs to be either a number, string, or boolean, as follo
     c) 'F' -> false, 'T' -> true
     d) Number(#).  If isNaN(#) -> string it.  Otherwise, leave it.
     e) Don't forget to reverse this when going in the other direction.
-In instructions for question editor, provide list of prohibited (ie, key-) strings
+In instructions for question editor, provide link to cexprtk page.
 Somewhere in question editor, insert desired number of decimal places.

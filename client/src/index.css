@@ -11,4 +11,5 @@ input.smaller {width: 4em}
 input.larger  {width: 20em}
 .error {color: red}
 .qeditor {display: flex; flex-direction: column; align-items: center}
-.qinputs {display: flex; justify-content: space-between}
+.qinputs {display: flex; justify-content: space-between; align-items: space-between}
+.qinputs>* {display: flex; flex-direction: column; align-items: center}

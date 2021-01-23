@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 
-const SubInput2 = ({ row, subrow, input, inputs, setInputs, canEdit, varNames, setVarNames }) => {
-    const [varName, setVarName] = useState(input[0]);
-    const [list, setList] = useState(input.slice(1).join(','));
+const SubInput2 = ({ row, subrow, subinput, inputs, setInputs, canEdit, varNames, setVarNames }) => {
+    console.log(subinput);
+    const [varName, setVarName] = useState(subinput[0]);
+    const [list, setList] = useState(subinput.slice(1).join(','));
     const [inputLength, setInputLength] = useState(inputs[row].length);
     return (
         <tr>
@@ -14,8 +15,8 @@ const SubInput2 = ({ row, subrow, input, inputs, setInputs, canEdit, varNames, s
                     let j = 0;
                     while (varNames.has("x" + j)) j++;
                     let varName = "x" + j;
-                    let addedArray = [varName, new Array(inputs[row][subrow].length - 1).fill(0)];
-                    let newInputs = [...JSON.parse(JSON.stringify(inputs))];
+                    let addedArray = [varName, ...new Array(inputs[row][subrow].length - 1).fill(0)];
+                    let newInputs = JSON.parse(JSON.stringify(inputs));
                     newInputs[row] = [...newInputs[row], addedArray];
                     varNames.add(varName);
                     setVarNames(varNames);
@@ -24,10 +25,10 @@ const SubInput2 = ({ row, subrow, input, inputs, setInputs, canEdit, varNames, s
                 }}>
                      inc
                 </button>
-                <button onClick={
+                {(inputs[row].length === 1) ? null : <button onClick={
                     () => {
                     let newInputLength = inputLength - 1;
-                    let newInputs = [...JSON.parse(JSON.stringify(inputs))];
+                    let newInputs = JSON.parse(JSON.stringify(inputs));
                     varNames.delete(newInputs[row][newInputs[row].length - 1][0]);
                     newInputs[row] = newInputs[row].slice(0, -1);
                     setVarNames(varNames);
@@ -35,7 +36,7 @@ const SubInput2 = ({ row, subrow, input, inputs, setInputs, canEdit, varNames, s
                     setInputs(newInputs);
                 }}>
                      dec
-                </button>
+                </button>}
                 <br/>
                 number (from {inputs[row].length})
             </td>}

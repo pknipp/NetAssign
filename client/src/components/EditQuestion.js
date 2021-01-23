@@ -41,7 +41,6 @@ const EditQuestion = ({ match }) => {
                     let varNames = new Set();
                     inputs.forEach(input => {
                         if (typeof(input[0]) === "string") {
-                            debugger
                             inputs1.push(input);
                             varNames.add(input[0]);
                         } else {
@@ -51,7 +50,6 @@ const EditQuestion = ({ match }) => {
                             });
                         }
                     })
-                    debugger
                     setQuestionCode(data.question_code);
                     setAnswerCode(data.answer_code);
                     setInputs1(inputs1);
@@ -78,22 +76,29 @@ const EditQuestion = ({ match }) => {
                 body: JSON.stringify({ questionCode, answerCode, inputs: [...inputs1, ...inputs2], isPublic })
             });
             const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            history.push("/questions")
+            if (!response.ok) {
+                setErrors(responseData.errors);
+            } else {
+                if (responseData.messages) setMessages(responseData.messages)
+                history.push("/questions")
+            }
         })();
     }
 
     const postQuestion = () => {
         (async _ => {
+            console.log(questionCode)
             const response = await fetchWithCSRF(`/api/questions`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ questionCode, answerCode, inputs: [...inputs1, ...inputs2], isPublic })
             });
             const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            history.push("/questions")
+            if (!response.ok) {
+                setErrors(responseData.errors);
+            } else {
+                if (responseData.messages) setMessages(responseData.messages)
+                history.push("/questions")
+            }
         })();
     }
 
@@ -166,16 +171,18 @@ const EditQuestion = ({ match }) => {
                 <div className="qinputs2">
                     <h3>correlated choices from arrays</h3>
                     {!canEdit && questionId ? null :
-                        <InputControl key="inputs2"
-                        canEdit={canEdit || !questionId}
-                        inputLength={input2Length}
-                        setInputLength={setInput2Length}
-                        inputs={inputs2}
-                        setInputs={setInputs2}
-                        varNames={varNames}
-                        setVarNames={setVarNames}
-                        varArray={true}
-                    />}
+                        <InputControl
+                            key="inputs2"
+                            canEdit={canEdit || !questionId}
+                            inputLength={input2Length}
+                            setInputLength={setInput2Length}
+                            inputs={inputs2}
+                            setInputs={setInputs2}
+                            varNames={varNames}
+                            setVarNames={setVarNames}
+                            varArray={true}
+                        />
+                    }
                     {!input2Length ? null : <table>
                         <thead>
                             <tr>
@@ -186,12 +193,12 @@ const EditQuestion = ({ match }) => {
                         </thead>
                         <tbody>
                             {!(inputs2.length) ? null : (
-                                inputs2.map((input, row, inputs) => (
+                                inputs2.map((input, row) => (
                                     <Input2
                                         key={`${row}2`}
                                         row={row}
                                         input={input}
-                                        inputs={inputs}
+                                        inputs={inputs2}
                                         setInputs={setInputs2}
                                         canEdit={canEdit || !questionId}
                                         varNames={varNames}
@@ -203,27 +210,21 @@ const EditQuestion = ({ match }) => {
                     </table>}
                 </div>
             </div>
-            <span>
-                encoded question string:
-                <textarea
-                    placeholder="Question code" value={questionCode} rows="3" cols="50"
-                    onChange={e => setQuestionCode(e.target.value)} disabled={!canEdit && questionId}
-                />
-            </span>
-            <span>
-                encoded answer string:
-                <input
-                    type="text" placeholder="Answer code" value={answerCode} className="larger"
-                    onChange={e => setAnswerCode(e.target.value)} disabled={!canEdit && questionId}
-                />
-            </span>
-            <span>
-                randomized question: {question}
-            </span>
-            <span>
-                corresponding answer: {answer}
-                <br/> (Refresh browser in order to see other versions.)
-            </span>
+            encoded question string:
+            <textarea
+                placeholder="Question code" value={questionCode} rows="3" cols="50"
+                onChange={e => setQuestionCode(e.target.value)} disabled={!canEdit &&questionId}
+            />
+            encoded answer string:
+            <input
+                type="text" placeholder="Answer code" value={answerCode} className="larger"
+                onChange={e => setAnswerCode(e.target.value)} disabled={!canEdit &&questionId}
+            />
+            <div>randomized question:</div>
+            <div>{question}</div>
+            <div>corresponding answer:</div>
+            <div>{answer}</div>
+            (Refresh browser in order to see other versions.)
             {(!canEdit && questionId) ? null : (
                 <span>
                     sharing: {isPublic ? "public " : "private "}

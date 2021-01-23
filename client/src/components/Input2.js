@@ -12,14 +12,14 @@ const Input2 = ({ row, input, inputs, setInputs, canEdit, varNames, setVarNames 
                 key={`${row}${subrow}`}
                 row={row}
                 subrow={subrow}
-                input={subinput}
+                subinput={subinput}
                 inputs={inputs}
                 setInputs={setInputs}
                 canEdit={canEdit}
                 varNames={varNames}
                 setVarNames={setVarNames}
-                inputLength={inputLength}
-                setInputLength={setInputLength}
+                // inputLength={inputLength}
+                // setInputLength={setInputLength}
             />
         ))
     )

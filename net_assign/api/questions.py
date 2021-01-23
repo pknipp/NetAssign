@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request, redirect
 from flask_login import current_user
 from net_assign.models import Question, db, User
 from . import version
+from . import parse
 from datetime import datetime
 from sqlalchemy import or_
 from random import random, randint
@@ -17,12 +18,18 @@ def me():
     if request.method == 'POST':
         if not request.is_json:
             return jsonify({"message": "Missing JSON in request"}), 400
+
+        question_code=request.json.get('questionCode', None)
+        inputs=request.json.get('inputs', None)
+        errors = parse.parse(question_code, inputs)
+        if errors["errors"]:
+            return errors, 400
         new_question = Question(
             instructor_id=user_id,
-            question_code=request.json.get('questionCode'),
-            answer_code=request.json.get('answerCode'),
-            inputs=json.dumps(request.json.get('inputs')),
-            is_public=request.json.get('isPublic'),
+            question_code=question_code,
+            inputs=json.dumps(inputs),
+            answer_code=request.json.get('answerCode', None),
+            is_public=request.json.get('isPublic', None),
             created_at=datetime.now(),
             updated_at=datetime.now()
         )
@@ -79,9 +86,15 @@ def one(qid):
     if request.method == 'PUT':
         if not request.is_json:
             return jsonify({"msg": "Missing JSON in request"}), 400
-        question.question_code = request.json.get('questionCode', None)
+        question_code = request.json.get('questionCode', None)
+        inputs = request.json.get('inputs', None)
+        # Here subject question_code and inputs to validation
+        errors = parse.parse(question_code, inputs)
+        if errors["errors"]:
+            return errors, 400
+        question.question_code = question_code
+        question.inputs = json.dumps(inputs)
         question.answer_code = request.json.get('answerCode', None)
-        question.inputs = json.dumps(request.json.get('inputs', None))
         question.is_public = request.json.get('isPublic', None)
         question.updated_at = datetime.now()
         db.session.commit()
