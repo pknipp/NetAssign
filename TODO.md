@@ -34,3 +34,5 @@ Determine how to handle a situation in which question is edited after assignment
 In instructions for question editor, provide link to cexprtk page.
 Somewhere in question editor, insert desired number of decimal places.
 Provide means for an instructor to deploy (ie, schedule) an assignment. (From "Home" or "Assignments"?)
+Ensure that whitespace is appropriately removed from inputs and question_code.
+For fill-in-the-blank question in which you want to allow multiple correct answers, allow for multiple correct answers?

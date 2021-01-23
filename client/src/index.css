@@ -13,3 +13,4 @@ input.larger  {width: 20em}
 .qeditor {display: flex; flex-direction: column; align-items: center}
 .qinputs {display: flex; justify-content: space-between; align-items: space-between}
 .qinputs>* {display: flex; flex-direction: column; align-items: center}
+button.info {margin-left: 5px; padding: 0px; }

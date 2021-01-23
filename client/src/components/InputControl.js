@@ -33,7 +33,7 @@ const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs,
             }}>
                 decrease
             </button>}
-            <> (from <>{inputLength}</>) the number of this type</>
+            <> (from <>{inputLength}</>) the number of {varArray ? " groups of type-2 " : " type-1 "}variables</>
         </span>
     )
 };

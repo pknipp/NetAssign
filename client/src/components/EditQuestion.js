@@ -4,6 +4,7 @@ import AuthContext from '../auth';
 import Input1 from './Input1';
 import Input2 from './Input2';
 import InputControl from './InputControl';
+import ToggleInfo from './ToggleInfo';
 
 
 const EditQuestion = ({ match }) => {
@@ -22,6 +23,7 @@ const EditQuestion = ({ match }) => {
     const [isPublic, setIsPublic] = useState(true);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [showInfo, setShowInfo] = useState({});
     const history = useHistory();
 
     useEffect(() => {
@@ -121,14 +123,43 @@ const EditQuestion = ({ match }) => {
             history.push("/questions")
         })();
     }
+
+    const handleToggle = e => {
+        let name = e.currentTarget.name;
+        let newShowInfo = {...showInfo};
+        newShowInfo[name] = !showInfo[name];
+        setShowInfo(newShowInfo);
+    }
+
+    let text = {
+        randomization: "NetAssign allows for two types of variable randomization: (1) a single variable assuming values which are uniformly spread in a particular interval, and (2) one or (more often) more variables which are chosen from the same number of lists, in a correlated manner.  The name for each variable may consist of one or more characters, each of which may be either a letter (upper or lower case), digit, or underscore (_).  The first character may not be a number.  Note that a single question can use both types of randomization.  Click below for more information about each type.",
+        type1: "Click 'increase/decrease' to set the number of variables of this type that you want.  For each variable, choose its name and specify the minimum and maximum values that it may have. Last, specify the number of different values (minus 1) that it may possibly have.",
+        type2: "First, decide how many groups of variables you want to choose in a correlated manner, and click the 'increase' buttons to generate rows for these.  Within each group, click the 'inc' button to generate the variables (usually two) the you need for that particular group.  After choosing the name for each variable, type the list of values for each variable, separated by commas.  Each list should solely of either numbers, booleans (expressed as either T/F, true/false, or True/False), or character strings.  To allow the values to be chosen in a correlated manner, the length of each list (in a group) should be the same.",
+        questionCode: "This should consist of the text of your question but with variable values replaced by '{variableName}', ie the name of the variable surrounded by braces. For example for a question which requires the sum of two numbers, this would be 'What is the sum of {x1} and {x2}?', although you may use different variable names.",
+        answerCode: `For a fill-in-the-blank question (including true-false), this should contain only one item: the name of the variable which represents the answer.  For a numerical-type question, this should contain a (perhaps) simple arithmetic expression which utilizes the names of your variables (not enclosed with braces) and operators such as +, -, *, /, and ^ (for exponentiation).  For a complete list of these operations, see http://www.partow.net/programming/exprtk or click the link above.`,
+    }
+
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <div className="qeditor">
             <span><h1>Question Editor</h1></span>
-            <h2>Specifications of random inputs</h2>
+            <span>
+                <h2>Specifications of random inputs
+                <ToggleInfo onClick={handleToggle} name="randomization" toggle={showInfo.randomization} />
+                </h2>
+            </span>
+            <div>
+                <i>{showInfo.randomization ? text.randomization : null}</i>
+            </div>
             <ul>{errors.map(err => <li key={err} className="error">{err}</li>)}</ul>
             <div className="qinputs">
                 <div className="qinputs1">
-                    <h3>chosen from a number range</h3>
+                    <h3>
+                        1) chosen from a number range
+                        <ToggleInfo onClick={handleToggle} name="type1" toggle={showInfo.type1} />
+                    </h3>
+                    <div>
+                        <i>{showInfo.type1 ? text.type1 : null}</i>
+                    </div>
                     {!canEdit && questionId ? null :
                         <InputControl key="inputs1"
                             canEdit={canEdit || !questionId}
@@ -165,7 +196,14 @@ const EditQuestion = ({ match }) => {
                     </table>}
                 </div>
                 <div className="qinputs2">
-                    <h3>correlated choices from arrays</h3>
+                    <h3>
+                        2) correlated choices from arrays
+                        <ToggleInfo onClick={handleToggle} name="type2" toggle={showInfo.type2} />
+                    </h3>
+                    <div>
+                        <i>{showInfo.type2 ? text.type2 : null}</i>
+                    </div>
+
                     {!canEdit && questionId ? null :
                         <InputControl
                             key="inputs2"
@@ -206,20 +244,37 @@ const EditQuestion = ({ match }) => {
                     </table>}
                 </div>
             </div>
-            encoded question string:
+            <h4>
+                question code:
+                <ToggleInfo onClick={handleToggle} name="questionCode" toggle={showInfo.questionCode} />
+            </h4>
+            <div>
+                <i>{showInfo.questionCode ? text.questionCode : null}</i>
+            </div>
             <textarea
                 placeholder="Question code" value={questionCode} rows="3" cols="50"
                 onChange={e => setQuestionCode(e.target.value)} disabled={!canEdit &&questionId}
             />
-            encoded answer string:
+            <h4>
+                {!showInfo.answerCode ?
+                    "answer code:"
+                :
+                    <a target="_blank" href="http://www.partow.net/programming/exprtk">
+                        answer code:
+                    </a>
+                }
+                <ToggleInfo onClick={handleToggle} name="answerCode" toggle={showInfo.answerCode} />
+            </h4>
+            <div>
+                <i>{showInfo.answerCode ? text.answerCode : null}</i>
+            </div>
             <input
                 type="text" placeholder="Answer code" value={answerCode} className="larger"
                 onChange={e => setAnswerCode(e.target.value)} disabled={!canEdit &&questionId}
             />
-            <div>randomized question:</div>
-            <div>{question}</div>
-            <div>corresponding answer:</div>
-            <div>{answer}</div>
+            <h4>randomized version:</h4>
+
+            <div>Question: "<i>{question}</i>"   Answer: "<i>{answer}</i>"</div>
             (Refresh browser in order to see other versions.)
             {(!canEdit && questionId) ? null : (
                 <span>
