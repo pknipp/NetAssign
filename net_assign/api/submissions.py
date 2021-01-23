@@ -76,10 +76,11 @@ def put_question(did_and_qindex):
         db.session.commit()
         grade = None
         if response != None:
-            if isinstance(answer, "string"):
-                grade = answer == response
+            print("answer and response are ", answer, response, answer == response)
+            if isinstance(answer, str):
+                grade = (answer == response)
             else:
-                grade = abs(answer - response) <= tolerance * abs(answer) or abs(answer - response) < tolerance
+                grade = abs(answer - float(response)) <= tolerance * abs(answer) or abs(answer - float(response)) < tolerance
         res = {"grade": grade}
         if is_instructor:
            res["answer"] = answer

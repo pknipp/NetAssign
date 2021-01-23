@@ -49,7 +49,7 @@ questions = [
     (1, True, "The cosine of {a} rads equals ... ", "cos(a)", [['a', -3, 3, 60]]),
     (3, False, "The arctangent of {a} equals (when expressed in radians) ...", "atan(a)", [['a', -4, 4, 80]]),
     (1, True, "If a girl runs at {a} m/s for {b} hours, how many km does she travel?", "a * b * 3.6", [["a", 4, 7, 30], ['b', 2, 3, 10]]),
-    # (1, "[{0}, 2][1]", "[x0, 2][1]", [[3, 4, 10]])
+    (1, True, "What is the capitol of {state}?", "capital", [[['state','Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'],['capital','Montgomery','Juneau','Phoenix','Little Rock','Sacramento','Denver','Hartford','Dover','Tallahassee','Atlanta','Honolulu','Boise','Springfield','Indianapolis','Des Moines','Topeka','Frankfort','Baton Rouge','Augusta','Annapolis','Boston','Lansing','St. Paul','Jackson','Jefferson City','Helena','Lincoln','Carson City','Concord','Trenton','Santa Fe','Albany','Raleigh','Bismarck','Columbus','Oklahoma City','Salem','Harrisburg','Providence','Columbia','Pierre','Nashville','Austin','Salt Lake City','Montpelier','Richmond','Olympia','Charleston','Madison','Cheyenne']]]),
     ]
 
 with app.app_context():

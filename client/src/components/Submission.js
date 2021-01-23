@@ -17,7 +17,7 @@ const Submission = ({ qAndR, number, deploymentId }) => {
             {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
                 // credentials: 'include',
-                body: JSON.stringify({response: (response === "") ? null : Number(response)})
+                body: JSON.stringify({response: (response === "") ? null : response})
             }
         );
         const responseData = await res.json();
