@@ -49,4 +49,4 @@ def parse(question_code, inputs):
     for var in input_vars:
         if var in keywords:
             errors.append("{0} is a reserved keyword, so you must change the name of that variable.".format(var))
-    return {"errors": errors, "inputs": new_inputs}
+    return {"errors": errors, "inputs": new_inputs, "vars": input_vars}

@@ -1,11 +1,13 @@
 import cexprtk
 from random import random, randint, seed
+from . import parse
 
 seed()
 dec = 4
 
 def version(question_code, inputs, answer_code):
-    print("in version, inputs = ", inputs)
+    parse_out = parse.parse(question_code, inputs)
+    vars = parse_out["vars"]
     kwargs = dict()
     for i in range(len(inputs)):
         input = inputs[i][0]
@@ -22,5 +24,18 @@ def version(question_code, inputs, answer_code):
             value = round(inputs[i][1]+(inputs[i][2]-inputs[i][1])*randint(0, inputs[i][3])/inputs[i][3] ,dec)
             kwargs[key] = value
     question = question_code.format(**kwargs)
-    answer = round(cexprtk.evaluate_expression(answer_code, kwargs), dec)
+    # First, see if this answer is numerical and unrandomized
+    try:
+        answer = float(answer_code)
+    except ValueError:
+        # Next, see if the answer is for randomized T/F or fill-in-the-blank questions
+        if answer_code in vars:
+            answer = kwargs[answer_code]
+            if answer == True:
+                answer = "T"
+            if answer == False:
+                answer = "F"
+        # Finally, the answer must be for randomized numerical question
+        else:
+            answer = round(cexprtk.evaluate_expression(answer_code, kwargs), dec)
     return dict(question=question, answer=answer)
