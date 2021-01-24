@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const InputControl = ({ canEdit, inputLength, setInputLength, inputs, setInputs, varNames, setVarNames, varArray}) => {
 

@@ -134,11 +134,12 @@ const EditQuestion = ({ match }) => {
     }
 
     let text = {
-        randomization: "NetAssign allows for two types of variable randomization: (1) a single variable assuming values which are uniformly spread in a particular interval, and (2) one or (more often) more variables which are chosen from the same number of lists, in a correlated manner.  The name for each variable may consist of one or more characters, each of which may be either a letter (upper or lower case), digit, or underscore (_).  The first character may not be a number.  Note that a single question can use both types of randomization.  Click below for more information about each type.",
+        randomization: "NetAssign allows for two types of variable randomization: (1) a single variable assuming values which are uniformly spread in a particular interval, and/or (2) one or (more often) more variables which are chosen from the same number of lists, in a correlated manner.  The name for each variable may consist of one or more characters, each of which may be either a letter (upper or lower case), digit, or underscore (_).  The first character may not be a number.  A single question can use both types of randomization.  Click below for more information about each type.",
         type1: "Click 'increase/decrease' to set the number of variables of this type that you want.  For each variable, choose its name and specify the minimum and maximum values that it may have. Last, specify the number of different values (minus 1) that it may possibly have.",
-        type2: "First, decide how many groups of variables you want to choose in a correlated manner, and click the 'increase' buttons to generate rows for these.  Within each group, click the 'inc' button to generate the variables (usually two) the you need for that particular group.  After choosing the name for each variable, type the list of values for each variable, separated by commas.  Each list should solely of either numbers, booleans (expressed as either T/F, true/false, or True/False), or character strings.  To allow the values to be chosen in a correlated manner, the length of each list (in a group) should be the same.",
-        questionCode: "This should consist of the text of your question but with variable values replaced by '{variableName}', ie the name of the variable surrounded by braces. For example for a question which requires the sum of two numbers, this would be 'What is the sum of {x1} and {x2}?', although you may use different variable names.",
-        answerCode: `For a fill-in-the-blank question (including true-false), this should contain only one item: the name of the variable which represents the answer.  For a numerical-type question, this should contain a (perhaps) simple arithmetic expression which utilizes the names of your variables (not enclosed with braces) and operators such as +, -, *, /, and ^ (for exponentiation).  For a complete list of these operations, see http://www.partow.net/programming/exprtk or click the link above.`,
+        type2: "First, decide how many groups of variables you want to choose in a correlated manner, and click the 'increase' buttons to generate rows for these.  Within each group, click the 'increment/decrement' button to generate the number of variables (usually two) the you need for that particular group.  After choosing the name for each variable, type the list of its values separated by commas.  Each list should consist solely of either numbers, booleans (expressed as either T/F, true/false, or True/False), or character strings.  To allow the values to be chosen in a correlated manner, the length of each list should be the same within each group.",
+        questionCode: "This should consist of the text of your question but with variable values replaced by {variableName}, i.e. the variable's name surrounded by braces. For example this would be 'What is the sum of {a} and {b}?' for a question which requires the sum of two numbers.",
+        answerCode: `For a fill-in-the-blank question (including true-false), this should contain only one item: the name of the variable which represents the answer.  For a numerical-type question, this should contain a arithmetic expression which utilizes the names of your variables (not enclosed with braces) and operators such as +, -, *, /, and ^ (for exponentiation).  For the extensive list of these operations (trigonometric, logarithmic, etc.), see http://www.partow.net/programming/exprtk or click the link above.`,
+        privacy: "This controls whether or not other instructors will be able to see, use, and/or duplicate this question.  (Regardless they'll not have edit/delete privileges.)",
     }
 
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
@@ -157,7 +158,7 @@ const EditQuestion = ({ match }) => {
             <div className="qinputs">
                 <div className="qinputs1">
                     <h3>
-                        1) chosen from a number range
+                        1) inputs chosen from a range of numbers
                         <ToggleInfo onClick={handleToggle} name="type1" toggle={showInfo.type1} />
                     </h3>
                     <div>
@@ -198,9 +199,10 @@ const EditQuestion = ({ match }) => {
                         </tbody>
                     </table>}
                 </div>
+                <div><h3>and/or</h3></div>
                 <div className="qinputs2">
                     <h3>
-                        2) correlated choices from arrays
+                        2) inputs which are chosen from lists
                         <ToggleInfo onClick={handleToggle} name="type2" toggle={showInfo.type2} />
                     </h3>
                     <div>
@@ -228,9 +230,10 @@ const EditQuestion = ({ match }) => {
                                  <th> comma-separated list from which to pick values</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        {/* <tbody> */}
                             {!(inputs2.length) ? null : (
                                 inputs2.map((input, row) => (
+                                    <tbody>
                                     <Input2
                                         key={`${row}2`}
                                         row={row}
@@ -241,9 +244,10 @@ const EditQuestion = ({ match }) => {
                                         varNames={varNames}
                                         setVarNames={setVarNames}
                                     />
+                                    </tbody>
                                 ))
                             )}
-                        </tbody>
+                        {/* </tbody> */}
                     </table>}
                 </div>
             </div>
@@ -277,17 +281,23 @@ const EditQuestion = ({ match }) => {
             />
             <h4>randomized version:</h4>
 
-            <div>Question: "<i>{question}</i>"   Answer: "<i>{answer}</i>"</div>
+            <div>Question: <i>"{question}"</i>   Answer: <i>"{answer}"</i></div>
             (Refresh browser in order to see other versions.)
             {(!canEdit && questionId) ? null : (
-                <span>
-                    sharing: {isPublic ? "public " : "private "}
-                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
-                    <br/>
-                    <button onClick={questionId ? putQuestion : postQuestion}>
-                        {questionId ? "Submit changes" : "Create question"}
-                    </button>
-                </span>
+                <>
+                <h4>privacy setting:
+                <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
+                </h4>
+                <div>
+                    <i>{showInfo.privacy ? text.privacy : null}</i>
+                </div>
+                <>{isPublic ? "public " : "private "}</>
+                <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                <br/>
+                <button onClick={questionId ? putQuestion : postQuestion}>
+                    <h3>{questionId ? "Submit changes" : "Create question"}</h3>
+                </button>
+                </>
             )}
             {!questionId ? null :
                 <>
