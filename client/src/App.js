@@ -19,6 +19,8 @@ import EditAssignment from './components/EditAssignment';
 import EditDeployment from './components/EditDeployment';
 import EditCourse from './components/EditCourse';
 import Roster from './components/Roster';
+import Welcome from './components/Welcome';
+import WelcomeType from './components/WelcomeType';
 
 const App = _ => {
     const [fetchWithCSRF] = useState(() => fetch);
@@ -43,9 +45,12 @@ const App = _ => {
         <AuthContext.Provider value={authContextValue}>
             {loading ? <h1>Loading</h1> :
                 <BrowserRouter>
-                    <NavBar />
                     <div className="switch">
                         <Switch>
+                            <AuthRoute exact path="/welcome" component={Welcome} />
+                            {/* <AuthRoute exact path="/welcomeinstructor" userType={"instructor"} component={WelcomeType} /> */}
+                            <AuthRoute exact path="/welcomeinstructor" userType={"instructor"} component={NavBar} />
+                            <AuthRoute exact path="/welcomestudent" userType={"student"} component={NavBar} />
                             <AuthRoute exact path="/logininstructor" defaultUser={"demoInstructor@aol.com"} component={LogIn} />
                             <AuthRoute exact path="/loginstudent" defaultUser={"demoStudent@aol.com"} component={LogIn} />
                             <AuthRoute exact path="/signupInstructor" isInstructor={true} component={SignUp} />
