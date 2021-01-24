@@ -135,7 +135,7 @@ const EditQuestion = ({ match }) => {
 
     let text = {
         randomization: "NetAssign allows for two types of variable randomization: (1) a single variable assuming values which are uniformly spread in a particular interval, and/or (2) one or (more often) more variables which are chosen from the same number of lists, in a correlated manner.  The name for each variable may consist of one or more characters, each of which may be either a letter (upper or lower case), digit, or underscore (_).  The first character may not be a number.  A single question can use both types of randomization.  Click below for more information about each type.",
-        type1: "Click 'increase/decrease' to set the number of variables of this type that you want.  For each variable, choose its name and specify the minimum and maximum values that it may have. Last, specify the number of different values (minus 1) that it may possibly have.",
+        type1: "Click 'increase/decrease' to set the number of variables of this type that you want.  For each variable, choose its name and specify the minimum and maximum values that it may have. Last, choose the number of divisions for this interval.  You'll probably want to choose this in a manner which'll lead to inputs having only a small number - if any - decimal places.",
         type2: "First, decide how many groups of variables you want to choose in a correlated manner, and click the 'increase' buttons to generate rows for these.  Within each group, click the 'increment/decrement' button to generate the number of variables (usually two) the you need for that particular group.  After choosing the name for each variable, type the list of its values separated by commas.  Each list should consist solely of either numbers, booleans (expressed as either T/F, true/false, or True/False), or character strings.  To allow the values to be chosen in a correlated manner, the length of each list should be the same within each group.",
         questionCode: "This should consist of the text of your question but with variable values replaced by {variableName}, i.e. the variable's name surrounded by braces. For example this would be 'What is the sum of {a} and {b}?' for a question which requires the sum of two numbers.",
         answerCode: `For a fill-in-the-blank question (including true-false), this should contain only one item: the name of the variable which represents the answer.  For a numerical-type question, this should contain a arithmetic expression which utilizes the names of your variables (not enclosed with braces) and operators such as +, -, *, /, and ^ (for exponentiation).  For the extensive list of these operations (trigonometric, logarithmic, etc.), see http://www.partow.net/programming/exprtk or click the link above.`,
@@ -178,9 +178,9 @@ const EditQuestion = ({ match }) => {
                         <thead>
                             <tr>
                                  <th>variable</th>
-                                 <th>min<br/> value</th>
-                                 <th>max<br/> value</th>
-                                 <th># of<br/> divisions</th>
+                                 <th>mininimum<br/> value</th>
+                                 <th>maximum<br/> value</th>
+                                 <th>number of<br/> divisions</th>
                             </tr>
                         </thead>
                         <tbody>

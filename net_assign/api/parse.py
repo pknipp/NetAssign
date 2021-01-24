@@ -30,6 +30,7 @@ def parse(question_code, inputs):
                 for i in range(len(subinput)):
                     value = subinput[i]
                     if i == 0:
+                        # The variable name needs no parsing.
                         pass
                     elif value == "true" or value == True or value == "T":
                         value = True
@@ -37,8 +38,10 @@ def parse(question_code, inputs):
                         value = False
                     else:
                         try:
+                            # Check if it's a number.  If so, don't put a zero unnecessarily in the tenths place.
                             value = int(value) if int(value) == float(value) else float(value)
                         except ValueError:
+                            # Leave it as a string if it's neither boolean nor numerical.
                             pass
                     new_subinput.append(value)
                 new_input.append(new_subinput)

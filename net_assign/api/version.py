@@ -22,6 +22,8 @@ def version(question_code, inputs, answer_code):
         else:
             key = inputs[i][0]
             value = round(inputs[i][1]+(inputs[i][2]-inputs[i][1])*randint(0, inputs[i][3])/inputs[i][3] ,dec)
+            # Do not unnecessarily put a zero in the tenths place.
+            value = int(value) if value == int(value) else value
             kwargs[key] = value
     question = question_code.format(**kwargs)
     # First, see if this answer is numerical and unrandomized
