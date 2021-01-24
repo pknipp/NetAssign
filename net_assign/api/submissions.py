@@ -40,9 +40,10 @@ def get_questions(did):
                 response = None
                 question_and_answer_and_response = {"id": id, "question": question, "answer": answer, "response": response}
                 qars.append(question_and_answer_and_response)
+                question_and_response = json.loads(json.dumps(question_and_answer_and_response))
                 # Do not include answer in list to be sent to front-end, except for instructors
                 if not is_instructor:
-                    del question_and_answer_and_response["answer"]
+                    del question_and_response["answer"]
                 qrs.append(question_and_answer_and_response)
             new_submission = Submission(
                 student_id=student_id,

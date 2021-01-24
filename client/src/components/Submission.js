@@ -13,11 +13,13 @@ const Submission = ({ qAndR, number, deploymentId }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
 
     const putSubmission = async () => {
+        let newResponse = response;
+        while (newResponse && newResponse[0] === " ") newResponse = newResponse.slice(1);
+        while (newResponse && newResponse[newResponse.length - 1] === " ") newResponse = newResponse.slice(0, -1);
         const res = await fetchWithCSRF(`/api/submissions/${deploymentId + " " + number}`,
             {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                // credentials: 'include',
-                body: JSON.stringify({response: (response === "") ? null : response})
+                body: JSON.stringify({response: (newResponse === "") ? null : newResponse})
             }
         );
         const responseData = await res.json();

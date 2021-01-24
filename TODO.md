@@ -25,14 +25,13 @@ Insert an is_admin column in User model (and provide oversight of is_instructor 
 Insert additional columns (fname, lname, etc) in User model.
 Make sure that all front-end routes are protected by authContext or back-end fetch
 Create a gradebook (for students AND teachers).
-Improve styling of question editor thru the use of grid - rather than flex - display.
 Rename some components to reflect their function rather than first db Query?
 Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
 When fetching lists from back-end, sort them in the most logical manner
 Increase # of Question seeds (but not until after broadening question format?)
 Determine how to handle a situation in which question is edited after assignment w/it is downloaded.
 Provide means for an instructor to deploy (ie, schedule) an assignment. (From "Home" or "Assignments"?)
-Ensure that whitespace is appropriately removed from inputs and fill-in-blank answer & response (in back or front?)
+Ensure that whitespace is appropriately removed from input2s and fill-in-blank answer (in back or front?)
 For fill-in-the-blank question in which you want to allow multiple correct answers, allow this somehow?
 Make a splash page that promotes NetAssign and then asks user to choose student vs instructor route.
 Make separate pages for student and instructor, each with more (specific) info and 2 links: login and signup.
