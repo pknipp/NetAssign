@@ -32,7 +32,7 @@ When fetching lists from back-end, sort them in the most logical manner
 Increase # of Question seeds (but not until after broadening question format?)
 Determine how to handle a situation in which question is edited after assignment w/it is downloaded.
 Provide means for an instructor to deploy (ie, schedule) an assignment. (From "Home" or "Assignments"?)
-Ensure that whitespace is appropriately removed from inputs and question_code (in back or front?)
-For fill-in-the-blank question in which you want to allow multiple correct answers, allow for multiple correct answers?
+Ensure that whitespace is appropriately removed from inputs and fill-in-blank answer & response (in back or front?)
+For fill-in-the-blank question in which you want to allow multiple correct answers, allow this somehow?
 Make a splash page that promotes NetAssign and then asks user to choose student vs instructor route.
 Make separate pages for student and instructor, each with more (specific) info and 2 links: login and signup.

@@ -76,7 +76,6 @@ def put_question(did_and_qindex):
         db.session.commit()
         grade = None
         if response != None:
-            print("answer and response are ", answer, response, answer == response)
             if isinstance(answer, str):
                 grade = (answer == response)
             else:
