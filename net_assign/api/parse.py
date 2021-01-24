@@ -37,7 +37,7 @@ def parse(question_code, inputs):
                         value = False
                     else:
                         try:
-                            value = float(value)
+                            value = int(value) if int(value) == float(value) else float(value)
                         except ValueError:
                             pass
                     new_subinput.append(value)

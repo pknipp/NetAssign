@@ -31,7 +31,7 @@ Figure out how to input deadline (type="datetime-local", for Deployment CU route
 When fetching lists from back-end, sort them in the most logical manner
 Increase # of Question seeds (but not until after broadening question format?)
 Determine how to handle a situation in which question is edited after assignment w/it is downloaded.
-Somewhere in question editor, insert desired number of decimal places.
+In "qinputs1" in EditQuestion, insert desired number of decimal places & use this in version.py (ie for input & answer)
 Provide means for an instructor to deploy (ie, schedule) an assignment. (From "Home" or "Assignments"?)
 Ensure that whitespace is appropriately removed from inputs and question_code (in back or front?)
 For fill-in-the-blank question in which you want to allow multiple correct answers, allow for multiple correct answers?
