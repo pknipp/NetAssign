@@ -81,7 +81,7 @@ const Roster = ({ match }) => {
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
             <p align="center">
-                {students.length ? `My current students:` : `I have no students now.`}
+                <h3>{students.length ? `My course's students:` : `I have no students now.`}</h3>
             </p>
             <ul>
                 {students.map(student => (
@@ -99,6 +99,7 @@ const Roster = ({ match }) => {
                     <button onClick={() => getMoreStudents()}>
                         {showMoreStudents ? "Hide" : "Show"} students who are not enrolled in this course.
                     </button>
+                    {showMoreStudents ? <h3>Other students:</h3> : null}
                     <ul>
                         {moreStudents.filter(student => !studentIds.includes(student.id)).map(student => (
                             <li key={student.id}>

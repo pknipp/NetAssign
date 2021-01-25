@@ -155,6 +155,7 @@ const EditAssignment = ({ match }) => {
         <>
             <h2>Assignment Editor</h2>
             {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
+            <h4>Assignment name:</h4>
             <input
                 type="text" placeholder="Name of new assignment" value={name} className="larger"
                 onChange={e => setName(e.target.value)} disabled={!canEdit && assignmentId}
