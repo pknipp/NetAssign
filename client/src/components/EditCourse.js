@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import AuthContext from '../auth'
-
+import AuthContext from '../auth';
+import ToggleInfo from './ToggleInfo';
 
 const EditCourse = ({ match }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
@@ -10,9 +10,13 @@ const EditCourse = ({ match }) => {
     const [isPublic, setIsPublic] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
+    const [showInfo, setShowInfo] = useState({});
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
+    const text = {
+        privacy: "This controls whether or not other instructors will be able to see, use, and/or duplicate this course.  (Regardless they'll not have edit/delete privileges.)",
+    };
 
     useEffect(() => {
         debugger
@@ -88,8 +92,16 @@ const EditCourse = ({ match }) => {
         })();
     }
 
+    const handleToggle = e => {
+        let name = e.currentTarget.name;
+        let newShowInfo = {...showInfo};
+        newShowInfo[name] = !showInfo[name];
+        setShowInfo(newShowInfo);
+    }
+
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
+            <h2>Course Editor</h2>
             {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
             <input
                 type="text" placeholder="Name of new course" value={name}
@@ -97,16 +109,18 @@ const EditCourse = ({ match }) => {
                 disabled={!canEdit && courseId}
             />
             {(!canEdit && courseId) ? null : (
-                <span>
-                    sharing: {isPublic ? "public " : "private "}
-                    <button onClick={() => {setIsPublic(!isPublic)}}>
-                        toggle
-                    </button>
-                    <br/>
+                <>
+                    <h4>
+                        privacy setting:
+                        <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
+                    </h4>
+                    <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
+                    {isPublic ? "public " : "private "}
+                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
                     <button onClick={courseId ? putCourse : postCourse}>
-                        {courseId ? "Submit changes" : "Create course"}
+                        <h3>{courseId ? "Submit changes" : "Create course"}</h3>
                     </button>
-                </span>
+                </>
             )}
 
             {!courseId ? null :
@@ -117,9 +131,9 @@ const EditCourse = ({ match }) => {
                         " or delete "}
                         this course?</h4>
                     <span>
-                        <button onClick={() => duplicateCourse()}>Duplicate it</button>
+                        <button onClick={() => duplicateCourse()}><h3>duplicate</h3></button>
                         {!canEdit && courseId ? null :
-                        <button onClick={() => deleteCourse()}>Delete it</button>}
+                        <button onClick={() => deleteCourse()}><h3>delete</h3></button>}
                     </span>
                 </>
             }

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import AuthContext from '../auth'
-
+import AuthContext from '../auth';
+import ToggleInfo from './ToggleInfo';
 
 const EditAssignment = ({ match }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
@@ -14,9 +14,14 @@ const EditAssignment = ({ match }) => {
     const [moreQuestions, setMoreQuestions] = useState([]);
     const [showMoreQuestions, setShowMoreQuestions] = useState(false);
     const [rerender, setRerender] = useState(false);
+    const [showInfo, setShowInfo] = useState({});
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
+
+    const text = {
+        privacy: "This controls whether or not other instructors will be able to see, use, and/or duplicate this assignment.  (Regardless they'll not have edit/delete privileges.)",
+    };
 
     useEffect(() => {
         if (assignmentId > 0) {
@@ -39,6 +44,13 @@ const EditAssignment = ({ match }) => {
             }
         })()}
     }, [rerender])
+
+    const handleToggle = e => {
+        let name = e.currentTarget.name;
+        let newShowInfo = {...showInfo};
+        newShowInfo[name] = !showInfo[name];
+        setShowInfo(newShowInfo);
+    }
 
     const putAssignment = () => {
         (async _ => {
@@ -141,6 +153,7 @@ const EditAssignment = ({ match }) => {
 
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
+            <h2>Assignment Editor</h2>
             {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
             <input
                 type="text" placeholder="Name of new assignment" value={name} className="larger"
@@ -148,14 +161,18 @@ const EditAssignment = ({ match }) => {
             />
 
             {(!canEdit && assignmentId) ? null : (
-                <span>
-                    sharing: {isPublic ? "public " : "private "}
+                <>
+                    <h4>
+                        privacy setting:
+                        <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
+                    </h4>
+                    <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
+                    {isPublic ? "public " : "private "}
                     <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
-                    <br/>
                     <button onClick={assignmentId ? putAssignment : postAssignment}>
-                        {assignmentId ? "Submit changes" : "Create Assignment"}
+                        <h3>{assignmentId ? "Submit changes" : "Create question"}</h3>
                     </button>
-                </span>
+                </>
             )}
             {!assignmentId ? null : "Refresh browser in order to see different versions of questions."}
 
@@ -196,10 +213,10 @@ const EditAssignment = ({ match }) => {
                         {canEdit ? " or delete ": " "} this assignment?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateAssignment()}>Duplicate it</button>
+                        <button onClick={() => duplicateAssignment()}><h3>duplicate</h3></button>
                         {messages.map(err => <li key={err}>{err}</li>)}
                         {!canEdit ? null :
-                            <button onClick={() => deleteAssignment()}>Delete it</button>
+                            <button onClick={() => deleteAssignment()}><h3>delete</h3></button>
                         }
                     </span>
                 </>

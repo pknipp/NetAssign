@@ -291,18 +291,16 @@ const EditQuestion = ({ match }) => {
             (Refresh browser in order to see other versions.)
             {(!canEdit && questionId) ? null : (
                 <>
-                <h4>privacy setting:
-                <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
-                </h4>
-                <div>
-                    <i>{showInfo.privacy ? text.privacy : null}</i>
-                </div>
-                <>{isPublic ? "public " : "private "}</>
-                <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
-                <br/>
-                <button onClick={questionId ? putQuestion : postQuestion}>
-                    <h3>{questionId ? "Submit changes" : "Create question"}</h3>
-                </button>
+                    <h4>
+                        privacy setting:
+                        <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
+                    </h4>
+                    <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
+                    {isPublic ? "public " : "private "}
+                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                    <button onClick={questionId ? putQuestion : postQuestion}>
+                        <h3>{questionId ? "Submit changes" : "Create question"}</h3>
+                    </button>
                 </>
             )}
             {!questionId ? null :

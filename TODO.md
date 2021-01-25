@@ -33,5 +33,4 @@ Determine how to handle a situation in which question is edited after assignment
 Provide means for an instructor to deploy (ie, schedule) an assignment. (From "Home" or "Assignments"?)
 Ensure that whitespace is appropriately removed from input2s and fill-in-blank answer (in back or front?)
 For fill-in-the-blank question in which you want to allow multiple correct answers, allow this somehow?
-Make a splash page that promotes NetAssign and then asks user to choose student vs instructor route.
-Make separate pages for student and instructor, each with more (specific) info and 2 links: login and signup.
+Insert an boolean in Deployment model which'll allow student to see answer key after deadline passes.

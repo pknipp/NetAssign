@@ -18,6 +18,10 @@ input.larger  {width: 20em}
 .q-and-a-code {display: grid; grid-template-columns: 50% 50%; justify-items: space-around}
 .q-and-a-code>* {display: flex; flex-direction: column; padding: 0 5px; }
 button.info {margin-left: 5px; padding: 0px; }
-td {border: 1px solid black; }
+td {border: 1px solid black; text-align: center}
 .nav-container {display: flex; flex-direction: column; justify-content: center; align-items: center; }
 .nav-container * {display: flex; padding: 0 40px; }
+.info.text div,ul{padding: 5px 150px; }
+.info.text li{padding: 5px 0; }
+input {margin: 5px; }
+button {margin: 5px }

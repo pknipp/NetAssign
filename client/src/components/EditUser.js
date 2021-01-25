@@ -44,6 +44,7 @@ const EditUser = _ => {
 
     return (
         <>
+            <h3>My account information:</h3>
             <form onSubmit={putUser}>
                 {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
                 <input
@@ -55,7 +56,7 @@ const EditUser = _ => {
                 <input
                     type="password" placeholder="Confirm new password (required)" value={password2}
                     onChange={e => setPassword2(e.target.value)} className="larger" />
-                <button type="submit">Submit Changes</button>
+                <button type="submit">Submit changes</button>
             </form>
             <form onSubmit={deleteUser}>
                 {messages.map(err => <li key={err}>{err}</li>)}
