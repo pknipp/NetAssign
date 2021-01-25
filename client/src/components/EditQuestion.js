@@ -144,16 +144,13 @@ const EditQuestion = ({ match }) => {
 
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <div className="qeditor">
-            <span><h2>Question Editor</h2></span>
-            <span>(Click '<img src={info} alt="Show information." />/<img src={cancel} alt="Hide information." />' below in order to toggle the display of information about various details.</span>
+            <h2>Question Editor</h2>
             <span>
                 <h3>Specifications of random inputs
                 <ToggleInfo onClick={handleToggle} name="randomization" toggle={showInfo.randomization} />
                 </h3>
             </span>
-            <div>
-                <i>{showInfo.randomization ? text.randomization : null}</i>
-            </div>
+            <div><i>{showInfo.randomization ? text.randomization : null}</i></div>
             <ul>{errors.map(err => <li key={err} className="error">{err}</li>)}</ul>
             <div className="qinputs">
                 <div className="qinputs1">
@@ -161,9 +158,7 @@ const EditQuestion = ({ match }) => {
                         1) inputs chosen from a range of numbers
                         <ToggleInfo onClick={handleToggle} name="type1" toggle={showInfo.type1} />
                     </h4>
-                    <div>
-                        <i>{showInfo.type1 ? text.type1 : null}</i>
-                    </div>
+                    <div><i>{showInfo.type1 ? text.type1 : null}</i></div>
                     {!canEdit && questionId ? null :
                         <InputControl key="inputs1"
                             canEdit={canEdit || !questionId}
@@ -205,10 +200,7 @@ const EditQuestion = ({ match }) => {
                         2) inputs which are chosen from lists
                         <ToggleInfo onClick={handleToggle} name="type2" toggle={showInfo.type2} />
                     </h4>
-                    <div>
-                        <i>{showInfo.type2 ? text.type2 : null}</i>
-                    </div>
-
+                    <div><i>{showInfo.type2 ? text.type2 : null}</i></div>
                     {!canEdit && questionId ? null :
                         <InputControl
                             key="inputs2"
@@ -257,9 +249,7 @@ const EditQuestion = ({ match }) => {
                         question code:
                         <ToggleInfo onClick={handleToggle} name="questionCode" toggle={showInfo.questionCode} />
                     </h4>
-                    <div>
-                        <i>{showInfo.questionCode ? text.questionCode : null}</i>
-                    </div>
+                    <div><i>{showInfo.questionCode ? text.questionCode : null}</i></div>
                     <textarea
                         placeholder="Question code" value={questionCode} rows="3" cols="50"
                         onChange={e => setQuestionCode(e.target.value)} disabled={!canEdit &&questionId}

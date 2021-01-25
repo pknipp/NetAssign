@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import AuthContext from "../auth";
+import info from "../info.png";
+import cancel from "../cancel.jpeg";
 
 const general = (
   <>
@@ -37,6 +39,7 @@ const student = (
     <div>NOTE: any classmate will probably receive a different ("randomized") version of the the question from you, so any collaboration between you and that classmate must be on a "higher level", i.e. sharing concepts and approaches rather than simply numbers or words.</div>
 
     <div>Please click a link above in order either to login as a demo student or to signup as a new user, each of which will allow you to gain a greater view of the student side of NetAssign.</div>
+
   </div>
   );
 
@@ -52,6 +55,8 @@ const student = (
         <li>student grades are automatically stored in the database.</li>
       </ul>
       <div>Please click a link above in order either to login as a demo instructor or to signup as a new user, each of which will allow you to gain a greater view of the instructor side of NetAssign.</div>
+
+      <div>NOTE: As you navigate through NetAssign there will be places where you can click '<img src={info} alt="Show information." />/<img src={cancel} alt="Hide information." />' in order to toggle the display of information about various details.</div>
     </div>
   );
 
