@@ -12,10 +12,12 @@ input.larger  {width: 20em}
 .error {color: red}
 .qeditor {display: flex; flex-direction: column; align-items: center}
 .qinputs {display: grid; grid-template-columns: 48% 4% 48%}
-.qeditor * {padding: 5px 10px}
+/* .qeditor * {padding: 5px 10px} */
 .qinputs>* {display: flex; flex-direction: column; align-items: center; margin: 2px}
 .qinputs>*>* {padding: 5px}
+.q-and-a-code {display: grid; grid-template-columns: 50% 50%; justify-items: space-around}
+.q-and-a-code>* {display: flex; flex-direction: column; padding: 0 5px; }
 button.info {margin-left: 5px; padding: 0px; }
 td {border: 1px solid black; }
 .nav-container {display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.nav-container * {display: flex; justify-content: space-around; padding: 0 40px; }
+.nav-container * {display: flex; padding: 0 40px; }

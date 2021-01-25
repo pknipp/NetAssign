@@ -35,8 +35,8 @@ const SubInput2 = ({ row, subrow, subinput, inputs, setInputs, canEdit, varNames
                     setInputs(newInputs);
                 }}>
                      decrement
-                </button>}
-                (from {inputs[row].length}) the number in this group
+                </button>}&nbsp;
+                 from {inputs[row].length}
             </td>}
             <td>
                 <input type="text" value={varName} size={6} className="smaller"
@@ -49,15 +49,6 @@ const SubInput2 = ({ row, subrow, subinput, inputs, setInputs, canEdit, varNames
                 />
             </td>
             <td>
-                {/* <input type="text" value={list} className="larger"
-                    disabled={!canEdit} onChange={e => {
-                        setList(e.target.value);
-                        let newInputs = JSON.parse(JSON.stringify(inputs))
-                        newInputs[row][subrow] = [newInputs[row][subrow][0], ...e.target.value.split(",")];
-                        // .map(elem => Number(elem))];
-                        setInputs(newInputs);
-                    }}
-                /> */}
                 <textarea value={list} className="larger"
                     disabled={!canEdit} onChange={e => {
                         setList(e.target.value);
