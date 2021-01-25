@@ -1,13 +1,14 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useContext } from 'react';
+import AuthContext from "../auth";
 
-const Welcome = () => (
-  <>
-  <h1>Welcome to NetAssign, my clone of WebAssign</h1>
-  <NavLink to="/welcomeinstructor">Instructor</NavLink>
-  <NavLink to="/welcomestudent">Student</NavLink>
-  </>
-);
-
+const Welcome = props => {
+  const { userType, setUserType } = useContext(AuthContext);
+  setUserType(props.userType);
+  return (
+    <div>
+      {`info about ${!userType ? "general" : userType === "instructor" ? "instructor" : "student"} use of NA`}
+    </div>
+  );
+}
 
 export default Welcome;

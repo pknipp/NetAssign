@@ -17,3 +17,5 @@ input.larger  {width: 20em}
 .qinputs>*>* {padding: 5px}
 button.info {margin-left: 5px; padding: 0px; }
 td {border: 1px solid black; }
+.nav-container {display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.nav-container * {display: flex; justify-content: space-around; padding: 0 40px; }

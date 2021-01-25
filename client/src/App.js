@@ -20,23 +20,26 @@ import EditDeployment from './components/EditDeployment';
 import EditCourse from './components/EditCourse';
 import Roster from './components/Roster';
 import Welcome from './components/Welcome';
-import WelcomeType from './components/WelcomeType';
 
 const App = _ => {
     const [fetchWithCSRF] = useState(() => fetch);
     const [currentUser, setCurrentUser] = useState(null);
+    const [userType, setUserType] = useState('');
     const [loading, setLoading] = useState(true)
     const authContextValue = {
         fetchWithCSRF,
         currentUser,
-        setCurrentUser
+        setCurrentUser,
+        userType,
+        setUserType
     };
 
     useEffect(() => {
         (async () => {
             const response = await fetch('/restore');
-            const data = await response.json();
-            setCurrentUser(data.current_user);
+            const user = await response.json();
+            setCurrentUser(user.current_user);
+            setUserType(!user ? null : user.is_instructor ? "instructor" : "student")
             setLoading(false);
         })()
     }, [])
@@ -45,18 +48,18 @@ const App = _ => {
         <AuthContext.Provider value={authContextValue}>
             {loading ? <h1>Loading</h1> :
                 <BrowserRouter>
+                    <NavBar />
                     <div className="switch">
                         <Switch>
                             <AuthRoute exact path="/welcome" component={Welcome} />
-                            {/* <AuthRoute exact path="/welcomeinstructor" userType={"instructor"} component={WelcomeType} /> */}
-                            <AuthRoute exact path="/welcomeinstructor" userType={"instructor"} component={NavBar} />
-                            <AuthRoute exact path="/welcomestudent" userType={"student"} component={NavBar} />
-                            <AuthRoute exact path="/logininstructor" defaultUser={"demoInstructor@aol.com"} component={LogIn} />
-                            <AuthRoute exact path="/loginstudent" defaultUser={"demoStudent@aol.com"} component={LogIn} />
+                            <AuthRoute exact path="/welcomeInstructor" userType={"instructor"} component={Welcome} />
+                            <AuthRoute exact path="/welcomeStudent" userType={"student"} component={Welcome} />
+                            <AuthRoute exact path="/loginInstructor" defaultUser={"demoInstructor@aol.com"} component={LogIn} />
+                            <AuthRoute exact path="/loginStudent" defaultUser={"demoStudent@aol.com"} component={LogIn} />
                             <AuthRoute exact path="/signupInstructor" isInstructor={true} component={SignUp} />
                             <AuthRoute exact path="/signupStudent" isInstructor={false} component={SignUp} />
                             <ProtectedRoute exact path="/logout" component={LogOut} />
-                            <ProtectedRoute exact path="/edituser" component={EditUser} />
+                            <ProtectedRoute exact path="/editUser" component={EditUser} />
                             <ProtectedRoute exact path="/" component={Enrollments} />
                             {/* instructor: all questions available */}
                             <ProtectedInstructorRoute exact path="/questions" component={Questions} />

@@ -89,14 +89,14 @@ const Enrollments = () => {
 
     return (
         <>
+            <h3>
+                {courses.length ? `My courses:` : `I have no courses now.`}
+            </h3>
             {!currentUser.is_instructor ? null :
                 <NavLink exact to={"/courses/edit/0"} className="nav" activeClassName="active">
                     create new course
                 </NavLink>
             }
-            <h3>
-                {courses.length ? `My classes:` : `I have no classes now.`}
-            </h3>
             <ul>
                 {courses.map(course => (
                     <li key={course.course.id}>
@@ -132,9 +132,9 @@ const Enrollments = () => {
                         <button onClick={() => getMoreCourses()}>
                             {showMoreCourses ? "Hide" : "Show"}
                         </button>
-                        <> other classes.</>
+                        <> other courses.</>
                     </span>
-                    {showMoreCourses ? <h3>Other classes:</h3> : null}
+                    {showMoreCourses ? <h3>Other courses:</h3> : null}
                     <ul>
                         {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
                             <li key={course.id}>
