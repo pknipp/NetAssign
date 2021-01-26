@@ -1,14 +1,15 @@
 from flask import Blueprint, request, redirect
 from net_assign.models import db, Assignment, Deployment, Course
+from flask_login import current_user
 
 deployments = Blueprint('deployments', __name__)
 
 @deployments.route('/<deployment_id>', methods=['GET', 'DELETE', 'PUT'])
 def index(deployment_id):
     deployment = Deployment.query.get(int(deployment_id))
-    # instructor_id = Course.query.get(deployment.course_id).instructor_id
-    # if not instructor_id == current_user.id:
-    #     return {"errors": ["You are not authorized to this."]}, 401
+    instructor_id = Course.query.get(deployment.course_id).instructor_id
+    if not instructor_id == current_user.id:
+        return {"errors": ["You are not authorized to this."]}, 401
     if request.method == 'GET':
         deployment = Deployment.query.get(int(deployment_id))
         assignment = Assignment.query.get(deployment.assignment_id)
@@ -21,9 +22,9 @@ def index(deployment_id):
 
 @deployments.route('/courses/<course_id>', methods=['GET'])
 def get_deployments(course_id):
-    # instructor_id = Course.query.get(course_id).instructor_id
-    # if not instructor_id == current_user.id:
-    #     return {"errors": ["You are not authorized to this."]}, 401
+    instructor_id = Course.query.get(course_id).instructor_id
+    if not instructor_id == current_user.id:
+        return {"errors": ["You are not authorized to this."]}, 401
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == int(course_id)).order_by(Deployment.deadline)
         course_name = Course.query.get(int(course_id)).name

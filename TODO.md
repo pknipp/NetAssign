@@ -18,8 +18,6 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
     (8)submissions (s): deadline > t2s > t1s > t1u, t1s > t1d
 
 Figure out (using list above?) how to seed other students w/a certain number of responses.
-Make sure that all front-end routes are protected by authContext or back-end fetch (I think
-    that this still needs to be done for about 3 models)
 
 Rename some components to reflect their function rather than first db Query?
 Muse upon rationale for putting routes in different blueprints (and naming components)
