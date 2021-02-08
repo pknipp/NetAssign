@@ -9,7 +9,6 @@ const EditDeployment = ({ match }) => {
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState(null);
-    // const [rerender, setRerender] = useState(false);
     const [courseId, setCourseId] = useState(null);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -37,13 +36,11 @@ const EditDeployment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                // credentials: 'include',
                 body: JSON.stringify({ deadline })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            // history.push(`/assignments/${assignmentId}`)
         })();
     }
 
@@ -67,8 +64,6 @@ const EditDeployment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'DELETE',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

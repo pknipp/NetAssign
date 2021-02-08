@@ -53,8 +53,6 @@ const Roster = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'DELETE',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
@@ -68,8 +66,6 @@ const Roster = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'POST',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

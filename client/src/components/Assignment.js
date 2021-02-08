@@ -6,10 +6,10 @@ const Assignment = ({ assignment }) => {
     const { currentUser } = useContext(AuthContext);
     return (
         <>
-        <NavLink exact to={`/assignments/${assignment.id}`} className="nav"activeClassName="active">
-            {(currentUser.id === assignment.owner.id) ? "edit" : "view"}/duplicate
-        </NavLink>
-        {assignment.name}
+            <NavLink exact to={`/assignments/${assignment.id}`} className="nav"activeClassName="active">
+                {(currentUser.id === assignment.owner.id) ? "edit" : "view"}/duplicate
+            </NavLink>
+            {assignment.name}
         </>
     )
 }

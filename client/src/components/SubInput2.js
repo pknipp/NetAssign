@@ -54,7 +54,6 @@ const SubInput2 = ({ row, subrow, subinput, inputs, setInputs, canEdit, varNames
                         setList(e.target.value);
                         let newInputs = JSON.parse(JSON.stringify(inputs))
                         newInputs[row][subrow] = [newInputs[row][subrow][0], ...e.target.value.split(",")];
-                        // .map(elem => Number(elem))];
                         setInputs(newInputs);
                     }}
                 />

@@ -19,7 +19,6 @@ const EditCourse = ({ match }) => {
     };
 
     useEffect(() => {
-        debugger
         if (courseId > 0) {
         (async () => {
             try {

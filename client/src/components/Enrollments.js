@@ -76,14 +76,11 @@ const Enrollments = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
                 method: 'POST',
-                // headers: {"Content-Type": "application/json"},
-                // credentials: 'include', body: JSON.stringify({})
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
             setRerender(!rerender);
-            // history.push("/")
         })();
     }
 
@@ -125,36 +122,33 @@ const Enrollments = () => {
                     </li>
                 ))}
             </ul>
-
-
-                <>
-                    <span>
-                        <button onClick={() => getMoreCourses()}>
-                            {showMoreCourses ? "Hide" : "Show"}
-                        </button>
-                        <> other courses.</>
-                    </span>
-                    {showMoreCourses ? <h3>Other courses:</h3> : null}
-                    <ul>
-                        {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
-                            <li key={course.id}>
-                                <>
-                                    <button onClick={() => {
-                                        currentUser.is_instructor ? (
-                                            duplicateCourse(course.id)
-                                        ) : (
-                                            postEnrollment(currentUser.id, course.id)
-                                        )
-                                    }}>
-                                        {currentUser.is_instructor ? "Duplicate" : "Add"}
-                                    </button>
-                                    {course.name}
-                                </>
-                            </li>
-                        ))}
-                    </ul>
-                </>
-
+            <>
+                <span>
+                    <button onClick={() => getMoreCourses()}>
+                        {showMoreCourses ? "Hide" : "Show"}
+                    </button>
+                    <> other courses.</>
+                </span>
+                {showMoreCourses ? <h3>Other courses:</h3> : null}
+                <ul>
+                    {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
+                        <li key={course.id}>
+                            <>
+                                <button onClick={() => {
+                                    currentUser.is_instructor ? (
+                                        duplicateCourse(course.id)
+                                    ) : (
+                                        postEnrollment(currentUser.id, course.id)
+                                    )
+                                }}>
+                                    {currentUser.is_instructor ? "Duplicate" : "Add"}
+                                </button>
+                                {course.name}
+                            </>
+                        </li>
+                    ))}
+                </ul>
+            </>
         </>
     )
 }

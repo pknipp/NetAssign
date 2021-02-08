@@ -47,9 +47,7 @@ const EditQuestion = ({ match }) => {
                             varNames.add(input[0]);
                         } else {
                             inputs2.push(input);
-                            input.forEach(subinput => {
-                                varNames.add(subinput[0]);
-                            });
+                            input.forEach(subinput => varNames.add(subinput[0]));
                         }
                     })
                     setQuestionCode(data.question_code);
@@ -222,24 +220,22 @@ const EditQuestion = ({ match }) => {
                                  <th> comma-separated list from which to pick values</th>
                             </tr>
                         </thead>
-                        {/* <tbody> */}
-                            {!(inputs2.length) ? null : (
-                                inputs2.map((input, row) => (
-                                    <tbody>
-                                    <Input2
-                                        key={`${row}2`}
-                                        row={row}
-                                        input={input}
-                                        inputs={inputs2}
-                                        setInputs={setInputs2}
-                                        canEdit={canEdit || !questionId}
-                                        varNames={varNames}
-                                        setVarNames={setVarNames}
-                                    />
-                                    </tbody>
-                                ))
-                            )}
-                        {/* </tbody> */}
+                        {!(inputs2.length) ? null : (
+                            inputs2.map((input, row) => (
+                                <tbody>
+                                <Input2
+                                    key={`${row}2`}
+                                    row={row}
+                                    input={input}
+                                    inputs={inputs2}
+                                    setInputs={setInputs2}
+                                    canEdit={canEdit || !questionId}
+                                    varNames={varNames}
+                                    setVarNames={setVarNames}
+                                />
+                                </tbody>
+                            ))
+                        )}
                     </table>}
                 </div>
             </div>

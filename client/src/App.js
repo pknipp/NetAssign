@@ -60,6 +60,7 @@ const App = _ => {
                             <AuthRoute exact path="/signupStudent" isInstructor={false} component={SignUp} />
                             <ProtectedRoute exact path="/logout" component={LogOut} />
                             <ProtectedRoute exact path="/editUser" component={EditUser} />
+                            {/* all courses which student is enrolled in or instructor teaches */}
                             <ProtectedRoute exact path="/" component={Enrollments} />
                             {/* instructor: all questions available */}
                             <ProtectedInstructorRoute exact path="/questions" component={Questions} />
@@ -67,12 +68,14 @@ const App = _ => {
                             {/* instructor: all assignments available */}
                             <ProtectedInstructorRoute exact path="/assignments" component={Assignments} />
                             <Route exact path="/assignments/:assignmentId" component={EditAssignment} />
-                            {/*  self-explanatory*/}
                             <Route exact path="/courses/edit/:courseId" component={EditCourse} />
-                            {/* all DID's for a particular course*/}
+                            {/* all deployed assignments for a particular course*/}
                             <Route exact path="/courses/:courseId" component={Deployments} />
+                            {/* all students enrolled in a particular course*/}
                             <Route exact path="/roster/:courseId" component={Roster} />
+                            {/* all questions & responses for the user for a particular deployed assignment */}
                             <Route exact path="/submissions/:deploymentId" component={Submissions} />
+                            {/* Enables instructor to change details of a particular deployment (needs deadline functionality) */}
                             <Route exact path="/deployments/:deploymentId" component={EditDeployment} />
                         </Switch>
                     </div>
