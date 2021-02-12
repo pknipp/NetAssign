@@ -9,10 +9,12 @@ const EditDeployment = ({ match }) => {
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState(null);
+    const [deadstring, setDeadstring] = useState('');
     const [courseId, setCourseId] = useState(null);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     useEffect(() => {
         (async () => {
@@ -24,12 +26,19 @@ const EditDeployment = ({ match }) => {
                     setAssignmentName(data.assignment_name);
                     setDeadline(data.deadline);
                     setCourseId(data.course_id);
+                    let dateArray = data.deadline.split(' ');
+                    let yyyy = dateArray[3];
+                    let dd = Number(dateArray[1]);
+                    dd = (dd < 10 ? '0' : '') + String(dd);
+                    let mm = months.indexOf(dateArray[2]) + 1;
+                    mm = (mm < 10 ? '0' : '') + String(mm);
+                    setDeadstring(yyyy + '-' + mm + '-' + dd);
                 }
             } catch (err) {
                 console.error(err)
             }
         })()
-    })
+    }, [])
 
     const putDeployment = e => {
         e.preventDefault();
@@ -78,6 +87,9 @@ const EditDeployment = ({ match }) => {
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 Course: {courseName}<br/>
                 Assignment: {assignmentName}
+                <br/>{!deadline ? null : deadline.split(' ').join('#')}
+                <br/>{deadstring}
+                <input type="date" value={deadstring} onChange={e => setDeadstring(e.target.value)} />
                 <input
                     type="text" placeholder="deadline" value={deadline}
                     onChange={e => setDeadline(e.target.value)} className="larger" />
