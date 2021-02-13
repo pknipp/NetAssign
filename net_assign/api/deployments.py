@@ -1,20 +1,28 @@
 from flask import Blueprint, request, redirect
 from net_assign.models import db, Assignment, Deployment, Course
 from flask_login import current_user
+from datetime import datetime
 
 deployments = Blueprint('deployments', __name__)
 
-@deployments.route('/<deployment_id>', methods=['GET', 'DELETE', 'PUT'])
+@deployments.route('/<deployment_id>', methods=['GET', 'PUT', 'DELETE'])
 def index(deployment_id):
     deployment = Deployment.query.get(int(deployment_id))
     instructor_id = Course.query.get(deployment.course_id).instructor_id
     if not instructor_id == current_user.id:
         return {"errors": ["You are not authorized to this."]}, 401
     if request.method == 'GET':
-        deployment = Deployment.query.get(int(deployment_id))
+        # deployment = Deployment.query.get(int(deployment_id))
         assignment = Assignment.query.get(deployment.assignment_id)
         course = Course.query.get(deployment.course_id)
-        return({"course_name":course.name, "assignment_name": assignment.name, "deadline": deployment.deadline, "course_id": course.id})
+        # print("deployment.deadline = ", deployment.deadline)
+        # print("isinstance(deployment.deadline, str) = ", isinstance(deployment.deadline, str))
+        return({"course_name":course.name, "assignment_name": assignment.name, "deadline": deployment.deadline.isoformat(), "course_id": course.id})
+    if request.method == 'PUT':
+        deployment.deadline = datetime.strptime(request.json.get('deadline', None), '%Y-%m-%dT%H:%M:%S')
+        deployment.updated_at = datetime.now()
+        db.session.commit()
+        return ({"message": "success"})
     if request.method == 'DELETE':
         db.session.delete(deployment)
         db.session.commit()
