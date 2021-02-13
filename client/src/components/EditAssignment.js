@@ -171,7 +171,7 @@ const EditAssignment = ({ match }) => {
                     {isPublic ? "public " : "private "}
                     <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
                     <button onClick={assignmentId ? putAssignment : postAssignment}>
-                        <h3>{assignmentId ? "Submit changes" : "Create question"}</h3>
+                        <h3>{assignmentId ? "Submit changes" : "Create assignment"}</h3>
                     </button>
                 </>
             )}

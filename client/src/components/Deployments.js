@@ -25,14 +25,14 @@ const Deployments = ({ match }) => {
 
     return (
         <>
-            <h3>Assignments for {courseName}:</h3>
+            <h3>Deployed assignments for {courseName}:</h3>
             <ul>
                 {(!assignments.length) ? null :
                     assignments.map(assignment => (
                         <li key={assignment.assignment.id}>
                             {!currentUser.is_instructor ? null :
                             <NavLink to={`/deployments/${assignment.deployment.id}`}>
-                                modify schedule
+                                modify deployment
                             </NavLink>}
                             <NavLink to={`/submissions/${assignment.deployment.id}`}>
                                 {assignment.assignment.name} (due {assignment.deployment.deadline})

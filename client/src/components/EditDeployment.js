@@ -9,7 +9,7 @@ const EditDeployment = ({ match }) => {
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
-    const [deadline, setDeadline] = useState(null);
+    const [deadline, setDeadline] = useState('');
     const [deadDate, setDeadDate] = useState('');
     const [deadTime, setDeadTime] = useState('');
     const [courseId, setCourseId] = useState(null);
@@ -29,13 +29,6 @@ const EditDeployment = ({ match }) => {
                     setDeadline(data.deadline);
                     // setDeadline(DateTime.fromISO(data.deadline))
                     setCourseId(data.course_id);
-                    // let dateArray = data.deadline.split(' ');
-                    // let yyyy = dateArray[3];
-                    // let dd = Number(dateArray[1]);
-                    // dd = (dd < 10 ? '0' : '') + String(dd);
-                    // let mm = months.indexOf(dateArray[2]) + 1;
-                    // mm = (mm < 10 ? '0' : '') + String(mm);
-                    // setDeadDate(yyyy + '-' + mm + '-' + dd);
                     setDeadDate(data.deadline.split('T')[0])
                     // setDeadTime(dateArray[4]);
                     setDeadTime(data.deadline.split('T')[1])
@@ -65,7 +58,6 @@ const EditDeployment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF("/api/deployments", {
                 method: 'POST', headers: {"Content-Type": "application/json"},
-                // credentials: 'include',
                 body: JSON.stringify({ courseId })
             });
             const responseData = await response.json();
@@ -90,32 +82,30 @@ const EditDeployment = ({ match }) => {
 
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
+            <h2>Deployment Editor</h2>
             <form onSubmit={deploymentId ? putDeployment : postDeployment}>
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
-                Course: {courseName}<br/>
-                Assignment: {assignmentName}
-                {/* <br/>{!deadline ? null : deadline.split(' ').join('#')} */}
+                <span>
+                    Course: {courseName}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    Assignment: {assignmentName}
+                </span>
                 <span>
                     deadline:
-                    <input type="date" value={deadDate} onChange={e => {
-                        setDeadDate(e.target.value);
-                        setDeadline([e.target.value, deadTime].join('T'));
+                    <input type="date" value={deadline.split('T')[0]} onChange={e => {
+                        setDeadline(e.target.value + 'T' + deadline.split('T')[1]);
                     }} />
-                    <input type="time" value={deadTime} onChange={e => {
-                        setDeadTime(e.target.value);
-                        setDeadline([deadDate, e.target.value].join('T'));
+                    <input type="time" value={deadline.split('T')[1]} onChange={e => {
+                        setDeadline(deadline.split('T')[0] + 'T' + e.target.value);
                     }} />
                 </span>
-                {/* <input
-                    type="text" placeholder="deadline" value={deadline}
-                    onChange={e => setDeadline(e.target.value)} className="larger" /> */}
-                <button type="submit">change deadline</button>
+                <button type="submit">Change deadline</button>
             </form>
 
             {deploymentId ? <form onSubmit={deleteDeployment}>
                 {messages.map(err => <li key={err}>{err}</li>)}
-                <h3>Would you like to unschedule this assignment?</h3>
-                <button type="submit">Unschedule</button>
+                <h3>Would you like to undeploy this assignment?</h3>
+                <button type="submit">Undeploy</button>
             </form> : null}
         </>
     );

@@ -12,11 +12,8 @@ def index(deployment_id):
     if not instructor_id == current_user.id:
         return {"errors": ["You are not authorized to this."]}, 401
     if request.method == 'GET':
-        # deployment = Deployment.query.get(int(deployment_id))
         assignment = Assignment.query.get(deployment.assignment_id)
         course = Course.query.get(deployment.course_id)
-        # print("deployment.deadline = ", deployment.deadline)
-        # print("isinstance(deployment.deadline, str) = ", isinstance(deployment.deadline, str))
         return({"course_name":course.name, "assignment_name": assignment.name, "deadline": deployment.deadline.isoformat(), "course_id": course.id})
     if request.method == 'PUT':
         deployment.deadline = datetime.strptime(request.json.get('deadline', None), '%Y-%m-%dT%H:%M:%S')
