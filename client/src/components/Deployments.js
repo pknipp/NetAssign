@@ -6,6 +6,7 @@ const Deployments = ({ match }) => {
     let courseId = match.params.courseId;
     const [assignments, setAssignments] = useState([]);
     const [courseName, setCourseName] = useState("");
+    const [showMoreAssignments, setShowMoreAssignments] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
@@ -41,6 +42,24 @@ const Deployments = ({ match }) => {
                     ))
                 }
             </ul>
+
+            <span>
+                <button onClick={() => setShowMoreAssignments(!showMoreAssignments)}>
+                    {showMoreAssignments ? "Hide " : "Show "}
+                </button>
+                <span padding-left={"10px"}> undeployed assignments</span>
+            </span>
+            {!showMoreAssignments ? null :
+                <>
+                    <h3>Other's assignments:</h3>
+                    <ul>
+                        {assignments.filter(assignment => assignment.owner.id !== currentUser.id).map(assignment => {
+                            // return <li><Assignment key={assignment.id} assignment={assignment}/></li>
+                        })}
+                    </ul>
+                </>
+            }
+
         </>
     )
 }

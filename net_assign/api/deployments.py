@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect
 from net_assign.models import db, Assignment, Deployment, Course
 from flask_login import current_user
 from datetime import datetime
+from sqlalchemy import or_, and_
 
 deployments = Blueprint('deployments', __name__)
 
@@ -37,4 +38,10 @@ def get_deployments(course_id):
         for deployment in deployments:
             assignment = Assignment.query.get(deployment.assignment_id)
             assignments.append({"assignment": assignment.to_dict(), "deployment": deployment.to_dict()})
-        return {"assignments": assignments, "course_name": course_name}
+        all_assignments = Assignment.query.filter(or_(Assignment.instructor_id == instructor_id, Assignment.is_public)).order_by(Assignment.id)
+        other_assignments = list()
+        for assignment in all_assignments:
+            deployments = Deployment.query.filter(and_(Deployment.course_id == int(course_id), Deployment.assignment_id == assignment.id))
+            if not deployments:
+                other_assignments.append(assignment.to_dict())
+        return {"assignments": assignments, "course_name": course_name, "other_assignments": other_assignments}
