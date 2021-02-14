@@ -1,22 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import { DateTime } from 'luxon';
+// import { DateTime } from 'luxon';
 import AuthContext from '../auth'
 
 
 const EditDeployment = ({ match }) => {
-    const deploymentId = Number(match.params.deploymentId);
+    const [deploymentId, assignmentId] = match.params.didAndAid.split(" ").map(char => Number(char));
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState('');
-    const [deadDate, setDeadDate] = useState('');
-    const [deadTime, setDeadTime] = useState('');
+    // const [deadDate, setDeadDate] = useState('');
+    // const [deadTime, setDeadTime] = useState('');
     const [courseId, setCourseId] = useState(null);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     useEffect(() => {
         (async () => {
@@ -29,15 +29,30 @@ const EditDeployment = ({ match }) => {
                     setDeadline(data.deadline);
                     // setDeadline(DateTime.fromISO(data.deadline))
                     setCourseId(data.course_id);
-                    setDeadDate(data.deadline.split('T')[0])
+                    // setDeadDate(data.deadline.split('T')[0])
                     // setDeadTime(dateArray[4]);
-                    setDeadTime(data.deadline.split('T')[1])
+                    // setDeadTime(data.deadline.split('T')[1])
                 }
             } catch (err) {
                 console.error(err)
             }
         })()
     }, [])
+
+    const duplicateDeployment = () => {
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
+                method: 'POST',
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                setErrors(responseData.errors);
+            } else {
+                if (responseData.messages) setMessages(responseData.messages)
+                history.push("/deployments")
+            }
+        })();
+    }
 
     const putDeployment = e => {
         e.preventDefault();
@@ -56,14 +71,14 @@ const EditDeployment = ({ match }) => {
     const postDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF("/api/deployments", {
+            const response = await fetchWithCSRF(`/api/deployments`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ courseId })
+                body: JSON.stringify({ assignmentId, courseId, deadline })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push("/assignments")
+            history.push(`/deployments/${courseId}`)
         })();
     }
 

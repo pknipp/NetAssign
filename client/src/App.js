@@ -76,7 +76,7 @@ const App = _ => {
                             {/* all questions & responses for the user for a particular deployed assignment */}
                             <Route exact path="/submissions/:deploymentId" component={Submissions} />
                             {/* Enables instructor to change details of a particular deployment (needs deadline functionality) */}
-                            <Route exact path="/deployments/:deploymentId" component={EditDeployment} />
+                            <Route exact path="/deployments/:didAndAid" component={EditDeployment} />
                         </Switch>
                     </div>
                 </BrowserRouter>
