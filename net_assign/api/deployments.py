@@ -6,9 +6,27 @@ from sqlalchemy import or_, and_
 
 deployments = Blueprint('deployments', __name__)
 
+# @deployments.route('', methods=['POST'])
+# def post_deployment:
+#     if request.method == 'POST':
+#         if not request.is_json:
+#             return jsonify({"message": "Missing JSON in request"}), 400
+#         new_deployment = Deployment(
+#             course_id=1,
+#             assignment_id=1,
+#             deadline=request.json.get('deadline', None),
+#             created_at=datetime.now(),
+#             updated_at=datetime.now()
+#         )
+#         db.session.add(new_assignment)
+#         db.session.commit()
+#         return {"assignment": new_assignment.to_dict()}
+
 @deployments.route('/<deployment_id>', methods=['GET', 'PUT', 'DELETE'])
 def index(deployment_id):
-    deployment = Deployment.query.get(int(deployment_id))
+    deployment = None
+    if deployment_id:
+        deployment = Deployment.query.get(int(deployment_id))
     instructor_id = Course.query.get(deployment.course_id).instructor_id
     if not instructor_id == current_user.id:
         return {"errors": ["You are not authorized to this."]}, 401
@@ -28,12 +46,27 @@ def index(deployment_id):
 
 @deployments.route('/courses/<course_id>', methods=['GET'])
 def get_deployments(course_id):
+    course_id = int(course_id)
     instructor_id = Course.query.get(course_id).instructor_id
     if not instructor_id == current_user.id:
         return {"errors": ["You are not authorized to this."]}, 401
+    if request.method == 'POST':
+        if not request.is_json:
+            return jsonify({"message": "Missing JSON in request"}), 400
+        new_deployment = Deployment(
+            course_id=course_id,
+            assignment_id=request.json.get("assignmentId", None),
+            deadline=request.json.get('deadline', None),
+            created_at=datetime.now(),
+            updated_at=datetime.now()
+        )
+        db.session.add(new_deployment)
+        db.session.commit()
+        return {"assignment": new_assignment.to_dict()}
+
     if request.method == 'GET':
-        deployments = Deployment.query.filter(Deployment.course_id == int(course_id)).order_by(Deployment.deadline)
-        course_name = Course.query.get(int(course_id)).name
+        deployments = Deployment.query.filter(Deployment.course_id == course_id).order_by(Deployment.deadline)
+        course_name = Course.query.get(course_id).name
         assignments = list()
         for deployment in deployments:
             assignment = Assignment.query.get(deployment.assignment_id)
@@ -41,7 +74,12 @@ def get_deployments(course_id):
         all_assignments = Assignment.query.filter(or_(Assignment.instructor_id == instructor_id, Assignment.is_public)).order_by(Assignment.id)
         other_assignments = list()
         for assignment in all_assignments:
-            deployments = Deployment.query.filter(and_(Deployment.course_id == int(course_id), Deployment.assignment_id == assignment.id))
+            # print(assignment.id)
+            deployments = Deployment.query.filter(and_(Deployment.course_id == course_id, Deployment.assignment_id == assignment.id)).all()
+            # print(deployments)
+            # for deployment in deployments:
+            #     print(assignment.id, deployment.id)
             if not deployments:
-                other_assignments.append(assignment.to_dict())
+                # print("Here's an example of an undeployed assignment", assignment)
+                other_assignments.append({"assignment":assignment.to_dict()})
         return {"assignments": assignments, "course_name": course_name, "other_assignments": other_assignments}
