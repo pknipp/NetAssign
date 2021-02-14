@@ -29,7 +29,9 @@ def index(deployment_id):
 def get_deployments(course_id):
     instructor_id = Course.query.get(course_id).instructor_id
     if not instructor_id == current_user.id:
-        return {"errors": ["You are not authorized to this."]}, 401
+        # PAK forgets what was being attempted by the following line.
+        # return {"errors": ["You are not authorized to this."]}, 401
+        pass
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == int(course_id)).order_by(Deployment.deadline)
         course_name = Course.query.get(int(course_id)).name
