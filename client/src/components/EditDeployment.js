@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
+import {LocalDateTime} from '@js-joda/core';
 // import { DateTime } from 'luxon';
-import AuthContext from '../auth'
+import AuthContext from '../auth';
 
 
 const EditDeployment = ({ match }) => {
@@ -11,6 +12,7 @@ const EditDeployment = ({ match }) => {
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState('');
     const [courseId, setCourseId] = useState(null);
+    const [now, setNow] = useState(LocalDateTime.now());
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
@@ -43,6 +45,7 @@ const EditDeployment = ({ match }) => {
             } else if (responseData.messages) {
                 setMessages(responseData.messages);
             } else {
+                setNow(LocalDateTime.now());
                 history.push(`/deployments/${responseData.deployment_id}`);
             }
         })();
@@ -108,7 +111,13 @@ const EditDeployment = ({ match }) => {
                         setDeadline(deadline.split('T')[0] + 'T' + e.target.value);
                     }} />
                 </span>
-                <button type="submit">Change deadline</button>
+                {`Deadline is in the ${now > deadline ? "past." : "future."}`}
+                <span>
+                    <button type="submit">
+                        Change deadline
+                    </button>
+                    or return to this course's deployments
+                </span>
             </form>
 
             {!deploymentId ? null : <div>

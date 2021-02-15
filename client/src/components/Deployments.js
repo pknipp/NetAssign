@@ -34,7 +34,7 @@ const Deployments = ({ match }) => {
             <ul>
                 {(!assignments.length) ? null :
                     assignments.map(assignment => (
-                        <li key={assignment.assignment.id}>
+                        <li key={assignment.deployment.id}>
                             {!currentUser.is_instructor ? null :
                             <NavLink to={`/deployments/${assignment.deployment.id}`}>
                                 modify deployment
