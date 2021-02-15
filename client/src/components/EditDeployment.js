@@ -30,7 +30,7 @@ const EditDeployment = ({ match }) => {
                 console.error(err)
             }
         })()
-    }, [])
+    }, [deploymentId]);
 
     const duplicateDeployment = () => {
         (async _ => {
@@ -40,9 +40,10 @@ const EditDeployment = ({ match }) => {
             const responseData = await response.json();
             if (!response.ok) {
                 setErrors(responseData.errors);
+            } else if (responseData.messages) {
+                setMessages(responseData.messages);
             } else {
-                if (responseData.messages) setMessages(responseData.messages)
-                history.push("/deployments")
+                history.push(`/deployments/${responseData.deployment_id}`);
             }
         })();
     }
@@ -110,11 +111,14 @@ const EditDeployment = ({ match }) => {
                 <button type="submit">Change deadline</button>
             </form>
 
-            {deploymentId ? <form onSubmit={deleteDeployment}>
+            {!deploymentId ? null : <div>
                 {messages.map(err => <li key={err}>{err}</li>)}
-                <h3>Would you like to undeploy this assignment?</h3>
-                <button type="submit">Undeploy</button>
-            </form> : null}
+                <h3>Would you like to undeploy this assignment or to duplicate this deployment?</h3>
+                <p align="center">
+                    <button onClick={deleteDeployment}>Undeploy</button>
+                    <button onClick={duplicateDeployment}>Duplicate</button>
+                </p>
+            </div>}
         </>
     );
 };
