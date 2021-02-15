@@ -10,13 +10,10 @@ const EditDeployment = ({ match }) => {
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState('');
-    // const [deadDate, setDeadDate] = useState('');
-    // const [deadTime, setDeadTime] = useState('');
     const [courseId, setCourseId] = useState(null);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
-    // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     useEffect(() => {
         (async () => {
@@ -27,11 +24,7 @@ const EditDeployment = ({ match }) => {
                     setCourseName(data.course_name);
                     setAssignmentName(data.assignment_name);
                     setDeadline(data.deadline);
-                    // setDeadline(DateTime.fromISO(data.deadline))
                     setCourseId(data.course_id);
-                    // setDeadDate(data.deadline.split('T')[0])
-                    // setDeadTime(dateArray[4]);
-                    // setDeadTime(data.deadline.split('T')[1])
                 }
             } catch (err) {
                 console.error(err)
@@ -73,7 +66,7 @@ const EditDeployment = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/deployments`, {
                 method: 'POST', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ assignmentId, courseId, deadline })
+                body: JSON.stringify({ assignmentId, courseId })
             });
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);

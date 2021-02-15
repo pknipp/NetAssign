@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect
-from net_assign.models import db, Assignment, Deployment, Course
+from net_assign.models import db, Assignment, Deployment, Course, Appearance, Question
 from flask_login import current_user
 from datetime import datetime
 from sqlalchemy import or_, and_
@@ -49,21 +49,9 @@ def get_deployments(course_id):
     course_id = int(course_id)
     instructor_id = Course.query.get(course_id).instructor_id
     if not instructor_id == current_user.id:
-        return {"errors": ["You are not authorized to this."]}, 401
-    if request.method == 'POST':
-        if not request.is_json:
-            return jsonify({"message": "Missing JSON in request"}), 400
-        new_deployment = Deployment(
-            course_id=course_id,
-            assignment_id=request.json.get("assignmentId", None),
-            deadline=request.json.get('deadline', None),
-            created_at=datetime.now(),
-            updated_at=datetime.now()
-        )
-        db.session.add(new_deployment)
-        db.session.commit()
-        return {"assignment": new_assignment.to_dict()}
-
+        # PAK forgets what was being attempted by the following line.
+        # return {"errors": ["You are not authorized to this."]}, 401
+        pass
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == course_id).order_by(Deployment.deadline)
         course_name = Course.query.get(course_id).name
@@ -74,12 +62,12 @@ def get_deployments(course_id):
         all_assignments = Assignment.query.filter(or_(Assignment.instructor_id == instructor_id, Assignment.is_public)).order_by(Assignment.id)
         other_assignments = list()
         for assignment in all_assignments:
-            # print(assignment.id)
             deployments = Deployment.query.filter(and_(Deployment.course_id == course_id, Deployment.assignment_id == assignment.id)).all()
-            # print(deployments)
-            # for deployment in deployments:
-            #     print(assignment.id, deployment.id)
             if not deployments:
-                # print("Here's an example of an undeployed assignment", assignment)
-                other_assignments.append({"assignment":assignment.to_dict()})
+                appearances = Appearance.query.filter(Appearance.assignment_id == assignment.id)
+                questions = list()
+                for appearance in appearances:
+                    question = Question.query.filter(Question.id == appearance.question_id).one_or_none()
+                    questions.append(question.question_code)
+                other_assignments.append({"assignment":assignment.to_dict(), "questions": questions})
         return {"assignments": assignments, "course_name": course_name, "other_assignments": other_assignments}

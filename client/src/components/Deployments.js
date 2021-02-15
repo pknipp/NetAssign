@@ -9,6 +9,7 @@ const Deployments = ({ match }) => {
     const [otherAssignments, setOtherAssignments] = useState([]);
     const [courseName, setCourseName] = useState("");
     const [showMoreAssignments, setShowMoreAssignments] = useState(false);
+    const [showOtherAssignment, setShowOtherAssignment] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
@@ -59,21 +60,18 @@ const Deployments = ({ match }) => {
                     <ul>
                         {otherAssignments.filter(assignment => assignment.assignment.instructor_id === currentUser.id).map(assignment => (
                             <li key={assignment.assignment.id}>
-                                <NavLink to={`/assignments/${assignment.assignment.id}`}>
+                                <button>
                                     view/deploy
-                                </NavLink>
+                                </button>
                                 {assignment.assignment.name}
                             </li>
                         ))}
                     </ul>
 
-                    <h3>Undeployed assignments not owned by me:</h3>
+                    <h3>Undeployed assignments owned by others:</h3>
                     <ul>
                         {otherAssignments.filter(assignment => assignment.assignment.instructor_id !== currentUser.id).map(assignment => (
                             <li key={assignment.assignment.id}>
-                                <NavLink to={`/deployments/0`}>
-                                    view/deploy
-                                </NavLink>
                                 {assignment.assignment.name}
                             </li>
                         ))}
