@@ -70,7 +70,7 @@ def one(qid):
     if request.method == 'POST':
         new_question = Question(
             instructor_id=current_user.id,
-            question_code=question.question_code,
+            question_code='COPY OF ' + question.question_code,
             answer_code=question.answer_code,
             inputs=question.inputs,
             is_public=question.is_public,

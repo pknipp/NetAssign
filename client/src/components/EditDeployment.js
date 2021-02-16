@@ -6,12 +6,14 @@ import AuthContext from '../auth';
 
 
 const EditDeployment = ({ match }) => {
-    const [deploymentId, assignmentId] = match.params.didAndAid.split(" ").map(char => Number(char));
+    const didAndAidAndCid = match.params.didAndAidAndCid;
+    const didAndAidAndCidArray = didAndAidAndCid.split(" ").map(char => Number(char));
+    const [deploymentId, assignmentId] = didAndAidAndCidArray;
     const { fetchWithCSRF, currentUser } = useContext(AuthContext);
     const [courseName, setCourseName] = useState('');
     const [assignmentName, setAssignmentName] = useState('');
     const [deadline, setDeadline] = useState('');
-    const [courseId, setCourseId] = useState(null);
+    const [courseId, setCourseId] = useState(didAndAidAndCidArray[2]);
     const [now, setNow] = useState(LocalDateTime.now());
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
@@ -20,7 +22,7 @@ const EditDeployment = ({ match }) => {
     useEffect(() => {
         (async () => {
             try {
-                const res = await fetch(`/api/deployments/${deploymentId}`)
+                const res = await fetch(`/api/deployments/${didAndAidAndCid}`);
                 if (res.ok) {
                     const data = await res.json();
                     setCourseName(data.course_name);
@@ -68,14 +70,13 @@ const EditDeployment = ({ match }) => {
     const postDeployment = e => {
         e.preventDefault();
         (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments`, {
-                method: 'POST', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ assignmentId, courseId })
-            });
+            const response = await fetchWithCSRF(`/api/deployments/0 ${assignmentId} ${courseId}`, {
+                method: 'POST'}
+            );
             const responseData = await response.json();
             if (!response.ok) setErrors(responseData.errors);
             if (responseData.messages) setMessages(responseData.messages)
-            history.push(`/deployments/${courseId}`)
+            history.push(`/courses/${courseId}`)
         })();
     }
 
@@ -119,15 +120,20 @@ const EditDeployment = ({ match }) => {
                     or return to this course's deployments
                 </span>
             </form>
-
-            {!deploymentId ? null : <div>
+            <div>
                 {messages.map(err => <li key={err}>{err}</li>)}
-                <h3>Would you like to undeploy this assignment or to duplicate this deployment?</h3>
-                <p align="center">
-                    <button onClick={deleteDeployment}>Undeploy</button>
-                    <button onClick={duplicateDeployment}>Duplicate</button>
-                </p>
-            </div>}
+                {deploymentId ?
+                    <>
+                    <h3>Would you like to undeploy this assignment or to duplicate this deployment?</h3>
+                    <p align="center">
+                        <button onClick={deleteDeployment}>Undeploy</button>
+                        <button onClick={duplicateDeployment}>Duplicate</button>
+                    </p>
+                    </>
+                        :
+                    <button onClick={postDeployment}>Deploy</button>
+                }
+            </div>
         </>
     );
 };

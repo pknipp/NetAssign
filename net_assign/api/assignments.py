@@ -55,7 +55,7 @@ def one(assignment_id):
     if request.method == 'POST':
         new_assignment = Assignment(
             instructor_id=current_user.id,
-            name=assignment.name + '(COPY)',
+            name='COPY OF ' + assignment.name,
             is_public=assignment.is_public,
             created_at=datetime.now(),
             updated_at=datetime.now()

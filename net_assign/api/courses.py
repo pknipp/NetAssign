@@ -47,7 +47,7 @@ def one(course_id):
     if request.method == 'POST':
         new_course = Course(
             instructor_id=current_user.id,
-            name=course.name + '(COPY)',
+            name='COPY OF ' + course.name,
             is_public=course.is_public,
             created_at=datetime.now(),
             updated_at=datetime.now()
