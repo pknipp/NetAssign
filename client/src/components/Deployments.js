@@ -72,25 +72,15 @@ const Deployments = ({ match }) => {
                     <ul>
                         {otherAssignments.filter(assignment => assignment.assignment.instructor_id !== currentUser.id).map(assignment => (
                             <li key={assignment.assignment.id}>
+                                <NavLink exact to={`/deployments/0 ${assignment.assignment.id} ${courseId}`} className="nav"activeClassName="active">
+                                    view and deploy
+                                </NavLink>
                                 {assignment.assignment.name}
                             </li>
                         ))}
                     </ul>
                 </>
             }
-
-
-            {/* {!showMoreAssignments ? null :
-                <>
-                    <h3>Undeployed assignments:</h3>
-                    <ul>
-                        {otherAssignments.map(assignment => {
-                            return <li><Assignment key={assignment.assignment.id} assignment={assignment}/></li>
-                        })}
-                    </ul>
-                </>
-            } */}
-
         </>
     )
 }

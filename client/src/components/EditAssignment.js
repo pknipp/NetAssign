@@ -170,9 +170,12 @@ const EditAssignment = ({ match }) => {
                     <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
                     {isPublic ? "public " : "private "}
                     <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
-                    <button onClick={assignmentId ? putAssignment : postAssignment}>
-                        <h3>{assignmentId ? "Submit changes" : "Create assignment"}</h3>
-                    </button>
+                    <span>
+                        <button onClick={assignmentId ? putAssignment : postAssignment}>
+                            <h3>{assignmentId ? "Submit changes" : "Create assignment"}</h3>
+                        </button>
+                        <button onClick={() => history.push("/assignments")}><h3>Cancel</h3></button>
+                    </span>
                 </>
             )}
             {!assignmentId ? null : "Refresh browser in order to see different versions of questions."}
@@ -214,11 +217,13 @@ const EditAssignment = ({ match }) => {
                         {canEdit ? " or delete ": " "} this assignment?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateAssignment()}><h3>duplicate</h3></button>
+                        <button onClick={() => duplicateAssignment()}><h3>Duplicate</h3></button>
+
                         {messages.map(err => <li key={err}>{err}</li>)}
                         {!canEdit ? null :
-                            <button onClick={() => deleteAssignment()}><h3>delete</h3></button>
+                            <button onClick={() => deleteAssignment()}><h3>Delete</h3></button>
                         }
+                        <button onClick={() => history.push("/assignments")}><h3>Cancel</h3></button>
                     </span>
                 </>
             }

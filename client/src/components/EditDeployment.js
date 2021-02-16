@@ -15,6 +15,7 @@ const EditDeployment = ({ match }) => {
     const [deadline, setDeadline] = useState('');
     const [courseId, setCourseId] = useState(didAndAidAndCidArray[2]);
     const [now, setNow] = useState(LocalDateTime.now());
+    const [questions, setQuestions] = useState([]);
     const [errors, setErrors] = useState([]);
     const [messages, setMessages] = useState([]);
     const history = useHistory();
@@ -27,6 +28,7 @@ const EditDeployment = ({ match }) => {
                     const data = await res.json();
                     setCourseName(data.course_name);
                     setAssignmentName(data.assignment_name);
+                    setQuestions(data.questions);
                     setDeadline(data.deadline);
                     setCourseId(data.course_id);
                 }
@@ -48,7 +50,7 @@ const EditDeployment = ({ match }) => {
                 setMessages(responseData.messages);
             } else {
                 setNow(LocalDateTime.now());
-                history.push(`/deployments/${responseData.deployment_id}`);
+                history.push(`/courses/${courseId}`);
             }
         })();
     }
@@ -100,8 +102,6 @@ const EditDeployment = ({ match }) => {
                 {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
                 <span>
                     Course: {courseName}
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    Assignment: {assignmentName}
                 </span>
                 <span>
                     deadline:
@@ -114,25 +114,41 @@ const EditDeployment = ({ match }) => {
                 </span>
                 {`Deadline is in the ${now > deadline ? "past." : "future."}`}
                 <span>
-                    <button type="submit">
-                        Change deadline
-                    </button>
-                    or return to this course's deployments
+                    <button type="submit"><h3>Change deadline</h3></button>
+                    <button onClick={() => history.push(`/courses/${courseId}`)}><h3>Cancel</h3></button>
                 </span>
             </form>
             <div>
                 {messages.map(err => <li key={err}>{err}</li>)}
                 {deploymentId ?
+                    <h3>
+                        Would you like to undeploy this assignment or to duplicate this deployment?
+                    </h3>
+                :
                     <>
-                    <h3>Would you like to undeploy this assignment or to duplicate this deployment?</h3>
-                    <p align="center">
-                        <button onClick={deleteDeployment}>Undeploy</button>
-                        <button onClick={duplicateDeployment}>Duplicate</button>
-                    </p>
+                    <h3>Questions for "{assignmentName}" assignment:</h3>
+                    <ol>
+                        {questions.map(question => (
+                            <li>
+                                {question.question}
+                            </li>
+                        ))}
+                    </ol>
                     </>
-                        :
-                    <button onClick={postDeployment}>Deploy</button>
                 }
+                <p align="center">
+                    {deploymentId ?
+                        <>
+                            <button onClick={deleteDeployment}><h3>Undeploy</h3></button>
+                            <button onClick={duplicateDeployment}><h3>Duplicate</h3></button>
+                        </>
+                    :
+                        <button onClick={postDeployment}><h3>Deploy</h3></button>
+                    }
+                    <button onClick={() => history.push(`/courses/${courseId}`)}>
+                        <h3>Cancel</h3>
+                    </button>
+                </p>
             </div>
         </>
     );

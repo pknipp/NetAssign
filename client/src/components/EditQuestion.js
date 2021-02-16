@@ -283,10 +283,15 @@ const EditQuestion = ({ match }) => {
                     </h4>
                     <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
                     {isPublic ? "public " : "private "}
-                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
-                    <button onClick={questionId ? putQuestion : postQuestion}>
-                        <h3>{questionId ? "Submit changes" : "Create question"}</h3>
-                    </button>
+                    <button onClick={() => setIsPublic(!isPublic)}>Toggle</button>
+                    <span>
+                        <button onClick={questionId ? putQuestion : postQuestion}>
+                            <h3>{questionId ? "Submit changes" : "Create question"}</h3>
+                        </button>
+                        <button onClick={() => history.push("/questions")}>
+                            <h3>Cancel</h3>
+                        </button>
+                    </span>
                 </>
             )}
             {!questionId ? null :
@@ -296,11 +301,12 @@ const EditQuestion = ({ match }) => {
                         {canEdit ? " or delete ": " "} this question?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateQuestion()}><h3>duplicate</h3></button>
+                        <button onClick={() => duplicateQuestion()}><h3>Duplicate</h3></button>
                         {messages.map(err => <li key={err}>{err}</li>)}
                         {!canEdit ? null :
-                            <button onClick={() => deleteQuestion()}><h3>delete</h3></button>
+                            <button onClick={() => deleteQuestion()}><h3>Delete</h3></button>
                         }
+                        <button onClick={() => history.push("/questions")}><h3>Cancel</h3></button>
                     </span>
                 </>
             }

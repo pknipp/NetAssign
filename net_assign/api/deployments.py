@@ -3,6 +3,8 @@ from net_assign.models import db, Assignment, Deployment, Course, Appearance, Qu
 from flask_login import current_user
 from datetime import datetime
 from sqlalchemy import or_, and_
+import json
+from . import version
 
 deployments = Blueprint('deployments', __name__)
 
@@ -26,23 +28,24 @@ deployments = Blueprint('deployments', __name__)
 def index(deployment_id_and_assignment_id_and_course_id):
     ids = deployment_id_and_assignment_id_and_course_id.split(' ')
     deployment_id = int(ids[0])
-    assignment_id = None
-    course_id = None
-    if len(ids) > 1:
+    assignment_id = 0
+    course_id = 0
+    deployment = Deployment.query.filter(Deployment.id == deployment_id).one_or_none()
+    if deployment:
+        assignment_id = deployment.assignment_id
+        course_id = deployment.course_id
+    else:
         assignment_id = int(ids[1])
-    if len(ids) > 2:
         course_id = int(ids[2])
-    deployment = None
-    if deployment_id:
-        deployment = Deployment.query.get(deployment_id)
-        instructor_id = Course.query.get(deployment.course_id).instructor_id
-        if not instructor_id == current_user.id:
-            return {"errors": ["You are not authorized to this."]}, 401
+    instructor_id = Course.query.get(course_id).instructor_id
+    if not instructor_id == current_user.id:
+        return {"errors": ["You are not authorized to this."]}, 401
+
     # duplicating a deployement
     if request.method == 'POST':
         new_deployment = Deployment(
-            course_id=deployment.course_id if deployment else course_id,
-            assignment_id=deployment.assignment_id if deployment else assignment_id,
+            course_id=course_id,
+            assignment_id=assignment_id,
             deadline=datetime.now(),
             created_at=datetime.now(),
             updated_at=datetime.now(),
@@ -51,9 +54,20 @@ def index(deployment_id_and_assignment_id_and_course_id):
         db.session.commit()
         return {"deployment_id": new_deployment.id}
     if request.method == 'GET':
-        assignment = Assignment.query.get(deployment.assignment_id if deployment else assignment_id)
-        course = Course.query.get(deployment.course_id if deployment else course_id)
-        return({"course_name":course.name, "assignment_name": assignment.name, "deadline": (deployment.deadline if deployment else datetime.now()).isoformat(timespec='seconds'), "course_id": course.id})
+        assignment = Assignment.query.filter(Assignment.id == assignment_id).one_or_none()
+        course = Course.query.filter(Course.id == course_id).one_or_none()
+        appearances = Appearance.query.filter(Appearance.assignment_id == assignment_id)
+        questions = [Question.query.get(appearance.question_id) for appearance in appearances]
+        question_list = list()
+        for q_and_a in questions:
+            id = q_and_a.id
+            question_code = q_and_a.question_code
+            inputs = json.loads(q_and_a.inputs)
+            answer_code = q_and_a.answer_code
+            q_and_a = version.version(question_code, inputs, answer_code)
+            question = q_and_a["question"]
+            question_list.append({"id": id, "question": question})
+        return({"course_name":course.name, "assignment_name": assignment.name, "deadline": (deployment.deadline if deployment else datetime.now()).isoformat(timespec='seconds'), "course_id": course.id, "questions": question_list})
     if request.method == 'PUT':
         deployment.deadline = datetime.strptime(request.json.get('deadline', None), '%Y-%m-%dT%H:%M:%S')
         deployment.updated_at = datetime.now()
