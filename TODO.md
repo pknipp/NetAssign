@@ -24,8 +24,7 @@ Muse upon rationale for putting routes in different blueprints (and naming compo
 When fetching lists from back-end, sort them in the most logical manner
 Increase # of Question seeds
 Determine how to handle a situation in which question is edited after assignment w/it is downloaded.
-Provide means for an instructor to deploy (ie, schedule) an assignment. (From "Home" or "Assignments"?)
-Figure out how to input deadline (type="datetime-local", for Deployment CU routes?)
+Provide means for an instructor to deploy (ie, schedule) an assignment from "Assignments"?
 Ensure that whitespace is appropriately removed from input2s and fill-in-blank answer (in back or front?)
 For fill-in-the-blank question in which you want to allow multiple correct answers, allow this somehow?
 introduce MC questions (as a type of fill-in-the-blank?)
