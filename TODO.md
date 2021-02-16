@@ -1,4 +1,5 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/net_assign#)
+Create gradebook, for both instructor and student.
 synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
 Get 'x<sup>2</sup>' to render properly (using npm react-innertext package?)
 For models.py, insert the many-to-many relationships?
