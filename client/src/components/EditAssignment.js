@@ -23,27 +23,29 @@ const EditAssignment = ({ match }) => {
         privacy: "This controls whether or not other instructors will be able to see, use, and/or duplicate this assignment.  (Regardless they'll not have edit/delete privileges.)",
     };
 
-    useEffect(() => {
+    const getAssignment = () => {
         if (assignmentId > 0) {
-        (async () => {
-            try {
-                const res = await fetch(`/api/assignments/${assignmentId}`)
-                const data = await res.json();
-
-                if (!res.ok) {
-                    setErrors(data.errors);
-                } else {
-                    setName(data.assignment.name);
-                    setIsPublic(data.assignment.is_public);
-                    setQuestions(data.questions);
-                    setQuestionIds(data.questions.map(question => question.id));
-                    setCanEdit(data.assignment.instructor_id === currentUser.id);
+            (async () => {
+                try {
+                    const res = await fetch(`/api/assignments/${assignmentId}`)
+                    const data = await res.json();
+                    if (!res.ok) {
+                        setErrors(data.errors);
+                    } else {
+                        setName(data.assignment.name);
+                        setIsPublic(data.assignment.is_public);
+                        setQuestions(data.questions);
+                        setQuestionIds(data.questions.map(question => question.id));
+                        setCanEdit(data.assignment.instructor_id === currentUser.id);
+                    }
+                } catch (err) {
+                    console.error(err)
                 }
-            } catch (err) {
-                console.error(err)
-            }
-        })()}
-    }, [rerender])
+            })()
+        }
+    };
+
+    useEffect(getAssignment, [rerender]);
 
     const handleToggle = e => {
         let name = e.currentTarget.name;

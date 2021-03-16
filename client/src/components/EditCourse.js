@@ -18,24 +18,27 @@ const EditCourse = ({ match }) => {
         privacy: "This controls whether or not other instructors will be able to see, use, and/or duplicate this course.  (Regardless they'll not have edit/delete privileges.)",
     };
 
-    useEffect(() => {
+    const getCourse = () => {
         if (courseId > 0) {
-        (async () => {
-            try {
-                const res = await fetch(`/api/courses/${courseId}`);
-                const data = await res.json();
-                if (!res.ok) {
-                    setErrors(data.errors);
-                } else {
-                    setName(data.course.name);
-                    setIsPublic(data.course.is_public);
-                    setCanEdit(data.course.instructor_id === currentUser.id);
+            (async () => {
+                try {
+                    const res = await fetch(`/api/courses/${courseId}`);
+                    const data = await res.json();
+                    if (!res.ok) {
+                        setErrors(data.errors);
+                    } else {
+                        setName(data.course.name);
+                        setIsPublic(data.course.is_public);
+                        setCanEdit(data.course.instructor_id === currentUser.id);
+                    }
+                } catch (err) {
+                    console.error(err)
                 }
-            } catch (err) {
-                console.error(err)
-            }
-        })()}
-    }, [rerender])
+            })()
+        }
+    };
+
+    useEffect(getCourse, [rerender]);
 
     const putCourse = () => {
         (async _ => {

@@ -20,7 +20,7 @@ const EditDeployment = ({ match }) => {
     const [messages, setMessages] = useState([]);
     const history = useHistory();
 
-    useEffect(() => {
+    const getDeployment = () => {
         (async () => {
             try {
                 const res = await fetch(`/api/deployments/${didAndAidAndCid}`);
@@ -36,7 +36,23 @@ const EditDeployment = ({ match }) => {
                 console.error(err)
             }
         })()
-    }, [deploymentId]);
+    };
+
+    useEffect(getDeployment, [deploymentId]);
+
+    const putDeployment = e => {
+        e.preventDefault();
+        (async _ => {
+            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
+                method: 'PUT', headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ deadline })
+            });
+            const responseData = await response.json();
+            if (!response.ok) setErrors(responseData.errors);
+            if (responseData.messages) setMessages(responseData.messages)
+            history.push(`/courses/${courseId}`)
+        })();
+    }
 
     const duplicateDeployment = () => {
         (async _ => {
@@ -52,20 +68,6 @@ const EditDeployment = ({ match }) => {
                 setNow(LocalDateTime.now());
                 history.push(`/courses/${courseId}`);
             }
-        })();
-    }
-
-    const putDeployment = e => {
-        e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ deadline })
-            });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
-            history.push(`/courses/${courseId}`)
         })();
     }
 

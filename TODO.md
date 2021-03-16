@@ -1,4 +1,8 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/net_assign#)
+tighten code (make uniform the useEffects) and insert comments
+are back-end routes suitably REST-ful?
+Are there any inputs for which one needs to input numbers starting w/decimal or "-"?
+create a README
 Create gradebook, for both instructor and student.
 synthesize LogIn, SignUp, and EditUser, or perhaps just the latter two
 Get 'x<sup>2</sup>' to render properly (using npm react-innertext package?)

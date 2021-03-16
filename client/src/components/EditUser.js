@@ -27,6 +27,7 @@ const EditUser = _ => {
             history.push('/')
         })();
     }
+    
     const deleteUser = e => {
         e.preventDefault();
         (async _ => {

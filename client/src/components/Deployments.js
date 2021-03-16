@@ -12,7 +12,7 @@ const Deployments = ({ match }) => {
     const [showOtherAssignment, setShowOtherAssignment] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
-    useEffect(() => {
+    const getDeployments = () => {
         (async () => {
             try {
                 const res = await fetch(`/api/deployments/courses/${courseId}`)
@@ -26,7 +26,9 @@ const Deployments = ({ match }) => {
                 console.error(err)
             }
         })()
-    }, [courseId])
+    };
+
+    useEffect(getDeployments, [courseId]);
 
     return (
         <>

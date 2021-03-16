@@ -11,7 +11,7 @@ const Questions = () => {
     const [questions, setQuestions] = useState([]);
     const [showMoreQuestions, setShowMoreQuestions] = useState(false);
 
-    useEffect(() => {
+    const getQuestions = () => {
         (async () => {
             const response = await fetchWithCSRF(`/api/questions`);
             const responseData = await response.json();
@@ -19,7 +19,9 @@ const Questions = () => {
             if (responseData.messages) return setMessages(responseData.messages);
             setQuestions(responseData.questions);
         })();
-    }, [])
+    };
+
+    useEffect(getQuestions, []);
 
     return (
         <>

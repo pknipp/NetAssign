@@ -23,7 +23,8 @@ const LogIn = ({ defaultUser }) => {
             setCurrentUser(responseData.current_user);
             history.push('/')
         })();
-    }
+    };
+    
     return (
         <form onSubmit={putSession}>
             {errors.map(err => <li key={err} className="error">{err}</li>)}

@@ -9,7 +9,8 @@ const LogOut = () => {
             const response = await fetchWithCSRF('/api/session', {method: 'DELETE'});
             if (response.ok) setCurrentUser(null);
         })();
-    }
+    };
+    
     return (
         <form onSubmit={deleteSession}>
             <button type="submit">Logout</button>

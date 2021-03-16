@@ -25,7 +25,8 @@ const SignUp = props => {
                 setCurrentUser(responseData.current_user);
             }
         })();
-    }
+    };
+    
     return (
         <form onSubmit={postUser}>
             {errors.map(err => <li key={err} className="error">{err}</li>)}

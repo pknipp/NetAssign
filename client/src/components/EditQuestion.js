@@ -28,45 +28,48 @@ const EditQuestion = ({ match }) => {
     const [showInfo, setShowInfo] = useState({});
     const history = useHistory();
 
-    useEffect(() => {
+    const getQuestion = () => {
         if (questionId > 0) {
-        (async () => {
-            try {
-                const res = await fetch(`/api/questions/${questionId}`)
-                const data = await res.json();
-                if (!res.ok) {
-                    setErrors(data.errors);
-                } else {
-                    let inputs = data.inputs;
-                    let inputs1 = [];
-                    let inputs2 = [];
-                    let varNames = new Set();
-                    inputs.forEach(input => {
-                        if (typeof(input[0]) === "string") {
-                            inputs1.push(input);
-                            varNames.add(input[0]);
-                        } else {
-                            inputs2.push(input);
-                            input.forEach(subinput => varNames.add(subinput[0]));
-                        }
-                    })
-                    setQuestionCode(data.question_code);
-                    setAnswerCode(data.answer_code);
-                    setInputs1(inputs1);
-                    setInput1Length(inputs1.length);
-                    setInputs2(inputs2);
-                    setInput2Length(inputs2.length);
-                    setVarNames(varNames);
-                    setIsPublic(data.is_public);
-                    setQuestion(data.question);
-                    setAnswer(data.answer);
-                    setCanEdit(data.instructor_id === currentUser.id);
+            (async () => {
+                try {
+                    const res = await fetch(`/api/questions/${questionId}`)
+                    const data = await res.json();
+                    if (!res.ok) {
+                        setErrors(data.errors);
+                    } else {
+                        let inputs = data.inputs;
+                        let inputs1 = [];
+                        let inputs2 = [];
+                        let varNames = new Set();
+                        inputs.forEach(input => {
+                            if (typeof(input[0]) === "string") {
+                                inputs1.push(input);
+                                varNames.add(input[0]);
+                            } else {
+                                inputs2.push(input);
+                                input.forEach(subinput => varNames.add(subinput[0]));
+                            }
+                        })
+                        setQuestionCode(data.question_code);
+                        setAnswerCode(data.answer_code);
+                        setInputs1(inputs1);
+                        setInput1Length(inputs1.length);
+                        setInputs2(inputs2);
+                        setInput2Length(inputs2.length);
+                        setVarNames(varNames);
+                        setIsPublic(data.is_public);
+                        setQuestion(data.question);
+                        setAnswer(data.answer);
+                        setCanEdit(data.instructor_id === currentUser.id);
+                    }
+                } catch (err) {
+                    console.error(err)
                 }
-            } catch (err) {
-                console.error(err)
-            }
-        })()}
-    }, [])
+            })();
+        }
+    };
+
+    useEffect(getQuestion, []);
 
     const putQuestion = () => {
         (async _ => {
@@ -82,7 +85,7 @@ const EditQuestion = ({ match }) => {
                 history.push("/questions")
             }
         })();
-    }
+    };
 
     const postQuestion = () => {
         (async _ => {
@@ -98,7 +101,7 @@ const EditQuestion = ({ match }) => {
                 history.push("/questions")
             }
         })();
-    }
+    };
 
     const duplicateQuestion = () => {
         (async _ => {
@@ -110,7 +113,7 @@ const EditQuestion = ({ match }) => {
             if (responseData.messages) setMessages(responseData.messages)
             history.push("/questions")
         })();
-    }
+    };
 
     const deleteQuestion = () => {
         (async _ => {
@@ -122,14 +125,14 @@ const EditQuestion = ({ match }) => {
             if (responseData.messages) setMessages(responseData.messages)
             history.push("/questions")
         })();
-    }
+    };
 
     const handleToggle = e => {
         let name = e.currentTarget.name;
         let newShowInfo = {...showInfo};
         newShowInfo[name] = !showInfo[name];
         setShowInfo(newShowInfo);
-    }
+    };
 
     let text = {
         randomization: "NetAssign allows for two types of variable randomization: (1) a single variable assuming values which are uniformly spread in a particular interval, and/or (2) one or (more often) more variables which are chosen from the same number of lists, in a correlated manner.  The name for each variable may consist of one or more characters, each of which may be either a letter (upper or lower case), digit, or underscore (_).  The first character may not be a number.  A single question can use both types of randomization.  Click below for more information about each type.",

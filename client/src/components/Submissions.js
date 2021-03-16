@@ -8,7 +8,7 @@ const Submissions = ({ match }) => {
     const [assignmentName, setAssignmentName] = useState("");
     const { currentUser } = useContext(AuthContext);
 
-    useEffect(() => {
+    const getSubmissions = () => {
         (async () => {
             try {
                 const res = await fetch(`/api/submissions/${deploymentId}`)
@@ -21,7 +21,9 @@ const Submissions = ({ match }) => {
                 console.error(err)
             }
         })()
-    }, [deploymentId, currentUser.id])
+    };
+
+    useEffect(getSubmissions, [deploymentId, currentUser.id]);
 
     return (
         <>

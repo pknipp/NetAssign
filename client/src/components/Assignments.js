@@ -11,7 +11,7 @@ const Assignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [showMoreAssignments, setShowMoreAssignments] = useState(false);
 
-    useEffect(() => {
+    const getAssignments = () => {
         (async () => {
             const response = await fetchWithCSRF("/api/assignments");
             const responseData = await response.json();
@@ -23,7 +23,9 @@ const Assignments = () => {
                 setAssignments(responseData.assignments);
             }
         })();
-    }, [])
+    };
+
+    useEffect(getAssignments, []);
 
     return (
         <>

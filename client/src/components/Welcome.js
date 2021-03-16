@@ -49,7 +49,7 @@ const student = (
       <ul>
         <li>you can easily share questions with other instructors who use the service,</li>
         <li>because of question randomization you'll know that your students are not simply copying answers from each other,</li>
-        <li>you can track the progress of the work performed by any student or course in order to determine if their are any "mid-course" corrections which you need to make in your instruction,</li>
+        <li>you can track the progress of the work performed by any student or course in order to determine if there are any "mid-course" corrections which you need to make in your instruction,</li>
         <li>you can make changes to the assignment - if needed - between its start date and deadline,</li>
         <li>you don't need to spend hours grading every week, and</li>
         <li>student grades are automatically stored in the database.</li>
