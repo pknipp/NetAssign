@@ -53,7 +53,7 @@ def index():
             user.password = password
             if email:
                 user_former = User.query.filter(User.email == email).one_or_none()
-                if user_former:
+                if user_former and not user_former.id == user.id:
                         return {"errors": ["That email has already been taken."]}, 500
         else:
             return {"errors": ["Passwords must match."]}, 400
