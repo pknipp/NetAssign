@@ -78,6 +78,11 @@ const App = _ => {
                             {/* Enables instructor to change details of a particular deployment (needs deadline functionality) */}
                             <Route exact path="/deployments/:didAndAidAndCid" component={EditDeployment} />
                         </Switch>
+                        <br/>
+                        <span>
+                            creator:
+                            <a href="https://pknipp.github.io/" target="_blank">Peter Knipp</a>
+                        </span>
                     </div>
                 </BrowserRouter>
             }
