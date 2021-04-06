@@ -15,32 +15,39 @@ const SignUp = props => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
-                method: 'POST', headers: { "Content-Type": "application/json" },
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password, password2, isInstructor })
             });
-            const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else {
-                setCurrentUser(responseData.current_user);
-            }
+            const data = await response.json();
+            setErrors(data.errors || []);
+            if (response.ok) setCurrentUser(data.current_user);
         })();
     };
-    
+
     return (
         <form onSubmit={postUser}>
             {errors.map(err => <li key={err} className="error">{err}</li>)}
             <input
-                type="text" placeholder="Email" value={email}
-                onChange={e => setEmail(e.target.value)} name="email"
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                name="email"
             />
             <input
-                type="password" placeholder="Password" value={password}
-                onChange={e => setPassword(e.target.value)} name="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                name="password"
             />
             <input
-                type="password" placeholder="Confirm password" value={password2}
-                onChange={e => setPassword2(e.target.value)} name="password2"
+                type="password"
+                placeholder="Confirm password"
+                value={password2}
+                onChange={e => setPassword2(e.target.value)}
+                name="password2"
             />
             <button type="submit">Sign Up</button>
         </form>

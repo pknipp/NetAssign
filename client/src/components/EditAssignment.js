@@ -27,9 +27,9 @@ const EditAssignment = ({ match }) => {
         if (assignmentId > 0) {
             (async () => {
                 try {
-                    const res = await fetch(`/api/assignments/${assignmentId}`)
-                    const data = await res.json();
-                    if (!res.ok) {
+                    const response = await fetch(`/api/assignments/${assignmentId}`)
+                    const data = await response.json();
+                    if (!response.ok) {
                         setErrors(data.errors);
                     } else {
                         setName(data.assignment.name);
@@ -57,12 +57,16 @@ const EditAssignment = ({ match }) => {
     const putAssignment = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                method: 'PUT',
+                headers: {"Content-Type": "application/json"},
+                credentials: 'include',
                 body: JSON.stringify({ name, isPublic })
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages);
+            const data = await response.json();
+            // if (!response.ok) setErrors(data.errors);
+            setErrors(data.errors || []);
+            // if (data.messages) setMessages(data.messages);
+            setMessages(data.messages || []);
             history.push(`/assignments`)
         })();
     }
@@ -70,16 +74,19 @@ const EditAssignment = ({ match }) => {
     const postAssignment = () => {
         (async _ => {
             const response = await fetchWithCSRF("/api/assignments", {
-                method: 'POST', headers: {"Content-Type": "application/json"}, credentials: 'include',
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                credentials: 'include',
                 body: JSON.stringify({ name, isPublic })
             });
-            const responseData = await response.json();
+            const data = await response.json();
             if (!response.ok) {
-                setErrors(responseData.errors);
+                setErrors(data.errors);
             } else {
-                if (responseData.messages) setMessages(responseData.messages)
-                setAssignmentId(responseData.assignment.id)
-                history.push(`/assignments/${responseData.assignment.id}`)
+                // if (data.messages) setMessages(data.messages)
+                setMessages(data.messages || "")
+                setAssignmentId(data.assignment.id)
+                history.push(`/assignments/${data.assignment.id}`)
             }
         })();
     }
@@ -89,13 +96,14 @@ const EditAssignment = ({ match }) => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
                 method: 'POST',
             });
-            const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else {
-                if (responseData.messages) setMessages(responseData.messages)
-                history.push("/assignments")
-            }
+            const data = await response.json();
+            // if (!response.ok) {
+            setErrors(data.errors || []);
+            // } else {
+                // if (responseData.messages) setMessages(responseData.messages)
+            setMessages(data.messages || []);
+            if (response.ok) history.push("/assignments")
+            // }
         })();
     }
 
@@ -104,9 +112,11 @@ const EditAssignment = ({ match }) => {
             const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
                 method: 'DELETE',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            // if (!response.ok) setErrors(data.errors);
+            setErrors(data.errors || []);
+            // if (responseData.messages) setMessages(responseData.messages)
+            setMessages(data.messages || []);
             history.push("/assignments")
         })();
     }
@@ -114,9 +124,9 @@ const EditAssignment = ({ match }) => {
     const getQuestions = async () => {
         if (!showMoreQuestions) {
             try {
-                const res = await fetch(`/api/questions`)
-                if (res.ok) {
-                    const data = await res.json();
+                const response = await fetch(`/api/questions`)
+                if (response.ok) {
+                    const data = await response.json();
                     setMoreQuestions(data.questions);;
                 }
             } catch (err) {
@@ -134,9 +144,11 @@ const EditAssignment = ({ match }) => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'POST',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            // if (!response.ok) setErrors(data.errors);
+            setErrors(data.errors || []);
+            // if (data.messages) setMessages(responseData.messages)
+            setMessages(data.messages || []);
             setRerender(!rerender);
         })();
     }
@@ -146,9 +158,11 @@ const EditAssignment = ({ match }) => {
             const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
                 method: 'DELETE',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            // if (!response.ok) setErrors(data.errors);
+            setMessages(data.messages || [])
+            // if (responseData.messages) setMessages(responseData.messages)
+            setMessages(data.messages || []);
             setRerender(!rerender);
         })();
     }
@@ -156,22 +170,44 @@ const EditAssignment = ({ match }) => {
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
             <h2>Assignment Editor</h2>
-            {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
-            <h4>Assignment name:</h4>
+            {errors.length ? errors.map(err => (
+                <li key={err} className="error">
+                    {err}
+                </li>
+            ))
+                : ''
+            }
+            <h4>
+                Assignment name:
+            </h4>
             <input
-                type="text" placeholder="Name of new assignment" value={name} className="larger"
-                onChange={e => setName(e.target.value)} disabled={!canEdit && assignmentId}
+                type="text"
+                placeholder="Name of new assignment"
+                value={name}
+                className="larger"
+                onChange={e => setName(e.target.value)}
+                disabled={!canEdit && assignmentId}
             />
 
             {(!canEdit && assignmentId) ? null : (
                 <>
                     <h4>
                         privacy setting:
-                        <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
+                        <ToggleInfo
+                            onClick={handleToggle}
+                            name="privacy"
+                            toggle={showInfo.privacy}
+                        />
                     </h4>
-                    <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
+                    <div>
+                        <i>
+                            {showInfo.privacy ? text.privacy : null}
+                        </i>
+                    </div>
                     {isPublic ? "public " : "private "}
-                    <button onClick={() => setIsPublic(!isPublic)}>toggle</button>
+                    <button onClick={() => setIsPublic(!isPublic)}>
+                        toggle
+                    </button>
                     <span>
                         <button onClick={assignmentId ? putAssignment : postAssignment}>
                             <h3>{assignmentId ? "Submit changes" : "Create assignment"}</h3>
@@ -180,7 +216,9 @@ const EditAssignment = ({ match }) => {
                     </span>
                 </>
             )}
-            {!assignmentId ? null : "Refresh browser in order to see different versions of questions."}
+            {!assignmentId ? null
+                : "Refresh browser in order to see different versions of questions."
+            }
 
             <ol>
                 {questions.map(question => (
@@ -199,19 +237,25 @@ const EditAssignment = ({ match }) => {
                 <>
                     {!canEdit && assignmentId ? null :
                     <button onClick={() => getQuestions()}>
-                        {showMoreQuestions ? "Hide" : "Show"} questions which may get added to this assignment.
+                        {showMoreQuestions ? "Hide" : "Show"}
+                            questions which may get added to this assignment.
                     </button>}
                     <ul>
-                        {moreQuestions.filter(question => !questionIds.includes(question.id)).map(question => (
-                            <li key={question.id}>
-                                <>
-                                    <button onClick={() => postAppearance(question.id)}>
-                                        add
-                                    </button>
-                                    {question.question}
-                                </>
-                            </li>
-                        ))}
+                        {moreQuestions.filter(question =>
+                            !questionIds.includes(question.id)
+                                .map(question => (
+                                    <li key={question.id}>
+                                        <>
+                                            <button
+                                                onClick={() => postAppearance(question.id)}
+                                            >
+                                                add
+                                            </button>
+                                            {question.question}
+                                        </>
+                                    </li>
+                                ))
+                        )}
                     </ul>
 
                     {messages.map(err => <li key={err}>{err}</li>)}
@@ -219,13 +263,23 @@ const EditAssignment = ({ match }) => {
                         {canEdit ? " or delete ": " "} this assignment?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateAssignment()}><h3>Duplicate</h3></button>
+                        <button onClick={() => duplicateAssignment()}>
+                            <h3>Duplicate</h3>
+                        </button>
 
                         {messages.map(err => <li key={err}>{err}</li>)}
                         {!canEdit ? null :
-                            <button onClick={() => deleteAssignment()}><h3>Delete</h3></button>
+                            <button onClick={() => deleteAssignment()}>
+                                <h3>
+                                    Delete
+                                </h3>
+                            </button>
                         }
-                        <button onClick={() => history.push("/assignments")}><h3>Cancel</h3></button>
+                        <button onClick={() => history.push("/assignments")}>
+                            <h3>
+                                Cancel
+                            </h3>
+                        </button>
                     </span>
                 </>
             }

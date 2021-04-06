@@ -44,12 +44,15 @@ const EditDeployment = ({ match }) => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"},
+                method: 'PUT',
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ deadline })
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            // if (!response.ok) setErrors(responseData.errors);
+            setErrors(data.errors || []);
+            // if (responseData.messages) setMessages(responseData.messages)
+            setMessages(data.messages || [])
             history.push(`/courses/${courseId}`)
         })();
     }
@@ -59,12 +62,12 @@ const EditDeployment = ({ match }) => {
             const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'POST',
             });
-            const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else if (responseData.messages) {
-                setMessages(responseData.messages);
-            } else {
+            const data = await response.json();
+            // if (!response.ok) {
+            setErrors(data.errors || []);
+            // } else if (responseData.messages) {
+            setMessages(data.messages || []);
+            if (response.ok) {
                 setNow(LocalDateTime.now());
                 history.push(`/courses/${courseId}`);
             }
@@ -77,9 +80,9 @@ const EditDeployment = ({ match }) => {
             const response = await fetchWithCSRF(`/api/deployments/0 ${assignmentId} ${courseId}`, {
                 method: 'POST'}
             );
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             history.push(`/courses/${courseId}`)
         })();
     }
@@ -90,9 +93,9 @@ const EditDeployment = ({ match }) => {
             const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
                 method: 'DELETE',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             history.push(`/courses/${courseId}`)
         })();
     }
@@ -101,23 +104,38 @@ const EditDeployment = ({ match }) => {
         <>
             <h2>Deployment Editor</h2>
             <form onSubmit={deploymentId ? putDeployment : postDeployment}>
-                {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''}
+                {/* {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''} */}
+                {errors.map(err => <li key={err}>{err}</li>)}
                 <span>
                     Course: {courseName}
                 </span>
                 <span>
                     deadline:
-                    <input type="date" value={deadline.split('T')[0]} onChange={e => {
-                        setDeadline(e.target.value + 'T' + deadline.split('T')[1]);
-                    }} />
-                    <input type="time" value={deadline.split('T')[1]} onChange={e => {
-                        setDeadline(deadline.split('T')[0] + 'T' + e.target.value);
-                    }} />
+                    <input
+                        type="date"
+                        value={deadline.split('T')[0]}
+                        onChange={e => setDeadline(e.target.value + 'T' + deadline.split('T')[1])}
+                    />
+                    <input
+                        type="time"
+                        value={deadline.split('T')[1]}
+                        onChange={e => setDeadline(deadline.split('T')[0] + 'T' + e.target.value)}
+                    />
                 </span>
                 {`Deadline is in the ${now > deadline ? "past." : "future."}`}
                 <span>
-                    <button type="submit"><h3>Change deadline</h3></button>
-                    <button onClick={() => history.push(`/courses/${courseId}`)}><h3>Cancel</h3></button>
+                    <button type="submit">
+                        <h3>
+                            Change deadline
+                        </h3>
+                    </button>
+                    <button
+                        onClick={() => history.push(`/courses/${courseId}`)}
+                    >
+                        <h3>
+                            Cancel
+                        </h3>
+                    </button>
                 </span>
             </form>
             <div>

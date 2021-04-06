@@ -75,31 +75,42 @@ const EditQuestion = ({ match }) => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ questionCode, answerCode, inputs: [...inputs1, ...inputs2], isPublic })
+                body: JSON.stringify({
+                    questionCode,
+                    answerCode,
+                    inputs: [...inputs1, ...inputs2],
+                    isPublic
+                })
             });
-            const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else {
-                if (responseData.messages) setMessages(responseData.messages)
-                history.push("/questions")
-            }
+            const data = await response.json();
+            // if (!response.ok) {
+            setErrors(data.errors || []);
+            // } else {
+            setMessages(data.messages || [])
+            if (response.ok) history.push("/questions")
+            // }
         })();
     };
 
     const postQuestion = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/questions`, {
-                method: 'POST', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ questionCode, answerCode, inputs: [...inputs1, ...inputs2], isPublic })
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    questionCode,
+                    answerCode,
+                    inputs: [...inputs1, ...inputs2],
+                    isPublic
+                })
             });
-            const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else {
-                if (responseData.messages) setMessages(responseData.messages)
-                history.push("/questions")
-            }
+            const data = await response.json();
+            // if (!response.ok) {
+            setErrors(data.errors || []);
+            // } else {
+            setMessages(data.messages || [])
+            if (response.ok) history.push("/questions");
+            // }
         })();
     };
 
@@ -108,9 +119,9 @@ const EditQuestion = ({ match }) => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'POST',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || []);
             history.push("/questions")
         })();
     };
@@ -120,9 +131,9 @@ const EditQuestion = ({ match }) => {
             const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
                 method: 'DELETE',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             history.push("/questions")
         })();
     };
@@ -147,19 +158,34 @@ const EditQuestion = ({ match }) => {
         <div className="qeditor">
             <h2>Question Editor</h2>
             <span>
-                <h3>Specifications of random inputs
-                <ToggleInfo onClick={handleToggle} name="randomization" toggle={showInfo.randomization} />
+                <h3>
+                    Specifications of random inputs
+                    <ToggleInfo
+                        onClick={handleToggle}
+                        name="randomization"
+                        toggle={showInfo.randomization}
+                    />
                 </h3>
             </span>
-            <div><i>{showInfo.randomization ? text.randomization : null}</i></div>
-            <ul>{errors.map(err => <li key={err} className="error">{err}</li>)}</ul>
+            <div>
+                <i>
+                    {showInfo.randomization ? text.randomization : null}
+                </i>
+            </div>
+            <ul>
+                {errors.map(err => <li key={err} className="error">{err}</li>)}
+            </ul>
             <div className="qinputs">
                 <div className="qinputs1">
                     <h4>
                         1) inputs chosen from a range of numbers
                         <ToggleInfo onClick={handleToggle} name="type1" toggle={showInfo.type1} />
                     </h4>
-                    <div><i>{showInfo.type1 ? text.type1 : null}</i></div>
+                    <div>
+                        <i>
+                            {showInfo.type1 ? text.type1 : null}
+                        </i>
+                    </div>
                     {!canEdit && questionId ? null :
                         <InputControl key="inputs1"
                             canEdit={canEdit || !questionId}
@@ -169,7 +195,8 @@ const EditQuestion = ({ match }) => {
                             setInputs={setInputs1}
                             varNames={varNames}
                             setVarNames={setVarNames}
-                        />}
+                        />
+                    }
                     {!input1Length ? null : <table>
                         <thead>
                             <tr>
@@ -199,9 +226,17 @@ const EditQuestion = ({ match }) => {
                 <div className="qinputs2">
                     <h4>
                         2) inputs which are chosen from lists
-                        <ToggleInfo onClick={handleToggle} name="type2" toggle={showInfo.type2} />
+                        <ToggleInfo
+                            onClick={handleToggle}
+                            name="type2"
+                            toggle={showInfo.type2}
+                        />
                     </h4>
-                    <div><i>{showInfo.type2 ? text.type2 : null}</i></div>
+                    <div>
+                        <i>
+                            {showInfo.type2 ? text.type2 : null}
+                        </i>
+                    </div>
                     {!canEdit && questionId ? null :
                         <InputControl
                             key="inputs2"
@@ -246,12 +281,20 @@ const EditQuestion = ({ match }) => {
                 <div className="qcode">
                     <h4>
                         question code:
-                        <ToggleInfo onClick={handleToggle} name="questionCode" toggle={showInfo.questionCode} />
+                        <ToggleInfo
+                            onClick={handleToggle}
+                            name="questionCode"
+                            toggle={showInfo.questionCode}
+                        />
                     </h4>
                     <div><i>{showInfo.questionCode ? text.questionCode : null}</i></div>
                     <textarea
-                        placeholder="Question code" value={questionCode} rows="3" cols="50"
-                        onChange={e => setQuestionCode(e.target.value)} disabled={!canEdit &&questionId}
+                        placeholder="Question code"
+                        value={questionCode}
+                        rows="3"
+                        cols="50"
+                        onChange={e => setQuestionCode(e.target.value)}
+                        disabled={!canEdit &&questionId}
                     />
                 </div>
                 <div className="acode">
@@ -263,14 +306,24 @@ const EditQuestion = ({ match }) => {
                                 answer code:
                             </a>
                         }
-                        <ToggleInfo onClick={handleToggle} name="answerCode" toggle={showInfo.answerCode} />
+                        <ToggleInfo
+                            onClick={handleToggle}
+                            name="answerCode"
+                            toggle={showInfo.answerCode}
+                        />
                     </h4>
                     <div>
-                        <i>{showInfo.answerCode ? text.answerCode : null}</i>
+                        <i>
+                            {showInfo.answerCode ? text.answerCode : null}
+                        </i>
                     </div>
                     <input
-                        type="text" placeholder="Answer code" value={answerCode} className="larger"
-                        onChange={e => setAnswerCode(e.target.value)} disabled={!canEdit &&questionId}
+                        type="text"
+                        placeholder="Answer code"
+                        value={answerCode}
+                        className="larger"
+                        onChange={e => setAnswerCode(e.target.value)}
+                        disabled={!canEdit &&questionId}
                     />
                 </div>
             </div>
@@ -282,17 +335,31 @@ const EditQuestion = ({ match }) => {
                 <>
                     <h4>
                         privacy setting:
-                        <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
+                        <ToggleInfo
+                            onClick={handleToggle}
+                            name="privacy"
+                            toggle={showInfo.privacy}
+                        />
                     </h4>
-                    <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
+                    <div>
+                        <i>
+                            {showInfo.privacy ? text.privacy : null}
+                        </i>
+                    </div>
                     {isPublic ? "public " : "private "}
-                    <button onClick={() => setIsPublic(!isPublic)}>Toggle</button>
+                    <button onClick={() => setIsPublic(!isPublic)}>
+                        Toggle
+                    </button>
                     <span>
                         <button onClick={questionId ? putQuestion : postQuestion}>
-                            <h3>{questionId ? "Submit changes" : "Create question"}</h3>
+                            <h3>
+                                {questionId ? "Submit changes" : "Create question"}
+                            </h3>
                         </button>
                         <button onClick={() => history.push("/questions")}>
-                            <h3>Cancel</h3>
+                            <h3>
+                                Cancel
+                            </h3>
                         </button>
                     </span>
                 </>
@@ -300,16 +367,30 @@ const EditQuestion = ({ match }) => {
             {!questionId ? null :
                 <>
                     {messages.map(err => <li key={err}>{err}</li>)}
-                    <h4>Would you like to duplicate
-                        {canEdit ? " or delete ": " "} this question?
+                    <h4>
+                        Would you like to duplicate
+                        {canEdit ? " or delete ": " "}
+                        this question?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateQuestion()}><h3>Duplicate</h3></button>
+                        <button onClick={() => duplicateQuestion()}>
+                            <h3>
+                                Duplicate
+                            </h3>
+                        </button>
                         {messages.map(err => <li key={err}>{err}</li>)}
                         {!canEdit ? null :
-                            <button onClick={() => deleteQuestion()}><h3>Delete</h3></button>
+                            <button onClick={deleteQuestion}>
+                                <h3>
+                                    Delete
+                                </h3>
+                            </button>
                         }
-                        <button onClick={() => history.push("/questions")}><h3>Cancel</h3></button>
+                        <button onClick={() => history.push("/questions")}>
+                            <h3>
+                                Cancel
+                            </h3>
+                        </button>
                     </span>
                 </>
             }

@@ -46,3 +46,5 @@ pipenv install --dev -r dev-requirements.txt --python=python3 && pipenv install 
 9. set up your database:
    heroku run -a {NAME_OF_HEROKU_APP} python -m database
 10. Under Settings find "Config Vars" and add any additional/secret .env variables.
+11. After each docker push:
+docker system prune -a -f (in order to keep things from getting bloated)

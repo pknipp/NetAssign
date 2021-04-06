@@ -24,9 +24,9 @@ const EditCourse = ({ match }) => {
                 try {
                     const res = await fetch(`/api/courses/${courseId}`);
                     const data = await res.json();
-                    if (!res.ok) {
-                        setErrors(data.errors);
-                    } else {
+                    // if (!res.ok) {
+                    setErrors(data.errors || []);
+                    if (res.ok) {
                         setName(data.course.name);
                         setIsPublic(data.course.is_public);
                         setCanEdit(data.course.instructor_id === currentUser.id);
@@ -43,12 +43,15 @@ const EditCourse = ({ match }) => {
     const putCourse = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"},
+                method: 'PUT',
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ name, isPublic })
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            // if (!response.ok) setErrors(responseData.errors);
+            setErrors(data.errors || []);
+            // if (responseData.messages) setMessages(responseData.messages)
+            setMessages(data.messages || [])
             setRerender(!rerender)
             history.push("/")
         })();
@@ -57,12 +60,15 @@ const EditCourse = ({ match }) => {
     const postCourse = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/courses`, {
-                method: 'POST', headers: {"Content-Type": "application/json"},
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ name })
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            // if (!response.ok) setErrors(responseData.errors);
+            setErrors(data.errors || []);
+            // if (responseData.messages) setMessages(responseData.messages)
+            setMessages(data.messages || [])
             setRerender(!rerender);
             history.push("/")
         })();
@@ -71,13 +77,14 @@ const EditCourse = ({ match }) => {
     const duplicateCourse = () => {
         (async _ => {
             const response = await fetchWithCSRF(`/api/courses/${courseId}`, {method: 'POST'});
-            const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else {
-                if (responseData.messages) setMessages(responseData.messages);
-                history.push("/");
-            }
+            const data = await response.json();
+            // if (!response.ok) {
+            setErrors(data.errors || []);
+            // } else {
+            // if (responseData.messages) setMessages(responseData.messages);
+            setMessages(data.messages || []);
+            if (response.ok) history.push("/");
+            // }
         })();
     }
 
@@ -86,9 +93,11 @@ const EditCourse = ({ match }) => {
             const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
                 method: 'DELETE',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            // if (!response.ok) setErrors(responseData.errors);
+            setErrors(data.errors || []);
+            // if (responseData.messages) setMessages(responseData.messages)
+            setMessages(data.messages)
             setRerender(!rerender);
             history.push("/")
         })();
@@ -114,7 +123,11 @@ const EditCourse = ({ match }) => {
                 <>
                     <h4>
                         privacy setting:
-                        <ToggleInfo onClick={handleToggle} name="privacy" toggle={showInfo.privacy} />
+                        <ToggleInfo
+                            onClick={handleToggle}
+                            name="privacy"
+                            toggle={showInfo.privacy}
+                        />
                     </h4>
                     <div><i>{showInfo.privacy ? text.privacy : null}</i></div>
                     {isPublic ? "public " : "private "}
@@ -127,15 +140,25 @@ const EditCourse = ({ match }) => {
 
             {!courseId ? null :
                 <>
-                    <>{messages.map(err => <li key={err}>{err}</li>)}</>
+                    <>
+                        {messages.map(err => <li key={err}>{err}</li>)}
+                    </>
                     <h4>Would you like to duplicate
-                        {!canEdit && courseId ? " " :
-                        " or delete "}
-                        this course?</h4>
+                        {!canEdit && courseId ? " "
+                            : " or delete "
+                        }
+                        this course?
+                    </h4>
                     <span>
                         <button onClick={() => duplicateCourse()}><h3>duplicate</h3></button>
-                        {!canEdit && courseId ? null :
-                        <button onClick={() => deleteCourse()}><h3>delete</h3></button>}
+                        {!canEdit && courseId ? null
+                            :
+                                <button onClick={() => deleteCourse()}>
+                                    <h3>
+                                        delete
+                                    </h3>
+                                </button>
+                        }
                     </span>
                 </>
             }

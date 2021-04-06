@@ -24,7 +24,7 @@ import Welcome from './components/Welcome';
 const App = _ => {
     const [fetchWithCSRF] = useState(() => fetch);
     const [currentUser, setCurrentUser] = useState(null);
-    const [userType, setUserType] = useState('');
+    const [userType, setUserType] = useState(null);
     const [loading, setLoading] = useState(true)
     const authContextValue = {
         fetchWithCSRF,

@@ -33,9 +33,9 @@ const Roster = ({ match }) => {
     const getMoreStudents = async () => {
         if (!showMoreStudents) {
             try {
-                const res = await fetch(`/api/users`)
-                if (res.ok) {
-                    const data = await res.json();
+                const response = await fetch(`/api/users`)
+                if (response.ok) {
+                    const data = await response.json();
                     setMoreStudents(data.students);;
                 }
             } catch (err) {
@@ -54,9 +54,9 @@ const Roster = ({ match }) => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'DELETE',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             setRerender(!rerender);
         })();
     }
@@ -67,9 +67,9 @@ const Roster = ({ match }) => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'POST',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             setRerender(!rerender);
         })();
     }
@@ -83,7 +83,11 @@ const Roster = ({ match }) => {
                 {students.map(student => (
                     <li key={student.id}>
                         <>
-                            <button onClick={e => deleteEnrollment(e, student.id)}>drop</button>
+                            <button
+                                onClick={e => deleteEnrollment(e, student.id)}
+                            >
+                                drop
+                            </button>
                             {student.email}
                         </>
                     </li>
@@ -93,20 +97,23 @@ const Roster = ({ match }) => {
             {!currentUser.is_instructor ? null :
                 <>
                     <button onClick={() => getMoreStudents()}>
-                        {showMoreStudents ? "Hide" : "Show"} students who are not enrolled in this course.
+                        {showMoreStudents ? "Hide" : "Show"}
+                        students who are not enrolled in this course.
                     </button>
                     {showMoreStudents ? <h3>Other students:</h3> : null}
                     <ul>
-                        {moreStudents.filter(student => !studentIds.includes(student.id)).map(student => (
-                            <li key={student.id}>
-                                <>
-                                    <button onClick={e => postEnrollment(e, student.id)}>
-                                        add
-                                    </button>
-                                    {student.email}
-                                </>
-                            </li>
-                        ))}
+                        {moreStudents.filter(student => !studentIds.includes(student.id))
+                            .map(student => (
+                                <li key={student.id}>
+                                    <>
+                                        <button onClick={e => postEnrollment(e, student.id)}>
+                                            add
+                                        </button>
+                                        {student.email}
+                                    </>
+                                </li>
+                            )
+                        )}
                     </ul>
                 </>
             }

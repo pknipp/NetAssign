@@ -30,7 +30,7 @@ const Submission = ({ qAndR, number, deploymentId }) => {
 
     useEffect(() => {
         putSubmission();
-    })
+    });
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -50,7 +50,13 @@ const Submission = ({ qAndR, number, deploymentId }) => {
                 <button type="submit">
                     Submit
                 </button>
-                {(grade === null) ? null : <img src={grade ? correct : incorrect} alt={grade ? "correct" : "incorrect"}/>}
+                {(grade === null) ? null
+                    :
+                        <img
+                            src={grade ? correct : incorrect}
+                            alt={grade ? "correct" : "incorrect"}
+                        />
+                }
             </span>
             {(currentUser.is_instructor) ? `answer: ${answer}` : null}
         </form>

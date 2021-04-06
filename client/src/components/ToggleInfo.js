@@ -10,7 +10,8 @@ const ToggleInfo = ({ onClick, name, toggle }) => {
     >
         <img
             src={`${toggle ? cancel : info}`}
-            alt={`Do ${toggle ? "not" : ""} display info about this control.`} />
+            alt={`Do ${toggle ? "not" : ""} display info about this control.`}
+        />
     </button>
 )}
 export default ToggleInfo;

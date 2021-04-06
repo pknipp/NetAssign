@@ -8,22 +8,6 @@ from . import version
 
 deployments = Blueprint('deployments', __name__)
 
-# @deployments.route('', methods=['POST'])
-# def post_deployment:
-#     if request.method == 'POST':
-#         if not request.is_json:
-#             return jsonify({"message": "Missing JSON in request"}), 400
-#         new_deployment = Deployment(
-#             course_id=1,
-#             assignment_id=1,
-#             deadline=request.json.get('deadline', None),
-#             created_at=datetime.now(),
-#             updated_at=datetime.now()
-#         )
-#         db.session.add(new_assignment)
-#         db.session.commit()
-#         return {"assignment": new_assignment.to_dict()}
-
 @deployments.route('/<deployment_id_and_assignment_id_and_course_id>', methods=['POST', 'GET', 'PUT', 'DELETE'])
 def index(deployment_id_and_assignment_id_and_course_id):
     ids = deployment_id_and_assignment_id_and_course_id.split(' ')

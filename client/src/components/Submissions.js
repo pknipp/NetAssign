@@ -11,9 +11,9 @@ const Submissions = ({ match }) => {
     const getSubmissions = () => {
         (async () => {
             try {
-                const res = await fetch(`/api/submissions/${deploymentId}`)
-                if (res.ok) {
-                    const data = await res.json();
+                const response = await fetch(`/api/submissions/${deploymentId}`)
+                if (response.ok) {
+                    const data = await response.json();
                     setQuestionsAndResponses(data.questions_and_responses);
                     setAssignmentName(data.assignment_name);
                 }
@@ -31,7 +31,12 @@ const Submissions = ({ match }) => {
         <ol>
             {(!questionsAndResponses.length) ? null :
                 questionsAndResponses.map((questionAndResponse, index) => (
-                    <Submission key={questionAndResponse.id} qAndR={questionAndResponse} number={index} deploymentId={deploymentId}/>
+                    <Submission
+                        key={questionAndResponse.id}
+                        qAndR={questionAndResponse}
+                        number={index}
+                        deploymentId={deploymentId}
+                    />
                 ))
             }
         </ol>

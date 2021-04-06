@@ -14,10 +14,10 @@ const Questions = () => {
     const getQuestions = () => {
         (async () => {
             const response = await fetchWithCSRF(`/api/questions`);
-            const responseData = await response.json();
-            if (!response.ok) return setErrors(responseData.errors);
-            if (responseData.messages) return setMessages(responseData.messages);
-            setQuestions(responseData.questions);
+            const data = await response.json();
+            if (!response.ok) return setErrors(data.errors);
+            if (data.messages) return setMessages(data.messages);
+            setQuestions(data.questions);
         })();
     };
 
@@ -45,9 +45,11 @@ const Questions = () => {
                 <>
                     <h3>Other's questions:</h3>
                     <ul>
-                        {questions.filter(question => question.owner.id !== currentUser.id).map(question => {
-                            return <li><Question key={question.id} question={question} /></li>
-                        })}
+                        {questions.filter(question => question.owner.id !== currentUser.id)
+                            .map(question => {
+                                return <li><Question key={question.id} question={question} /></li>
+                            })
+                        }
                     </ul>
                 </>
             }

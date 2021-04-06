@@ -15,9 +15,9 @@ const Deployments = ({ match }) => {
     const getDeployments = () => {
         (async () => {
             try {
-                const res = await fetch(`/api/deployments/courses/${courseId}`)
-                if (res.ok) {
-                    const data = await res.json();
+                const response = await fetch(`/api/deployments/courses/${courseId}`)
+                if (response.ok) {
+                    const data = await response.json();
                     setAssignments(data.assignments);
                     setOtherAssignments(data.other_assignments);
                     setCourseName(data.course_name);
@@ -34,52 +34,79 @@ const Deployments = ({ match }) => {
         <>
             <h3>Deployed assignments for {courseName}:</h3>
             <ul>
-                {(!assignments.length) ? null :
-                    assignments.map(assignment => (
-                        <li key={assignment.deployment.id}>
-                            {!currentUser.is_instructor ? null :
-                            <NavLink to={`/deployments/${assignment.deployment.id}`}>
-                                modify deployment
-                            </NavLink>}
-                            <NavLink to={`/submissions/${assignment.deployment.id}`}>
-                                {assignment.assignment.name} (due {assignment.deployment.deadline})
-                            </NavLink>
-                        </li>
-                    ))
+                {(!assignments.length) ? null
+                    :
+                        assignments.map(assignment => (
+                            <li key={assignment.deployment.id}>
+                                {!currentUser.is_instructor ? null
+                                    :
+                                        <NavLink
+                                            to={`/deployments/${assignment.deployment.id}`}
+                                        >
+                                            modify deployment
+                                        </NavLink>
+                                }
+                                <NavLink
+                                    to={`/submissions/${assignment.deployment.id}`}
+                                >
+                                    {assignment.assignment.name}
+                                    (due {assignment.deployment.deadline})
+                                </NavLink>
+                            </li>
+                        ))
                 }
             </ul>
 
             <span>
-                <button onClick={() => setShowMoreAssignments(!showMoreAssignments)}>
+                <button
+                    onClick={() => setShowMoreAssignments(!showMoreAssignments)}
+                >
                     {showMoreAssignments ? "Hide " : "Show "}
                 </button>
-                <span padding-left={"10px"}> undeployed assignments</span>
+                <span padding-left={"10px"}>
+                    undeployed assignments
+                </span>
             </span>
 
             {!showMoreAssignments ? null :
                 <>
-                    <h3>Undeployed assignments owned by me:</h3>
+                    <h3>
+                        Undeployed assignments owned by me:
+                    </h3>
                     <ul>
-                        {otherAssignments.filter(assignment => assignment.assignment.instructor_id === currentUser.id).map(assignment => (
-                            <li key={assignment.assignment.id}>
-                                <NavLink exact to={`/deployments/0 ${assignment.assignment.id} ${courseId}`} className="nav"activeClassName="active">
-                                    view and deploy
-                                </NavLink>
-                                {assignment.assignment.name}
-                            </li>
-                        ))}
+                        {otherAssignments.filter(assignment =>
+                            (assignment.assignment.instructor_id === currentUser.id)
+                            .map(assignment => (
+                                <li key={assignment.assignment.id}>
+                                    <NavLink
+                                        exact to={
+                                            `/deployments/0 ${assignment.assignment.id} ${courseId}`
+                                        }
+                                        className="nav"
+                                        activeClassName="active"
+                                    >
+                                        view and deploy
+                                    </NavLink>
+                                    {assignment.assignment.name}
+                                </li>
+                            ))
+                        )}
                     </ul>
 
                     <h3>Undeployed assignments owned by others:</h3>
                     <ul>
-                        {otherAssignments.filter(assignment => assignment.assignment.instructor_id !== currentUser.id).map(assignment => (
-                            <li key={assignment.assignment.id}>
-                                <NavLink exact to={`/deployments/0 ${assignment.assignment.id} ${courseId}`} className="nav"activeClassName="active">
-                                    view and deploy
-                                </NavLink>
-                                {assignment.assignment.name}
-                            </li>
-                        ))}
+                        {otherAssignments.filter(assignment => assignment.assignment.instructor_id !== currentUser.id)
+                            .map(assignment => (
+                                <li key={assignment.assignment.id}>
+                                    <NavLink
+                                        exact to={`/deployments/0 ${assignment.assignment.id} ${courseId}`} className="nav"activeClassName="active"
+                                    >
+                                        view and deploy
+                                    </NavLink>
+                                    {assignment.assignment.name}
+                                </li>
+                            ))
+                        }
                     </ul>
                 </>
             }

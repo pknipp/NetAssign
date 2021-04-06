@@ -14,9 +14,9 @@ const Enrollments = () => {
 
     const getMyCourses = async () => {
         try {
-            const res = await fetch(`/api/enrollments/${currentUser.id + ' 0'}`)
-            if (res.ok) {
-                const data = await res.json();
+            const response = await fetch(`/api/enrollments/${currentUser.id + ' 0'}`)
+            if (response.ok) {
+                const data = await response.json();
                 setCourses(data.courses);
                 setCourseIds(data.courses.map(course => course.course.id));
             }
@@ -32,9 +32,9 @@ const Enrollments = () => {
     const getMoreCourses = async () => {
         if (!showMoreCourses) {
             try {
-                const res = await fetch(`/api/courses`)
-                if (res.ok) {
-                    const data = await res.json();
+                const response = await fetch(`/api/courses`)
+                if (response.ok) {
+                    const data = await response.json();
                     setMoreCourses(data.courses);;
                 }
             } catch (err) {
@@ -53,9 +53,9 @@ const Enrollments = () => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'DELETE',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             setRerender(!rerender);
         })();
     }
@@ -65,9 +65,9 @@ const Enrollments = () => {
             const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
                 method: 'POST',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             setRerender(!rerender);
         })();
     }
@@ -77,9 +77,9 @@ const Enrollments = () => {
             const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
                 method: 'POST',
             });
-            const responseData = await response.json();
-            if (!response.ok) setErrors(responseData.errors);
-            if (responseData.messages) setMessages(responseData.messages)
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
             setRerender(!rerender);
         })();
     }
@@ -131,22 +131,24 @@ const Enrollments = () => {
                 </span>
                 {showMoreCourses ? <h3>Other courses:</h3> : null}
                 <ul>
-                    {moreCourses.filter(course => !courseIds.includes(course.id)).map(course => (
-                        <li key={course.id}>
-                            <>
-                                <button onClick={() => {
-                                    currentUser.is_instructor ? (
-                                        duplicateCourse(course.id)
-                                    ) : (
-                                        postEnrollment(currentUser.id, course.id)
-                                    )
-                                }}>
-                                    {currentUser.is_instructor ? "Duplicate" : "Add"}
-                                </button>
-                                {course.name}
-                            </>
-                        </li>
-                    ))}
+                    {moreCourses.filter(course => !courseIds.includes(course.id))
+                        .map(course => (
+                            <li key={course.id}>
+                                <>
+                                    <button onClick={() => {
+                                        currentUser.is_instructor ? (
+                                            duplicateCourse(course.id)
+                                        ) : (
+                                            postEnrollment(currentUser.id, course.id)
+                                        )
+                                    }}>
+                                        {currentUser.is_instructor ? "Duplicate" : "Add"}
+                                    </button>
+                                    {course.name}
+                                </>
+                            </li>
+                        ))
+                    }
                 </ul>
             </>
         </>

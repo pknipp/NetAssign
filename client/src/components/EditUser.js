@@ -17,29 +17,26 @@ const EditUser = _ => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"},
+                method: 'PUT',
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({ email, password, password2 })
             });
-            const responseData = await response.json();
-            if (!response.ok) return setErrors(responseData.errors);
-            if (responseData.messages) return setMessages(responseData.messages)
-            setCurrentUser(responseData.current_user)
+            const data = await response.json();
+            if (!response.ok) return setErrors(data.errors);
+            if (data.messages) return setMessages(data.messages)
+            setCurrentUser(data.current_user)
             history.push('/')
         })();
     }
-    
+
     const deleteUser = e => {
         e.preventDefault();
         (async _ => {
             const response = await fetchWithCSRF(`/api/users`, {method: 'DELETE'});
-            const responseData = await response.json();
-            if (!response.ok) {
-                setErrors(responseData.errors);
-            } else if (responseData.messages) {
-                setMessages(responseData.messages)
-            } else {
-                setCurrentUser(null);
-            }
+            const data = await response.json();
+            setErrors(data.errors || []);
+            setMessages(data.messages || [])
+            setCurrentUser(null);
         })();
     }
 
@@ -47,17 +44,31 @@ const EditUser = _ => {
         <>
             <h3>My account information:</h3>
             <form onSubmit={putUser}>
-                {errors.length ? errors.map(err => <li key={err} className="error">{err}</li>) : ''}
+                {errors.map(err => <li key={err} className="error">{err}</li>)}
                 <input
-                    type="email" placeholder="Email" value={email}
-                    onChange={e => setEmail(e.target.value)} className="larger" />
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    className="larger"
+                />
                 <input
-                    type="password" placeholder="New password (required)" value={password}
-                    onChange={e => setPassword(e.target.value)} className="larger" />
+                    type="password"
+                    placeholder="New password (required)"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className="larger"
+                />
                 <input
-                    type="password" placeholder="Confirm new password (required)" value={password2}
-                    onChange={e => setPassword2(e.target.value)} className="larger" />
-                <button type="submit">Submit changes</button>
+                    type="password"
+                    placeholder="Confirm new password (required)"
+                    value={password2}
+                    onChange={e => setPassword2(e.target.value)}
+                    className="larger"
+                />
+                <button type="submit">
+                    Submit changes
+                </button>
             </form>
             <form onSubmit={deleteUser}>
                 {messages.map(err => <li key={err}>{err}</li>)}

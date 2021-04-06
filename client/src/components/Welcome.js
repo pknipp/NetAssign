@@ -63,7 +63,11 @@ const student = (
 const Welcome = props => {
   const { userType, setUserType } = useContext(AuthContext);
   setUserType(props.userType);
-  return <div className="info text">{!userType ? general : userType === "student" ? student : instructor}</div>;
+  return (
+    <div className="info text">
+        {!props.userType ? general : userType === "student" ? student : instructor}
+      </div>
+  );
 }
 
 export default Welcome;

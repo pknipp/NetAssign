@@ -18,6 +18,7 @@ const NavBar = () => {
         </>
     );
 
+    // Can the following be DRY-ed by a factor of two using string interpolation?
     const yesUserType = userType === "instructor" ? (
         <>
             <NavLink to="/loginInstructor" className="nav" activeClassName="active">
@@ -40,19 +41,39 @@ const NavBar = () => {
         </>
 
 
-    const instructor = currentUser && !currentUser.is_instructor ? null : (
-        <>
-            <NavLink exact to="/questions" className="nav" activeClassName="active">Questions</NavLink>
-            <NavLink exact to="/assignments" className="nav" activeClassName="active">Assignments</NavLink>
-        </>
+    const instructor = currentUser && !currentUser.is_instructor ? null
+        :(
+            <>
+                <NavLink
+                    exact to="/questions"
+                    className="nav"
+                    activeClassName="active"
+                >
+                    Questions
+                </ NavLink>
+                <NavLink
+                    exact to="/assignments" className="nav"
+                    activeClassName="active"
+                >
+                    Assignments
+                </NavLink>
+            </>
     );
 
     const user = (
         <>
             {instructor}
-            <NavLink exact to="/" className="nav" activeClassName="active">Home</NavLink>
-            <NavLink to="/edituser" className="nav" activeClassName="active">Account Details</NavLink>
-            <NavLink to="/logout" className="nav" activeClassName="active">Log Out</NavLink>
+                <NavLink
+                    exact to="/"
+                    className="nav"
+                    activeClassName="active"
+                >
+                    Home
+                </NavLink>
+                <NavLink
+                    to="/edituser"
+                    className="nav" activeClassName="active">Account Details</  NavLink>
+                <NavLink to="/logout" className="nav" activeClassName="active">Log Out</NavLink>
         </>
     );
 
