@@ -11,18 +11,16 @@ const SignUp = props => {
 
     useEffect(() => (() => setIsInstructor(isInstructor))(), [isInstructor])
 
-    const postUser = e => {
+    const postUser = async e => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/users`, {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password, password2, isInstructor })
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            if (response.ok) setCurrentUser(data.current_user);
-        })();
+        const response = await fetchWithCSRF(`/api/users`, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password, password2, isInstructor })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        if (response.ok) setCurrentUser(data.current_user);
     };
 
     return (

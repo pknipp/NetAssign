@@ -13,31 +13,27 @@ const EditUser = _ => {
     const [messages, setMessages] = useState([]);
     let history = useHistory();
 
-    const putUser = e => {
+    const putUser = async e => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/users`, {
-                method: 'PUT',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ email, password, password2 })
-            });
-            const data = await response.json();
-            if (!response.ok) return setErrors(data.errors);
-            if (data.messages) return setMessages(data.messages)
-            setCurrentUser(data.current_user)
-            history.push('/')
-        })();
+        const response = await fetchWithCSRF(`/api/users`, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ email, password, password2 })
+        });
+        const data = await response.json();
+        if (!response.ok) return setErrors(data.errors);
+        if (data.messages) return setMessages(data.messages);
+        setCurrentUser(data.current_user);
+        history.push('/');
     }
 
-    const deleteUser = e => {
+    const deleteUser = async e => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/users`, {method: 'DELETE'});
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            setCurrentUser(null);
-        })();
+        const response = await fetchWithCSRF(`/api/users`, {method: 'DELETE'});
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setCurrentUser(null);
     }
 
     return (

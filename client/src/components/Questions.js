@@ -11,17 +11,17 @@ const Questions = () => {
     const [questions, setQuestions] = useState([]);
     const [showMoreQuestions, setShowMoreQuestions] = useState(false);
 
-    const getQuestions = () => {
-        (async () => {
-            const response = await fetchWithCSRF(`/api/questions`);
-            const data = await response.json();
-            if (!response.ok) return setErrors(data.errors);
-            if (data.messages) return setMessages(data.messages);
-            setQuestions(data.questions);
-        })();
+    const getQuestions = async () => {
+        const response = await fetchWithCSRF(`/api/questions`);
+        const data = await response.json();
+        if (!response.ok) return setErrors(data.errors);
+        if (data.messages) return setMessages(data.messages);
+        setQuestions(data.questions);
     };
 
-    useEffect(getQuestions, []);
+    useEffect(() => {
+        getQuestions();
+    }, []);
 
     return (
         <>

@@ -8,22 +8,22 @@ const Submissions = ({ match }) => {
     const [assignmentName, setAssignmentName] = useState("");
     const { currentUser } = useContext(AuthContext);
 
-    const getSubmissions = () => {
-        (async () => {
-            try {
-                const response = await fetch(`/api/submissions/${deploymentId}`)
-                if (response.ok) {
-                    const data = await response.json();
-                    setQuestionsAndResponses(data.questions_and_responses);
-                    setAssignmentName(data.assignment_name);
-                }
-            } catch (err) {
-                console.error(err)
+    const getSubmissions = async () => {
+        try {
+            const response = await fetch(`/api/submissions/${deploymentId}`)
+            if (response.ok) {
+                const data = await response.json();
+                setQuestionsAndResponses(data.questions_and_responses);
+                setAssignmentName(data.assignment_name);
             }
-        })()
+        } catch (err) {
+            console.error(err)
+        }
     };
 
-    useEffect(getSubmissions, [deploymentId, currentUser.id]);
+    useEffect(() => {
+        getSubmissions();
+    }, [deploymentId, currentUser.id]);
 
     return (
         <>

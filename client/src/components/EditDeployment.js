@@ -20,91 +20,78 @@ const EditDeployment = ({ match }) => {
     const [messages, setMessages] = useState([]);
     const history = useHistory();
 
-    const getDeployment = () => {
-        (async () => {
-            try {
-                const res = await fetch(`/api/deployments/${didAndAidAndCid}`);
-                if (res.ok) {
-                    const data = await res.json();
-                    setCourseName(data.course_name);
-                    setAssignmentName(data.assignment_name);
-                    setQuestions(data.questions);
-                    setDeadline(data.deadline);
-                    setCourseId(data.course_id);
-                }
-            } catch (err) {
-                console.error(err)
+    const getDeployment = async () => {
+        try {
+            const res = await fetch(`/api/deployments/${didAndAidAndCid}`);
+            if (res.ok) {
+                const data = await res.json();
+                setCourseName(data.course_name);
+                setAssignmentName(data.assignment_name);
+                setQuestions(data.questions);
+                setDeadline(data.deadline);
+                setCourseId(data.course_id);
             }
-        })()
+        } catch (err) {
+            console.error(err)
+        }
     };
 
-    useEffect(getDeployment, [deploymentId]);
+    useEffect(() => {
+        getDeployment();
+    }, [deploymentId]);
 
-    const putDeployment = e => {
+    const putDeployment = async e => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
-                method: 'PUT',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ deadline })
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(responseData.errors);
-            setErrors(data.errors || []);
-            // if (responseData.messages) setMessages(responseData.messages)
-            setMessages(data.messages || [])
-            history.push(`/courses/${courseId}`)
-        })();
+        const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ deadline })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || [])
+        history.push(`/courses/${courseId}`)
     }
 
-    const duplicateDeployment = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-            // if (!response.ok) {
-            setErrors(data.errors || []);
-            // } else if (responseData.messages) {
-            setMessages(data.messages || []);
-            if (response.ok) {
-                setNow(LocalDateTime.now());
-                history.push(`/courses/${courseId}`);
-            }
-        })();
+    const duplicateDeployment = async () => {
+        const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        if (response.ok) {
+            setNow(LocalDateTime.now());
+            history.push(`/courses/${courseId}`);
+        }
     }
 
-    const postDeployment = e => {
+    const postDeployment = async e => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/0 ${assignmentId} ${courseId}`, {
-                method: 'POST'}
-            );
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            history.push(`/courses/${courseId}`)
-        })();
+        const response = await fetchWithCSRF(`/api/deployments/0 ${assignmentId} ${courseId}`, {
+            method: 'POST'}
+        );
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        history.push(`/courses/${courseId}`);
     }
 
-    const deleteDeployment = e => {
+    const deleteDeployment = async e => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
-                method: 'DELETE',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            history.push(`/courses/${courseId}`)
-        })();
+        const response = await fetchWithCSRF(`/api/deployments/${deploymentId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        history.push(`/courses/${courseId}`);
     }
 
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
         <>
             <h2>Deployment Editor</h2>
             <form onSubmit={deploymentId ? putDeployment : postDeployment}>
-                {/* {errors.length ? errors.map(err => <li key={err}>{err}</li>) : ''} */}
                 {errors.map(err => <li key={err}>{err}</li>)}
                 <span>
                     Course: {courseName}

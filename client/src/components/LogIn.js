@@ -9,21 +9,21 @@ const LogIn = ({ defaultUser }) => {
     const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
     let history = useHistory();
 
-    useEffect(() => (() => setEmail(defaultUser))(), [defaultUser])
+    useEffect(() => {
+        (async () => setEmail(defaultUser))();
+    }, [defaultUser])
 
-    const putSession = e => {
+    const putSession = async e => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/session`, {
-                method: 'PUT',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({email, password})
-            });
-            const data = await response.json();
-            if (!response.ok) return setErrors(data.errors);
-            setCurrentUser(data.current_user);
-            history.push('/')
-        })();
+        const response = await fetchWithCSRF(`/api/session`, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email, password})
+        });
+        const data = await response.json();
+        if (!response.ok) return setErrors(data.errors);
+        setCurrentUser(data.current_user);
+        history.push('/');
     };
 
     return (

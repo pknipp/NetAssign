@@ -10,21 +10,17 @@ const Assignments = () => {
     const [assignments, setAssignments] = useState([]);
     const [showMoreAssignments, setShowMoreAssignments] = useState(false);
 
-    const getAssignments = () => {
-        (async () => {
-            const response = await fetchWithCSRF("/api/assignments");
-            const data = await response.json();
-            // if (!response.ok) {
-            setErrors(data.errors || []);
-            // } else if (data.messages) {
-            setMessages(data.messages || []);
-            // } else {
-            setAssignments(data.assignments || []);
-            // }
-        })();
+    const getAssignments = async () => {
+        const response = await fetchWithCSRF("/api/assignments");
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setAssignments(data.assignments || []);
     };
 
-    useEffect(getAssignments, []);
+    useEffect(() => {
+        getAssignments();
+    }, []);
 
     return (
         <>

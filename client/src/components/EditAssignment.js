@@ -23,29 +23,29 @@ const EditAssignment = ({ match }) => {
         privacy: "This controls whether or not other instructors will be able to see, use, and/or duplicate this assignment.  (Regardless they'll not have edit/delete privileges.)",
     };
 
-    const getAssignment = () => {
+    const getAssignment = async () => {
         if (assignmentId > 0) {
-            (async () => {
-                try {
-                    const response = await fetch(`/api/assignments/${assignmentId}`)
-                    const data = await response.json();
-                    if (!response.ok) {
-                        setErrors(data.errors);
-                    } else {
-                        setName(data.assignment.name);
-                        setIsPublic(data.assignment.is_public);
-                        setQuestions(data.questions);
-                        setQuestionIds(data.questions.map(question => question.id));
-                        setCanEdit(data.assignment.instructor_id === currentUser.id);
-                    }
-                } catch (err) {
-                    console.error(err)
+            try {
+                const response = await fetch(`/api/assignments/${assignmentId}`)
+                const data = await response.json();
+                if (!response.ok) {
+                    setErrors(data.errors);
+                } else {
+                    setName(data.assignment.name);
+                    setIsPublic(data.assignment.is_public);
+                    setQuestions(data.questions);
+                    setQuestionIds(data.questions.map(question => question.id));
+                    setCanEdit(data.assignment.instructor_id === currentUser.id);
                 }
-            })()
+            } catch (err) {
+                console.error(err)
+            }
         }
     };
 
-    useEffect(getAssignment, [rerender]);
+    useEffect(() => {
+        getAssignment();
+    }, [rerender]);
 
     const handleToggle = e => {
         let name = e.currentTarget.name;
@@ -54,71 +54,53 @@ const EditAssignment = ({ match }) => {
         setShowInfo(newShowInfo);
     }
 
-    const putAssignment = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
-                method: 'PUT',
-                headers: {"Content-Type": "application/json"},
-                credentials: 'include',
-                body: JSON.stringify({ name, isPublic })
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(data.errors);
-            setErrors(data.errors || []);
-            // if (data.messages) setMessages(data.messages);
-            setMessages(data.messages || []);
-            history.push(`/assignments`)
-        })();
+    const putAssignment = async () => {
+        const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            credentials: 'include',
+            body: JSON.stringify({ name, isPublic })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        history.push(`/assignments`)
     }
 
-    const postAssignment = () => {
-        (async _ => {
-            const response = await fetchWithCSRF("/api/assignments", {
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                credentials: 'include',
-                body: JSON.stringify({ name, isPublic })
-            });
-            const data = await response.json();
-            if (!response.ok) {
-                setErrors(data.errors);
-            } else {
-                // if (data.messages) setMessages(data.messages)
-                setMessages(data.messages || "")
-                setAssignmentId(data.assignment.id)
-                history.push(`/assignments/${data.assignment.id}`)
-            }
-        })();
+    const postAssignment = async () => {
+        const response = await fetchWithCSRF("/api/assignments", {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            credentials: 'include',
+            body: JSON.stringify({ name, isPublic })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        if (response.ok) {
+            setMessages(data.messages || [])
+            setAssignmentId(data.assignment.id)
+            history.push(`/assignments/${data.assignment.id}`)
+        }
     }
 
-    const duplicateAssignment = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-            // if (!response.ok) {
-            setErrors(data.errors || []);
-            // } else {
-                // if (responseData.messages) setMessages(responseData.messages)
-            setMessages(data.messages || []);
-            if (response.ok) history.push("/assignments")
-            // }
-        })();
+    const duplicateAssignment = async () => {
+        const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        if (response.ok) history.push("/assignments")
     }
 
-    const deleteAssignment = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
-                method: 'DELETE',
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(data.errors);
-            setErrors(data.errors || []);
-            // if (responseData.messages) setMessages(responseData.messages)
-            setMessages(data.messages || []);
-            history.push("/assignments")
-        })();
+    const deleteAssignment = async () => {
+        const response = await fetchWithCSRF(`/api/assignments/${assignmentId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        history.push("/assignments")
     }
 
     const getQuestions = async () => {
@@ -139,32 +121,23 @@ const EditAssignment = ({ match }) => {
         setRerender(!rerender);
     }
 
-    const postAppearance = qid => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(data.errors);
-            setErrors(data.errors || []);
-            // if (data.messages) setMessages(responseData.messages)
-            setMessages(data.messages || []);
-            setRerender(!rerender);
-        })();
+    const postAppearance = async qid => {
+        const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setRerender(!rerender);
     }
 
-    const deleteAppearance = qid => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
-                method: 'DELETE',
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(data.errors);
-            setMessages(data.messages || [])
-            // if (responseData.messages) setMessages(responseData.messages)
-            setMessages(data.messages || []);
-            setRerender(!rerender);
-        })();
+    const deleteAppearance = async qid => {
+        const response = await fetchWithCSRF(`/api/appearances/${assignmentId + " " + qid}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        setMessages(data.messages || []);
+        setRerender(!rerender);
     }
 
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
@@ -236,7 +209,7 @@ const EditAssignment = ({ match }) => {
             {!assignmentId ? null :
                 <>
                     {!canEdit && assignmentId ? null :
-                    <button onClick={() => getQuestions()}>
+                    <button onClick={getQuestions}>
                         {showMoreQuestions ? "Hide" : "Show"}
                             questions which may get added to this assignment.
                     </button>}
@@ -263,13 +236,13 @@ const EditAssignment = ({ match }) => {
                         {canEdit ? " or delete ": " "} this assignment?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateAssignment()}>
+                        <button onClick={duplicateAssignment}>
                             <h3>Duplicate</h3>
                         </button>
 
                         {messages.map(err => <li key={err}>{err}</li>)}
                         {!canEdit ? null :
-                            <button onClick={() => deleteAssignment()}>
+                            <button onClick={deleteAssignment}>
                                 <h3>
                                     Delete
                                 </h3>

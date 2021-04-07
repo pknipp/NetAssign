@@ -49,6 +49,7 @@ const Submission = ({ qAndR, number, deploymentId }) => {
                     value={response}
                     onChange={e => setResponse(e.target.value)}
                 />
+                {/* Is this button unnecessary, by refactoring? */}
                 <button type="submit">
                     Submit
                 </button>

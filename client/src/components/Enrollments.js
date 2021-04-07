@@ -21,7 +21,7 @@ const Enrollments = () => {
                 setCourseIds(data.courses.map(course => course.course.id));
             }
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
     }
 
@@ -47,41 +47,35 @@ const Enrollments = () => {
         setRerender(!rerender);
     }
 
-    const deleteEnrollment = (e, studentId, courseId) => {
+    const deleteEnrollment = async (e, studentId, courseId) => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
-                method: 'DELETE',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            setRerender(!rerender);
-        })();
+        const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setRerender(!rerender);
     }
 
-    const postEnrollment = (studentId, courseId) => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            setRerender(!rerender);
-        })();
+    const postEnrollment = async (studentId, courseId) => {
+        const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || [])
+        setRerender(!rerender);
     }
 
-    const duplicateCourse = courseId => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            setRerender(!rerender);
-        })();
+    const duplicateCourse = async courseId => {
+        const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setRerender(!rerender);
     }
 
     return (
@@ -124,7 +118,7 @@ const Enrollments = () => {
             </ul>
             <>
                 <span>
-                    <button onClick={() => getMoreCourses()}>
+                    <button onClick={getMoreCourses}>
                         {showMoreCourses ? "Hide" : "Show"}
                     </button>
                     <> other courses.</>

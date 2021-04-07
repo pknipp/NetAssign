@@ -12,23 +12,23 @@ const Deployments = ({ match }) => {
     const [showOtherAssignment, setShowOtherAssignment] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
-    const getDeployments = () => {
-        (async () => {
-            try {
-                const response = await fetch(`/api/deployments/courses/${courseId}`)
-                if (response.ok) {
-                    const data = await response.json();
-                    setAssignments(data.assignments);
-                    setOtherAssignments(data.other_assignments);
-                    setCourseName(data.course_name);
-                }
-            } catch (err) {
-                console.error(err)
+    const getDeployments = async () => {
+        try {
+            const response = await fetch(`/api/deployments/courses/${courseId}`)
+            if (response.ok) {
+                const data = await response.json();
+                setAssignments(data.assignments);
+                setOtherAssignments(data.other_assignments);
+                setCourseName(data.course_name);
             }
-        })()
+        } catch (err) {
+            console.error(err)
+        }
     };
 
-    useEffect(getDeployments, [courseId]);
+    useEffect(() => {
+        getDeployments();
+    }, [courseId]);
 
     return (
         <>
@@ -74,8 +74,7 @@ const Deployments = ({ match }) => {
                         Undeployed assignments owned by me:
                     </h3>
                     <ul>
-                        {otherAssignments.filter(assignment =>
-                            (assignment.assignment.instructor_id === currentUser.id)
+                        {otherAssignments.filter(assignment => assignment.assignment.instructor_id === currentUser.id)
                             .map(assignment => (
                                 <li key={assignment.assignment.id}>
                                     <NavLink
@@ -90,7 +89,7 @@ const Deployments = ({ match }) => {
                                     {assignment.assignment.name}
                                 </li>
                             ))
-                        )}
+                        }
                     </ul>
 
                     <h3>Undeployed assignments owned by others:</h3>

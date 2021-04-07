@@ -15,14 +15,14 @@ const Roster = ({ match }) => {
 
     const getMyStudents = async () => {
         try {
-            const res = await fetch(`/api/enrollments/${'0 ' + courseId}`)
-            if (res.ok) {
-                const data = await res.json();
+            const response = await fetch(`/api/enrollments/${'0 ' + courseId}`)
+            if (response.ok) {
+                const data = await response.json();
                 setStudents(data.students);
                 setStudentIds(data.students.map(student => student.id));
             }
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
     }
 
@@ -48,30 +48,26 @@ const Roster = ({ match }) => {
         setRerender(!rerender);
     }
 
-    const deleteEnrollment = (e, studentId) => {
+    const deleteEnrollment = async (e, studentId) => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
-                method: 'DELETE',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            setRerender(!rerender);
-        })();
+        const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setRerender(!rerender);
     }
 
-    const postEnrollment = (e, studentId) => {
+    const postEnrollment = async (e, studentId) => {
         e.preventDefault();
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            setRerender(!rerender);
-        })();
+        const response = await fetchWithCSRF(`/api/enrollments/${studentId + ' ' + courseId}`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setRerender(!rerender);
     }
 
     return !currentUser.is_instructor ? <Redirect to="/login" /> : (
@@ -96,7 +92,7 @@ const Roster = ({ match }) => {
 
             {!currentUser.is_instructor ? null :
                 <>
-                    <button onClick={() => getMoreStudents()}>
+                    <button onClick={getMoreStudents}>
                         {showMoreStudents ? "Hide" : "Show"}
                         students who are not enrolled in this course.
                     </button>

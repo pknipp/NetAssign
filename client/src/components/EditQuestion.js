@@ -28,114 +28,100 @@ const EditQuestion = ({ match }) => {
     const [showInfo, setShowInfo] = useState({});
     const history = useHistory();
 
-    const getQuestion = () => {
+    const getQuestion = async () => {
         if (questionId > 0) {
-            (async () => {
-                try {
-                    const res = await fetch(`/api/questions/${questionId}`)
-                    const data = await res.json();
-                    if (!res.ok) {
-                        setErrors(data.errors);
-                    } else {
-                        let inputs = data.inputs;
-                        let inputs1 = [];
-                        let inputs2 = [];
-                        let varNames = new Set();
-                        inputs.forEach(input => {
-                            if (typeof(input[0]) === "string") {
-                                inputs1.push(input);
-                                varNames.add(input[0]);
-                            } else {
-                                inputs2.push(input);
-                                input.forEach(subinput => varNames.add(subinput[0]));
-                            }
-                        })
-                        setQuestionCode(data.question_code);
-                        setAnswerCode(data.answer_code);
-                        setInputs1(inputs1);
-                        setInput1Length(inputs1.length);
-                        setInputs2(inputs2);
-                        setInput2Length(inputs2.length);
-                        setVarNames(varNames);
-                        setIsPublic(data.is_public);
-                        setQuestion(data.question);
-                        setAnswer(data.answer);
-                        setCanEdit(data.instructor_id === currentUser.id);
-                    }
-                } catch (err) {
-                    console.error(err)
+            try {
+                const res = await fetch(`/api/questions/${questionId}`)
+                const data = await res.json();
+                if (!res.ok) {
+                    setErrors(data.errors);
+                } else {
+                    let inputs = data.inputs;
+                    let inputs1 = [];
+                    let inputs2 = [];
+                    let varNames = new Set();
+                    inputs.forEach(input => {
+                        if (typeof(input[0]) === "string") {
+                            inputs1.push(input);
+                            varNames.add(input[0]);
+                        } else {
+                            inputs2.push(input);
+                            input.forEach(subinput => varNames.add(subinput[0]));
+                        }
+                    })
+                    setQuestionCode(data.question_code);
+                    setAnswerCode(data.answer_code);
+                    setInputs1(inputs1);
+                    setInput1Length(inputs1.length);
+                    setInputs2(inputs2);
+                    setInput2Length(inputs2.length);
+                    setVarNames(varNames);
+                    setIsPublic(data.is_public);
+                    setQuestion(data.question);
+                    setAnswer(data.answer);
+                    setCanEdit(data.instructor_id === currentUser.id);
                 }
-            })();
+            } catch (err) {
+                console.error(err)
+            }
         }
     };
 
-    useEffect(getQuestion, []);
+    useEffect(() => {
+        getQuestion();
+    }, []);
 
-    const putQuestion = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
-                method: 'PUT', headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    questionCode,
-                    answerCode,
-                    inputs: [...inputs1, ...inputs2],
-                    isPublic
-                })
-            });
-            const data = await response.json();
-            // if (!response.ok) {
-            setErrors(data.errors || []);
-            // } else {
-            setMessages(data.messages || [])
-            if (response.ok) history.push("/questions")
-            // }
-        })();
+    const putQuestion = async () => {
+        const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
+            method: 'PUT', headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                questionCode,
+                answerCode,
+                inputs: [...inputs1, ...inputs2],
+                isPublic
+            })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        if (response.ok) history.push("/questions");
     };
 
-    const postQuestion = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/questions`, {
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    questionCode,
-                    answerCode,
-                    inputs: [...inputs1, ...inputs2],
-                    isPublic
-                })
-            });
-            const data = await response.json();
-            // if (!response.ok) {
-            setErrors(data.errors || []);
-            // } else {
-            setMessages(data.messages || [])
-            if (response.ok) history.push("/questions");
-            // }
-        })();
+    const postQuestion = async () => {
+        const response = await fetchWithCSRF(`/api/questions`, {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                questionCode,
+                answerCode,
+                inputs: [...inputs1, ...inputs2],
+                isPublic
+            })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        if (response.ok) history.push("/questions");
     };
 
-    const duplicateQuestion = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || []);
-            history.push("/questions")
-        })();
+    const duplicateQuestion = async () => {
+        const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
+            method: 'POST',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        history.push("/questions");
     };
 
-    const deleteQuestion = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
-                method: 'DELETE',
-            });
-            const data = await response.json();
-            setErrors(data.errors || []);
-            setMessages(data.messages || [])
-            history.push("/questions")
-        })();
+    const deleteQuestion = async () => {
+        const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        history.push("/questions");
     };
 
     const handleToggle = e => {

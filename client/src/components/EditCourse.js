@@ -18,89 +18,71 @@ const EditCourse = ({ match }) => {
         privacy: "This controls whether or not other instructors will be able to see, use, and/or duplicate this course.  (Regardless they'll not have edit/delete privileges.)",
     };
 
-    const getCourse = () => {
+    const getCourse = async () => {
         if (courseId > 0) {
-            (async () => {
-                try {
-                    const res = await fetch(`/api/courses/${courseId}`);
-                    const data = await res.json();
-                    // if (!res.ok) {
-                    setErrors(data.errors || []);
-                    if (res.ok) {
-                        setName(data.course.name);
-                        setIsPublic(data.course.is_public);
-                        setCanEdit(data.course.instructor_id === currentUser.id);
-                    }
-                } catch (err) {
-                    console.error(err)
+            try {
+                const res = await fetch(`/api/courses/${courseId}`);
+                const data = await res.json();
+                // if (!res.ok) {
+                setErrors(data.errors || []);
+                if (res.ok) {
+                    setName(data.course.name);
+                    setIsPublic(data.course.is_public);
+                    setCanEdit(data.course.instructor_id === currentUser.id);
                 }
-            })()
+            } catch (err) {
+                console.error(err)
+            }
         }
     };
 
-    useEffect(getCourse, [rerender]);
+    useEffect(() => {
+        getCourse();
+    }, [rerender]);
 
-    const putCourse = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
-                method: 'PUT',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ name, isPublic })
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(responseData.errors);
-            setErrors(data.errors || []);
-            // if (responseData.messages) setMessages(responseData.messages)
-            setMessages(data.messages || [])
-            setRerender(!rerender)
-            history.push("/")
-        })();
+    const putCourse = async () => {
+        const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ name, isPublic })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        setRerender(!rerender);
+        history.push("/");
     }
 
-    const postCourse = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/courses`, {
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ name })
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(responseData.errors);
-            setErrors(data.errors || []);
-            // if (responseData.messages) setMessages(responseData.messages)
-            setMessages(data.messages || [])
-            setRerender(!rerender);
-            history.push("/")
-        })();
+    const postCourse = async () => {
+        const response = await fetchWithCSRF(`/api/courses`, {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ name, isPublic })
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || [])
+        setRerender(!rerender);
+        history.push("/")
+    };
+
+    const duplicateCourse = async () => {
+        const response = await fetchWithCSRF(`/api/courses/${courseId}`, {method: 'POST'});
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || []);
+        if (response.ok) history.push("/");
     }
 
-    const duplicateCourse = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/courses/${courseId}`, {method: 'POST'});
-            const data = await response.json();
-            // if (!response.ok) {
-            setErrors(data.errors || []);
-            // } else {
-            // if (responseData.messages) setMessages(responseData.messages);
-            setMessages(data.messages || []);
-            if (response.ok) history.push("/");
-            // }
-        })();
-    }
-
-    const deleteCourse = () => {
-        (async _ => {
-            const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
-                method: 'DELETE',
-            });
-            const data = await response.json();
-            // if (!response.ok) setErrors(responseData.errors);
-            setErrors(data.errors || []);
-            // if (responseData.messages) setMessages(responseData.messages)
-            setMessages(data.messages)
-            setRerender(!rerender);
-            history.push("/")
-        })();
+    const deleteCourse = async () => {
+        const response = await fetchWithCSRF(`/api/courses/${courseId}`, {
+            method: 'DELETE',
+        });
+        const data = await response.json();
+        setErrors(data.errors || []);
+        setMessages(data.messages || [])
+        setRerender(!rerender);
+        history.push("/")
     }
 
     const handleToggle = e => {
@@ -150,10 +132,10 @@ const EditCourse = ({ match }) => {
                         this course?
                     </h4>
                     <span>
-                        <button onClick={() => duplicateCourse()}><h3>duplicate</h3></button>
+                        <button onClick={duplicateCourse}><h3>duplicate</h3></button>
                         {!canEdit && courseId ? null
                             :
-                                <button onClick={() => deleteCourse()}>
+                                <button onClick={deleteCourse}>
                                     <h3>
                                         delete
                                     </h3>
