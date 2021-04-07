@@ -44,7 +44,9 @@ const Submission = ({ qAndR, number, deploymentId }) => {
         <form onSubmit={handleSubmit}>
             <span>
                 <input
-                    type="text" placeholder="Answer" value={response}
+                    type="text"
+                    placeholder="Response"
+                    value={response}
                     onChange={e => setResponse(e.target.value)}
                 />
                 <button type="submit">
