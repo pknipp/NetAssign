@@ -4,10 +4,11 @@ import AuthContext from "../auth";
 
 const NavBar = () => {
     const { userType, currentUser } = useContext(AuthContext);
+    const userTypes = ["instructor", "student"];
     const head = (
         <h1>
-            Welcome {(currentUser) ? `${currentUser.email} ` : ""}
-            to {!userType || currentUser ? "" : `the ${userType === "instructor" ? "instructor" : "student"} side of`} NetAssign.
+            Welcome {currentUser ? `${currentUser.email} ` : ""}
+            to {!userType || currentUser ? "" : `the ${userType} side of`} NetAssign.
         </h1>
     );
 
