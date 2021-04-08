@@ -5,6 +5,7 @@ import AuthContext from "../auth";
 const NavBar = () => {
     const { userType, currentUser } = useContext(AuthContext);
     const userTypes = ["instructor", "student"];
+    const UserTypes = userTypes.map(userType => userType[0].toUpperCase() + userType.slice(1));
     const head = (
         <h1>
             Welcome {currentUser ? `${currentUser.email} ` : ""}
@@ -14,35 +15,31 @@ const NavBar = () => {
 
     const noUserType = (
         <>
-            <NavLink exact to="/welcomeInstructor">Instructors</NavLink>
-            <NavLink exact to="/welcomeStudent">Students</NavLink>
+            {UserTypes.map(UserType => (
+                <NavLink exact to={`/welcome${UserType}`}>
+                    {`${UserType}s`}
+                </NavLink>
+            ))}
         </>
     );
 
-    // Can the following be DRY-ed by a factor of two using string interpolation?
-    const yesUserType = userType === "instructor" ? (
+    const i = userTypes.indexOf(userType);
+    const yesUserType = (
         <>
-            <NavLink to="/loginInstructor" className="nav" activeClassName="active">
-                Log In
+            <NavLink to={`/login${UserTypes[i]}`} className="nav" activeClassName="active">
+                Login In
             </NavLink>
-            <NavLink to="/signupInstructor" className="nav" activeClassName="active">
+            <NavLink to={`signup${UserTypes[i]}`} className="nav" activeClassName="active">
                 Sign Up
             </NavLink>
-            <NavLink to="/welcomeStudent" className="nav">Switch to Student Side</NavLink>
-        </>)
-    :
-        <>
-            <NavLink to="/loginStudent" className="nav" activeClassName="active">
-                Log In
+            <NavLink to={`/welcome${UserTypes[(i + 1) % 2]}`} className="nav">
+                Switch to {`Switch to ${UserTypes[(i + 1) % 2]} Side`}
             </NavLink>
-            <NavLink to="/signupStudent" className="nav" activeClassName="active">
-                Sign Up
-            </NavLink>
-            <NavLink to="/welcomeInstructor" className="nav">Switch to Instructor Side</NavLink>
         </>
-
+    )
 
     const instructor = currentUser && !currentUser.is_instructor ? null
+    // Two links below are only visible to instructors
         :(
             <>
                 <NavLink
@@ -62,6 +59,7 @@ const NavBar = () => {
     );
 
     const user = (
+        // Three links below are visible to all users
         <>
             {instructor}
                 <NavLink
