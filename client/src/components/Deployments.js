@@ -57,7 +57,7 @@ const Deployments = ({ match }) => {
                 }
             </ul>
 
-            <span>
+            {!currentUser.is_instructor ? null : <span>
                 <button
                     onClick={() => setShowMoreAssignments(!showMoreAssignments)}
                 >
@@ -66,7 +66,7 @@ const Deployments = ({ match }) => {
                 <span padding-left={"10px"}>
                     undeployed assignments
                 </span>
-            </span>
+            </span>}
 
             {!showMoreAssignments ? null :
                 <>

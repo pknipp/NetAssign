@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect
-from net_assign.models import db, Assignment, Deployment, Course, Appearance, Question
+from net_assign.models import db, Assignment, Deployment, Course, Appearance, Question, Enrollment
 from flask_login import current_user
 from datetime import datetime
 from sqlalchemy import or_, and_
@@ -66,9 +66,10 @@ def index(deployment_id_and_assignment_id_and_course_id):
 def get_deployments(course_id):
     course_id = int(course_id)
     instructor_id = Course.query.get(course_id).instructor_id
+    enrollments = Enrollment.query.filter(Enrollment.student_id == current_user.id)
     if not instructor_id == current_user.id:
-        # For some reason PAK was uncertain about the following line.
-        return {"errors": ["You are not authorized to this."]}, 401
+        # In above logic, check to see if user is enrolled in course
+        # return {"errors": ["You are not authorized to this."]}, 401
         pass
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == course_id).order_by(Deployment.deadline)
