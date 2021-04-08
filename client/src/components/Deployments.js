@@ -43,15 +43,15 @@ const Deployments = ({ match }) => {
                                         <NavLink
                                             to={`/deployments/${assignment.deployment.id}`}
                                         >
-                                            modify deployment
+                                            modify deadline
                                         </NavLink>
                                 }
                                 <NavLink
                                     to={`/submissions/${assignment.deployment.id}`}
                                 >
-                                    {assignment.assignment.name}
-                                    (due {assignment.deployment.deadline})
+                                    {assignment.assignment.name}&nbsp;
                                 </NavLink>
+                                (due {assignment.deployment.deadline})
                             </li>
                         ))
                 }

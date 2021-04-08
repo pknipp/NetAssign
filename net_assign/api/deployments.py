@@ -25,7 +25,7 @@ def index(deployment_id_and_assignment_id_and_course_id):
     if not instructor_id == current_user.id:
         return {"errors": ["You are not authorized to this."]}, 401
 
-    # duplicating a deployement
+    # duplicating a deployment
     if request.method == 'POST':
         new_deployment = Deployment(
             course_id=course_id,
@@ -67,8 +67,8 @@ def get_deployments(course_id):
     course_id = int(course_id)
     instructor_id = Course.query.get(course_id).instructor_id
     if not instructor_id == current_user.id:
-        # PAK forgets what was being attempted by the following line.
-        # return {"errors": ["You are not authorized to this."]}, 401
+        # For some reason PAK was uncertain about the following line.
+        return {"errors": ["You are not authorized to this."]}, 401
         pass
     if request.method == 'GET':
         deployments = Deployment.query.filter(Deployment.course_id == course_id).order_by(Deployment.deadline)

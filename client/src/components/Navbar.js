@@ -27,7 +27,7 @@ const NavBar = () => {
     const yesUserType = (
         <>
             <NavLink to={`/login${UserTypes[i]}`} className="nav" activeClassName="active">
-                Login In
+                Log In
             </NavLink>
             <NavLink to={`signup${UserTypes[i]}`} className="nav" activeClassName="active">
                 Sign Up
@@ -59,7 +59,7 @@ const NavBar = () => {
     );
 
     const user = (
-        // Three links below are visible to all users
+        // Three links below are visible to all users: instructors and students
         <>
             {instructor}
                 <NavLink

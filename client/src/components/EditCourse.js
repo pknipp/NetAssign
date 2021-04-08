@@ -21,11 +21,10 @@ const EditCourse = ({ match }) => {
     const getCourse = async () => {
         if (courseId > 0) {
             try {
-                const res = await fetch(`/api/courses/${courseId}`);
-                const data = await res.json();
-                // if (!res.ok) {
+                const response = await fetch(`/api/courses/${courseId}`);
+                const data = await response.json();
                 setErrors(data.errors || []);
-                if (res.ok) {
+                if (response.ok) {
                     setName(data.course.name);
                     setIsPublic(data.course.is_public);
                     setCanEdit(data.course.instructor_id === currentUser.id);
@@ -62,6 +61,7 @@ const EditCourse = ({ match }) => {
         const data = await response.json();
         setErrors(data.errors || []);
         setMessages(data.messages || [])
+        // Is the following line needed?
         setRerender(!rerender);
         history.push("/")
     };

@@ -22,9 +22,9 @@ const EditDeployment = ({ match }) => {
 
     const getDeployment = async () => {
         try {
-            const res = await fetch(`/api/deployments/${didAndAidAndCid}`);
-            if (res.ok) {
-                const data = await res.json();
+            const response = await fetch(`/api/deployments/${didAndAidAndCid}`);
+            if (response.ok) {
+                const data = await response.json();
                 setCourseName(data.course_name);
                 setAssignmentName(data.assignment_name);
                 setQuestions(data.questions);
@@ -113,7 +113,7 @@ const EditDeployment = ({ match }) => {
                 <span>
                     <button type="submit">
                         <h3>
-                            Change deadline
+                            {deploymentId ? "Change deadline" : "Deploy"}
                         </h3>
                     </button>
                     <button
@@ -150,11 +150,12 @@ const EditDeployment = ({ match }) => {
                             <button onClick={duplicateDeployment}><h3>Duplicate</h3></button>
                         </>
                     :
-                        <button onClick={postDeployment}><h3>Deploy</h3></button>
+                        // <button onClick={postDeployment}><h3>Deploy</h3></button>
+                        null
                     }
-                    <button onClick={() => history.push(`/courses/${courseId}`)}>
+                    {/* <button onClick={() => history.push(`/courses/${courseId}`)}>
                         <h3>Cancel</h3>
-                    </button>
+                    </button> */}
                 </p>
             </div>
         </>

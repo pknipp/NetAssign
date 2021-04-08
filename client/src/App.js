@@ -21,7 +21,7 @@ import EditCourse from './components/EditCourse';
 import Roster from './components/Roster';
 import Welcome from './components/Welcome';
 
-const App = _ => {
+const App = () => {
     const [fetchWithCSRF] = useState(() => fetch);
     const [currentUser, setCurrentUser] = useState(null);
     const [userType, setUserType] = useState(null);

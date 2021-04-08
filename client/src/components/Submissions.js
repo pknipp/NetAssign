@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import Submission from './Submission';
+import EditSubmission from './EditSubmission';
 import AuthContext from '../auth';
 
 const Submissions = ({ match }) => {
@@ -31,7 +31,7 @@ const Submissions = ({ match }) => {
         <ol>
             {(!questionsAndResponses.length) ? null :
                 questionsAndResponses.map((questionAndResponse, index) => (
-                    <Submission
+                    <EditSubmission
                         key={questionAndResponse.id}
                         qAndR={questionAndResponse}
                         number={index}

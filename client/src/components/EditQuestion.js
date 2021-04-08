@@ -31,11 +31,10 @@ const EditQuestion = ({ match }) => {
     const getQuestion = async () => {
         if (questionId > 0) {
             try {
-                const res = await fetch(`/api/questions/${questionId}`)
-                const data = await res.json();
-                if (!res.ok) {
-                    setErrors(data.errors);
-                } else {
+                const response = await fetch(`/api/questions/${questionId}`)
+                const data = await response.json();
+                setErrors(data.errors || []);
+                if (response.ok) {
                     let inputs = data.inputs;
                     let inputs1 = [];
                     let inputs2 = [];

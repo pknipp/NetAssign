@@ -4,7 +4,7 @@ import AuthContext from '../auth';
 import correct from "../correct10.jpg";
 import incorrect from "../incorrect10.jpeg";
 
-const Submission = ({ qAndR, number, deploymentId }) => {
+const EditSubmission = ({ qAndR, number, deploymentId }) => {
     let lastResponse = (qAndR.response === null) ? "" : String(qAndR.response);
     const [response, setResponse] = useState(String(lastResponse));
     const [grade, setGrade] = useState(null);
@@ -16,16 +16,16 @@ const Submission = ({ qAndR, number, deploymentId }) => {
         let newResponse = response;
         while (newResponse && newResponse[0] === " ") newResponse = newResponse.slice(1);
         while (newResponse && newResponse[newResponse.length - 1] === " ") newResponse = newResponse.slice(0, -1);
-        const res = await fetchWithCSRF(`/api/submissions/${deploymentId + " " + number}`,
+        const response = await fetchWithCSRF(`/api/submissions/${deploymentId + " " + number}`,
             {
                 method: 'PUT', headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({response: (newResponse === "") ? null : newResponse})
             }
         );
-        const responseData = await res.json();
-        if (!res.ok) return setErrors(responseData.errors);
-        if (response !== "") setGrade(responseData.grade);
-        setAnswer(responseData.answer);
+        const data = await response.json();
+        if (!response.ok) return setErrors(data.errors);
+        if (response !== "") setGrade(data.grade);
+        setAnswer(data.answer);
     };
 
     useEffect(() => {
@@ -65,4 +65,4 @@ const Submission = ({ qAndR, number, deploymentId }) => {
         </form>
     </li>
 }
-export default Submission;
+export default EditSubmission;

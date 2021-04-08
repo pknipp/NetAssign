@@ -12,14 +12,11 @@
 
 [Instructor/student dichotomy](#instructor/student-dichotomy)
 
-[Question Editor](#question-editor)
+[Question editor](#question-editor)
 
 [CRUD](#crud)
 
-[Duplication of resources]()
-CRUD + Duplicate (POST w/included ID#)
-
-[Gradebook]() IN PROGRESS
+[Gradebook](#gradebook)
 
 # Introduction
 
@@ -29,7 +26,7 @@ CRUD + Duplicate (POST w/included ID#)
 
 My project (NetAssign) is a clone of [WebAssign](http://www.webassign.net), a leader in the delivery, administration, and automated grading of online assignments to students in high school and college.  This industry sector has revolutionized the manner in which classroom assignments are implemented this century.  My clone uses JavaScript and React (with functional components, hooks, and context) for the front-end, and it uses Flask, Python, SQLAlchemy, and PostgreSQL for the back-end.
 
-# Instructor/Student dichotomy
+# Instructor/student dichotomy
 
 [return to "Contents"](#contents)
 
@@ -83,9 +80,7 @@ const Welcome = props => {
   );
 }
 ```
-This designation then guides the unregistered user to sign-up as the appropriate type of user via different versions of the NavBar:
-
-more from <tt>NavBar</tt> component:
+Different versions of the <tt>NavBar</tt> then guide the unregistered user to sign-up as the appropriate either <tt>instructor</tt> or <tt>student</tt>:
 ```
 const i = userTypes.indexOf(userType);
 const yesUserType = (
@@ -166,7 +161,7 @@ if not instructor_id == current_user.id:
 
 [go to next section ("CRUD")](#crud)
 
-NetAssign presently allows for two different categories of questions: "numerical" and "fill in the blank".  (The latter includes "true-false".)  Both question categories involve the use of a simple input element:
+NetAssign presently allows for two different categories of questions: "numerical" and "fill in the blank".  (The latter includes "true-false".)  Both categories use of a simple input element:
 ```
 <input
     type="text"
@@ -190,7 +185,7 @@ tolerance = 0.02
 ```
 As indicated above, the data-type of the answer (key) is a string for fill-in-the-blank but is a number for a numerical question.  A response to a fill-in-the-blank question is marked correct if and only if the student response exactly matches the answer.  However a response to a numerical question is marked correct either if the student's reponse is within 2% of the answer or is within 0.02 of the answer.
 
-One of the most powerful features of NetAssign is its ability to randomize questions and their answers.  This feature assures instructors that their students not simply copying answers from each other.  Accordingly the <tt>Questions</tt> table of of the database does not simply contain one column with a simple string for the question and another column with a simple string (or number) for the correct answer.  Instead there are three separate columns: <tt>question_code</tt>, <tt>inputs</tt>, and <tt>answer_code</tt>.  I'll now discuss these sequentially.
+One of the most powerful features of NetAssign (and WebAssign) is its ability to randomize questions and their answers.  This feature assures instructors that their students not simply copying answers from each other.  Accordingly the <tt>Questions</tt> table of of the database does not simply contain one column with a simple string for the question and another column with a simple string (or number) for the correct answer.  Instead there are three separate columns: <tt>question_code</tt>, <tt>inputs</tt>, and <tt>answer_code</tt>, which I'll now discuss in turn.
 1. <tt>question_code</tt>:
 
 This is a string with both regular text and zero or more instances of brace-pairs, each containing a string with the name of a variable which'll be randomized in a manner specified by the contents of the <tt>inputs</tt> column.  Below are three examples of this, taken from the seeder data in <tt>database.py</tt>
@@ -201,21 +196,23 @@ This is a string with both regular text and zero or more instances of brace-pair
 ```
 2. <tt>inputs</tt>:
 
-Each of these is a <tt>JSON.stringify</tt>-ed multi-dimensional array, the dimension for which is either three or two depending upon the nature of the randomization.  Consider the following example, which corresponds to the last of the three examples above, and which involves both types of randomization:
+Each of these is a <tt>JSON.stringify</tt>-ed multi-dimensional array, the dimension for which is either three or two depending upon the type of randomization.  Consider the following example, which corresponds to the last of the three examples above, and which involves both types of randomization:
 ```
 [['power', 4, 7, 3], [['ordinal', 4, 5, 6, 7], ['prime', 7, 11, 13, 17]]]
 ```
-The outer array contains two elements, corresponding to the fact that there are two different randomizations which must be performed.  Let's consider these one element at a time.  The first element consists of a flat array:
+The outer array contains two elements because there are two different randomizations which must be performed.  I'll consider these one element at a time.
+
+The first element is a flat array. This signifies that the variable <tt>power</tt> should randomly receive 3 + 1 = 4 different values which are spread evenly between a minimum value of 4 and a maximum value of 7.
 ```
 ['power', 4, 7, 3]
 ```
-This signifies that the variable <tt>power</tt> should randomly receive 3 + 1 = 4 different values which are spread evenly between a minimum value of 4 and a maximum value of 7.  Hence, <tt>power</tt> should be randomly chosen from the set {4, 5, 6, 7} (using notation from mathematics, not JavaScript).
+Hence, <tt>power</tt> should be randomly chosen from the set {4, 5, 6, 7} (using notation from mathematics, not JavaScript).
 
 Next consider the second element in <tt>inputs</tt>, which consists of a two-dimensional array. This signifies that there are two or more variables, which must be chosen in a correlated manner.
 ```
 [['ordinal', 4, 5, 6, 7], ['prime', 7, 11, 13, 17]]
 ```
-This contains two sub-subarrays each of length *N* + 1, where *N* is the number of different randomized values that these variables should assume.  The zeroth element of each sub-subarray is the name of the particular variable, and the remaining *N* elements (which themselves need *not* be numbers) are the values that the particular variable may assume.  Note that these randomizations occur in a correlated manner.  For instance, if <tt>ordinal</tt> equals 5, then <tt>prime</tt> equals 11.  (ie, the 5th prime number is 11.)
+The two sub-subarrays each have of length *N* + 1, where *N* is the number of different randomized values that these variables should assume.  The zeroth element of each sub-subarray is the name of the particular variable, and the remaining *N* elements (which themselves need *not* be numbers) are the values that the particular variable may assume.  Note that these randomizations occur in a correlated manner.  For instance, if <tt>ordinal</tt> equals 5, then <tt>prime</tt> equals 11.  (ie, the 5th prime number is 11.)
 
 In this particular example there is exactly one instance of the first type of randomization and one instance of the second type of randomization, but there can be any combination of the different types of randomizations.
 
@@ -235,10 +232,70 @@ www.partow.net/programming/exprtk</a> for more details.  For the second and thir
 
 [return to previous section ("Question editor")](#question-editor)
 
-The database has four joins tables: Enrollments (which joins Users and Courses), Appearances (joins Assignments and Questions), Deployments (Assignments and Courses), and Submissions (Deployments and Users).  The respective CRUD-functionalities for these four
-enrollments (users, courses), appearances (questions, assignments), deployments (courses, assignments, but can be multiple), submissions (deployments, users)
+[go to next section ("Gradebook")](#gradebook)
+
+In addition to the usual CRUD functionality, the table below includes a column ("Du") for the process of duplicating an existing row of a table in the database (which mimics the "Save As" functionality of most desktop applications).  Because there are no columns in the Appearances, Deployments, and Submissions tables other than the primary key, the foreign keys, and the created_at and updated_at moments, these three tables have no need for U functionality.  Deployments, the only other joins table, has a "deadline" column which may be updated.  There is no "delete" functionality for the Submissions table for the simple reason that each row is part of the student's permanent record.
 
 Table | Du | C | R | U | D | Joins?
 ------| ---- | --| - | - | - | -
 Users | N    | Y | Y | Y | Y | N
 Questions| Y | Y | Y | Y | Y | N
+Courses| Y| Y| Y | Y | Y | N
+Assignments| Y| Y | Y | Y | Y | N
+Enrollments| N| Y | Y | N | Y | Users and Courses
+Appearances| N| Y | Y | N | Y | Questions and Assignments
+Deployments| Y| Y | Y | Y | Y | Assignments and Courses
+Submissions| N| Y*| Y | Y | N | Deployments and Users
+
+*A row in the Submissions table is created automatically when the particular user first views the deployment.
+
+The event-handler for any of these actions starts with the string "<tt>duplicate</tt>" or the lower-case spelling of the HTTP verb (POST, GET, PUT, DELETE), followed by the name of the table in either plural or singular form as appropriate.
+Most of these handlers are found in a component by the same name as the table, or are in a component with the singular form of this name and with the prefix "Edit", but that pattern is not universal.  The <tt>fetch</tt> <tt>method</tt> used for each of the handlers is self-explanatory, except for the ones which duplicate resources.  For those I use the <tt>POST</tt> method, but I include params which equal the primary key of the resource being duplicated.  (For regular "post" handlers I either do not include params, or I set the params to zero.)  As an example, below are shown these handlers for such changes to the Questions table.  Note that the <tt>fetch</tt> call for the <tt>duplicate</tt> handler does not need a body, because those data are readily available at the back end, given that the params contains the primary key of the original being copied.
+```
+const postQuestion = async () => {
+    const response = await fetchWithCSRF(`/api/questions`, {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            questionCode,
+            answerCode,
+            inputs: [...inputs1, ...inputs2],
+            isPublic
+        })
+    });
+    // remaining 4 lines of event-handler omitted for brevity
+
+const duplicateQuestion = async () => {
+    const response = await fetchWithCSRF(`/api/questions/${questionId}`, {
+        method: 'POST',
+    });
+    // remaining 4 lines omitted
+```
+Of course the back-end routes accommodate this distinction.
+
+Earlier in the process, I use this same "truthiness vs falsi-ness of params" approach to distinguish between duplication and posting in front-end routes, also.  Below are the links for question creation and duplication, respectively.
+
+in the <tt>Questions</tt> component:
+```
+<NavLink exact to={"/questions/0"} className="nav" activeClassName="active">
+    create new question
+</NavLink>
+```
+
+in the <tt>Question</tt> component (with removal of some tangential details):
+```
+<NavLink exact to={`/questions/${question.id}`} className="nav" activeClassName="active">
+    duplicate
+</NavLink>
+{question.question}
+```
+
+Most of the components contain a <tt>useEffect</tt> invocation of a <tt>get</tt> handler.  Exceptions to this pattern include the <tt>Question/Assignment/ToggleInfo/Welcome/Route/Input</tt> components (to each of which is threaded an adequate supply of <tt>props</tt>), the <tt>EditUser/Login/Logout/Signup/NavBar</tt> components (each of which either does not require data or gets its data from context), and the <tt>EditSubmission</tt> component (which contains a <tt>useEffect</tt> invocation of a <tt>put</tt> handler, for technical reasons).
+
+# Gradebook
+
+[return to "Contents"](#contents)
+
+[return to previous section ("CRUD")](#crud)
+
+UNDER CONSTRUCTION
