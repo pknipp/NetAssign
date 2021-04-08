@@ -210,12 +210,11 @@ const EditAssignment = ({ match }) => {
                 <>
                     {!canEdit && assignmentId ? null :
                     <button onClick={getQuestions}>
-                        {showMoreQuestions ? "Hide" : "Show"}
+                        {showMoreQuestions ? "Hide" : "Show"}&nbsp;
                             questions which may get added to this assignment.
                     </button>}
                     <ul>
-                        {moreQuestions.filter(question =>
-                            !questionIds.includes(question.id)
+                        {moreQuestions.filter(question => !questionIds.includes(question.id))
                                 .map(question => (
                                     <li key={question.id}>
                                         <>
@@ -228,7 +227,7 @@ const EditAssignment = ({ match }) => {
                                         </>
                                     </li>
                                 ))
-                        )}
+                        }
                     </ul>
 
                     {messages.map(err => <li key={err}>{err}</li>)}

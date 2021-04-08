@@ -24,6 +24,7 @@ In database.py, control created_at (= t1), updated_at (t2), and is_public (for b
 
 Figure out (using list above?) how to seed other students w/a certain number of responses.
 
+Can "SUBMIT" button be removed from Submission.js, if logic is transferred from handleSubmit to onChange event handler, AND if putSubmission is allowed to take an argument?
 Rename some components to reflect their function rather than first db Query?
 Muse upon rationale for putting routes in different blueprints (and naming components)
 When fetching lists from back-end, sort them in the most logical manner

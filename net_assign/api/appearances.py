@@ -1,6 +1,7 @@
 from flask import Blueprint, request, redirect
 from net_assign.models import db, Assignment, Deployment, Course, Appearance
 from datetime import datetime
+from flask_login import current_user
 
 appearances = Blueprint('appearances', __name__)
 
@@ -26,4 +27,4 @@ def get_deployments(aid_and_qid):
         appearance = Appearance.query.filter(Appearance.assignment_id == aid).filter(Appearance.question_id == qid).one_or_none()
         db.session.delete(appearance)
         db.session.commit()
-        return {"message": "successful deletion"}
+        return {"message": "successful deletion of question from assignment"}

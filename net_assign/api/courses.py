@@ -14,6 +14,7 @@ def index():
         new_course = Course(
             instructor_id=current_user.id,
             name=request.json.get('name', None),
+            is_public=request.json.get('isPublic', None),
             created_at=datetime.now(),
             updated_at=datetime.now()
         )
@@ -83,7 +84,7 @@ def one(course_id):
         course.is_public = request.json.get('isPublic', None)
         course.updated_at = datetime.now()
         db.session.commit()
-        return {"message": "I hope that you like the new name for this course."}
+        return {"message": "I hope that you like the new settings for this course."}
 
     if request.method == 'DELETE':
         db.session.delete(course)

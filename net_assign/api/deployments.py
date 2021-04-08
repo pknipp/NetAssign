@@ -12,9 +12,9 @@ deployments = Blueprint('deployments', __name__)
 def index(deployment_id_and_assignment_id_and_course_id):
     ids = deployment_id_and_assignment_id_and_course_id.split(' ')
     deployment_id = int(ids[0])
-    assignment_id = 0
-    course_id = 0
-    deployment = Deployment.query.filter(Deployment.id == deployment_id).one_or_none()
+    assignment_id = None
+    course_id = None
+    deployment = Deployment.query.get(deployment_id)
     if deployment:
         assignment_id = deployment.assignment_id
         course_id = deployment.course_id
@@ -38,8 +38,8 @@ def index(deployment_id_and_assignment_id_and_course_id):
         db.session.commit()
         return {"deployment_id": new_deployment.id}
     if request.method == 'GET':
-        assignment = Assignment.query.filter(Assignment.id == assignment_id).one_or_none()
-        course = Course.query.filter(Course.id == course_id).one_or_none()
+        assignment = Assignment.query.get(assignment_id)
+        course = Course.query.get(course_id)
         appearances = Appearance.query.filter(Appearance.assignment_id == assignment_id)
         questions = [Question.query.get(appearance.question_id) for appearance in appearances]
         question_list = list()
@@ -85,7 +85,7 @@ def get_deployments(course_id):
                 appearances = Appearance.query.filter(Appearance.assignment_id == assignment.id)
                 questions = list()
                 for appearance in appearances:
-                    question = Question.query.filter(Question.id == appearance.question_id).one_or_none()
+                    question = Question.query.get(appearance.question_id)
                     questions.append(question.question_code)
                 other_assignments.append({"assignment":assignment.to_dict(), "questions": questions})
         return {"assignments": assignments, "course_name": course_name, "other_assignments": other_assignments}
