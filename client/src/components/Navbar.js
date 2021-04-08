@@ -15,8 +15,8 @@ const NavBar = () => {
 
     const noUserType = (
         <>
-            {UserTypes.map(UserType => (
-                <NavLink exact to={`/welcome${UserType}`}>
+            {UserTypes.map((UserType, i) => (
+                <NavLink key={i} exact to={`/welcome${UserType}`}>
                     {`${UserType}s`}
                 </NavLink>
             ))}

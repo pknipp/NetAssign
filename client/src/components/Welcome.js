@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import AuthContext from "../auth";
 import info from "../info.png";
 import cancel from "../cancel.jpeg";
@@ -10,7 +10,7 @@ const general = (
     <ul>
       <li>Instructor hands assignment sheet to the student.</li>
       <li>Student attempts to answer the first question on the assignment.</li>
-      <li>Student attempts the next question without knowing how well he/she answered the previous question.
+      <li>Student attempts the next question without knowing how well he/she answered the previous question.</li>
       <li>This continues for the rest of the assignment.</li>
       <li>Student hands the assignment to the instructor.</li>
       <li>Instructor grades the assignment.</li>
@@ -18,7 +18,6 @@ const general = (
       <li>Instructor hands the graded assignment back to the student.</li>
       <li>Student learns from his/her mistakes, if any.</li>
       <li>Depending upon course policy, the student resubmits his/her assignment, and the process repeats until the   student has learned the material.</li>
-      </li>
     </ul>
     </div>
     <div>This clumsy practice is now being replaced by services such as WebAssign which streamline the process by automating the distribution, administration, and grading of assignments and thereby tightening the feedback loop which is so important to teaching and learning.  Such services are used for in-person classes but - with the present pandemic - their importance is much greater for remote instruction.</div>
@@ -62,12 +61,15 @@ welcome.student = (
   );
 
 const Welcome = props => {
-  const { userType, setUserType } = useContext(AuthContext);
+  const { setUserType } = useContext(AuthContext);
   setUserType(props.userType);
+  // useEffect(() => {
+  //   return setUserType(props.userType);
+  // })
   return (
     <div className="info text">
         {welcome[props.userType] || general}
-      </div>
+    </div>
   );
 }
 

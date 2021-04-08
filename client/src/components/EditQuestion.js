@@ -5,8 +5,8 @@ import Input1 from './Input1';
 import Input2 from './Input2';
 import InputControl from './InputControl';
 import ToggleInfo from './ToggleInfo';
-import info from "../info.png";
-import cancel from "../cancel.jpeg";
+// import info from "../info.png";
+// import cancel from "../cancel.jpeg";
 
 
 const EditQuestion = ({ match }) => {
@@ -193,16 +193,14 @@ const EditQuestion = ({ match }) => {
                         </thead>
                         <tbody>
                                 {inputs1.map((input, row, inputs) => (
-                                    <tr>
-                                        <Input1
-                                            key={`${row}1`}
-                                            row={row}
-                                            input={input}
-                                            inputs={inputs}
-                                            setInputs={setInputs1}
-                                            canEdit={canEdit || !questionId}
-                                        />
-                                    </tr>
+                                    <Input1
+                                        key={`${row}1`}
+                                        row={row}
+                                        input={input}
+                                        inputs={inputs}
+                                        setInputs={setInputs1}
+                                        canEdit={canEdit || !questionId}
+                                    />
                                 ))}
                         </tbody>
                     </table>}
@@ -245,7 +243,6 @@ const EditQuestion = ({ match }) => {
                         </thead>
                         {!(inputs2.length) ? null : (
                             inputs2.map((input, row) => (
-                                <tbody>
                                 <Input2
                                     key={`${row}2`}
                                     row={row}
@@ -256,7 +253,6 @@ const EditQuestion = ({ match }) => {
                                     varNames={varNames}
                                     setVarNames={setVarNames}
                                 />
-                                </tbody>
                             ))
                         )}
                     </table>}

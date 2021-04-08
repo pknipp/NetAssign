@@ -31,9 +31,7 @@ const Assignments = () => {
             <ul>
                 {assignments.filter(assignment => assignment.owner.id === currentUser.id)
                     .map(assignment => (
-                        <li>
-                            <Assignment key={`aid${assignment.id}`} assignment={assignment}/>
-                        </li>
+                        <Assignment key={`aid${assignment.id}`} assignment={assignment}/>
                     ))
                 }
             </ul>

@@ -7,7 +7,7 @@ const Input1 = ({ row, input, inputs, setInputs, canEdit }) => {
     const [max, setMax] = useState(input[2]);
     const [n, setN] = useState(input[3]);
     return (
-        <>
+        <tr>
             <td>
                 <input type="text" value={varName} size={6} className="smaller"
                     disabled={!canEdit} onChange={e => {
@@ -49,7 +49,7 @@ const Input1 = ({ row, input, inputs, setInputs, canEdit }) => {
                     }}
                 />
             </td>
-        </>
+        </tr>
     )
 }
 

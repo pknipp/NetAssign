@@ -2,11 +2,14 @@ import React, { useContext } from 'react';
 import AuthContext from '../auth'
 
 const LogOut = () => {
-    const { fetchWithCSRF, setCurrentUser } = useContext(AuthContext);
+    const { fetchWithCSRF, setCurrentUser, setUserType } = useContext(AuthContext);
     const deleteSession = async e => {
         e.preventDefault();
         const response = await fetchWithCSRF('/api/session', {method: 'DELETE'});
-        if (response.ok) setCurrentUser(null);
+        if (response.ok) {
+            setCurrentUser(null);
+            setUserType(null);
+        }
     };
 
     return (

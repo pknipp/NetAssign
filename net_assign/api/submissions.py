@@ -8,6 +8,13 @@ from net_assign.models import db, Assignment, Deployment, Submission, Appearance
 
 submissions = Blueprint('submissions', __name__)
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
 @submissions.route('/<did>', methods=['GET'])
 def get_questions(did):
     deployment_id = int(did)
@@ -80,6 +87,8 @@ def put_question(did_and_qindex):
             if isinstance(answer, str):
                 grade = (answer == response)
             else:
+                if not is_number(response):
+                    return {"errors": ["Your response needs to be a number."]}, 400
                 grade = abs(answer - float(response)) <= tolerance * abs(answer) or abs(answer - float(response)) < tolerance
         res = {"grade": grade}
         if is_instructor:

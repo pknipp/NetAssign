@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../auth';
-import Assignment from './Assignment';
+// import Assignment from './Assignment';
 
 const Deployments = ({ match }) => {
     let courseId = match.params.courseId;
@@ -9,7 +9,7 @@ const Deployments = ({ match }) => {
     const [otherAssignments, setOtherAssignments] = useState([]);
     const [courseName, setCourseName] = useState("");
     const [showMoreAssignments, setShowMoreAssignments] = useState(false);
-    const [showOtherAssignment, setShowOtherAssignment] = useState(false);
+    // const [showOtherAssignment, setShowOtherAssignment] = useState(false);
     const { currentUser } = useContext(AuthContext);
 
     const getDeployments = async () => {

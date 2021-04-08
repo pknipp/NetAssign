@@ -51,7 +51,7 @@ questions = [
     (1, True, "If a girl runs at {speed} m/s for {time} hours, how many km does she travel?", "speed * time * 3.6", [["speed", 4, 7, 30], ['time', 2, 3, 10]]),
     (1, True, "What is the {ordinal}th prime number?", "prime", [[['ordinal', 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
                                                           ['prime', 7,11,13,17,19,23, 29, 31, 37, 41]]]),
-    (1, True, "What is the {power}th power of the {ordinal}th prime number?", "prime^power",    
+    (1, True, "What is the {power}th power of the {ordinal}th prime number?", "prime^power",  [['power', 4, 7, 3], [['ordinal', 4, 5, 6, 7], ['prime', 7, 11, 13, 17]]])
     ]
 
 with app.app_context():
