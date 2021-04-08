@@ -27,7 +27,8 @@ const general = (
   </>
 )
 
-const student = (
+const welcome = {};
+welcome.student = (
   <div>
     <div>If you do your coursework with NetAssign ...</div>
     <ul>
@@ -43,7 +44,7 @@ const student = (
   </div>
   );
 
-  const instructor = (
+  welcome.instructor = (
     <div>
       <div>If you do your coursework with NetAssign,</div>
       <ul>
@@ -65,7 +66,7 @@ const Welcome = props => {
   setUserType(props.userType);
   return (
     <div className="info text">
-        {!props.userType ? general : userType === "student" ? student : instructor}
+        {welcome[props.userType] || general}
       </div>
   );
 }

@@ -14,7 +14,7 @@
 
 [Question Editor](#question-editor)
 
-[Joins tables](#joins-tables)
+[CRUD](#crud)
 
 [Duplication of resources]()
 CRUD + Duplicate (POST w/included ID#)
@@ -42,10 +42,16 @@ This app has two different types of users (instructors and students), with consi
 
 from the <tt>NavBar</tt> component:
 ```
+const userTypes = ["instructor", "student"];
+const UserTypes = userTypes.map(userType => userType[0].toUpperCase() + userType.slice(1));
+// ... and later ...
 const noUserType = (
     <>
-        <NavLink exact to="/welcomeInstructor">Instructors</NavLink>
-        <NavLink exact to="/welcomeStudent">Students</NavLink>
+        {UserTypes.map(UserType => (
+            <NavLink exact to={`/welcome${UserType}`}>
+                {`${UserType}s`}
+            </NavLink>
+        ))}
     </>
 );
 // ... and later ...
@@ -64,43 +70,37 @@ This selection passes through these three children of the the <tt>Switch</tt> el
 <AuthRoute exact path="/welcomeInstructor" userType={"instructor"} component={Welcome} />
 <AuthRoute exact path="/welcomeStudent" userType={"student"} component={Welcome} />
 ```
-The updated props in the <tt>Welcome</tt> component causes the delivery the appropriate version of
+The updated props in the <tt>Welcome</tt> component causes the display of the value of the appropriate property of the <tt>welcome</tt> POJO, thereby displaying more specialized "welcome" information:
 ```
 const Welcome = props => {
-    const { userType, setUserType } = useContext(AuthContext);
-    setUserType(props.userType);
-    return (
-        <div className="info text">
-            // "student" and "instructor" are welcome-info strings tailored to those groups.
-            {!props.userType ? general : userType === "student" ? student : instructor}
-        </div>
-    );
+  const { userType, setUserType } = useContext(AuthContext);
+  setUserType(props.userType);
+  return (
+    <div className="info text">
+    // "welcome" POJO has two properties: "instructor" and "student"
+        {welcome[props.userType] || general}
+      </div>
+  );
 }
 ```
 This designation then guides the unregistered user to sign-up as the appropriate type of user via different versions of the NavBar:
 
 more from <tt>NavBar</tt> component:
 ```
-const yesUserType = userType === "instructor" ? (
+const i = userTypes.indexOf(userType);
+const yesUserType = (
     <>
-        <NavLink to="/loginInstructor" className="nav" activeClassName="active">
-            Log In
+        <NavLink to={`/login${UserTypes[i]}`} className="nav" activeClassName="active">
+            Login In
         </NavLink>
-        <NavLink to="/signupInstructor" className="nav" activeClassName="active">
+        <NavLink to={`signup${UserTypes[i]}`} className="nav" activeClassName="active">
             Sign Up
         </NavLink>
-        <NavLink to="/welcomeStudent" className="nav">Switch to Student Side</NavLink>
-    </>)
-:
-    <>
-        <NavLink to="/loginStudent" className="nav" activeClassName="active">
-            Log In
+        <NavLink to={`/welcome${UserTypes[(i + 1) % 2]}`} className="nav">
+            Switch to {`Switch to ${UserTypes[(i + 1) % 2]} Side`}
         </NavLink>
-        <NavLink to="/signupStudent" className="nav" activeClassName="active">
-            Sign Up
-        </NavLink>
-        <NavLink to="/welcomeInstructor" className="nav">Switch to Instructor Side</NavLink>
     </>
+)
 /// ... and later, with more details than before:
 return (
     <div className="nav-container">
@@ -112,6 +112,7 @@ return (
 )
 ```
 After logging in or signing up, the user is then provided access to non-<tt>Auth</tt> routes.  From this point onward in the user experience, three different mechanisms prevent students from accessing resoures to which they are not authorized, the first two in the front-end and the third one in the back.
+
 (1) <tt>Route</tt> wrappers:
 ```
 const ProtectedInstructorRoute = ({ component: Component, path, exact }) => {
@@ -163,9 +164,9 @@ if not instructor_id == current_user.id:
 
 [return to previous section ("Instructor/student dichotomy")](#instructor/student-dichotomy)
 
-[go to next section ("Joins tables")](#joins-tables)
+[go to next section ("CRUD")](#crud)
 
-NetAssign presently allows for two different categories of questions on assignments, known as "numerical" and "fill in the blank".  (The latter category includes "true-false".)  Both question categories involve the use of a simple input element:
+NetAssign presently allows for two different categories of questions: "numerical" and "fill in the blank".  (The latter includes "true-false".)  Both question categories involve the use of a simple input element:
 ```
 <input
     type="text"
@@ -185,7 +186,7 @@ tolerance = 0.02
             if isinstance(answer, str): # fill-in-the-blank question
                 grade = (answer == response)
             else: # numerical question
-                grade = abs(answer - float(response)) <= tolerance * abs(answer) or abs(answer - float(response)) < tolerance
+                grade=abs(answer-float(response))<=tolerance*abs(answer) or abs(answer-float(response))<tolerance
 ```
 As indicated above, the data-type of the answer (key) is a string for fill-in-the-blank but is a number for a numerical question.  A response to a fill-in-the-blank question is marked correct if and only if the student response exactly matches the answer.  However a response to a numerical question is marked correct either if the student's reponse is within 2% of the answer or is within 0.02 of the answer.
 
@@ -204,23 +205,23 @@ Each of these is a <tt>JSON.stringify</tt>-ed multi-dimensional array, the dimen
 ```
 [['power', 4, 7, 3], [['ordinal', 4, 5, 6, 7], ['prime', 7, 11, 13, 17]]]
 ```
-The outer array contains two elements, corresponding to the fact that there are two different randomizations which must be performed.  Let's consider these one element at a time.  The first element consists of an array:
+The outer array contains two elements, corresponding to the fact that there are two different randomizations which must be performed.  Let's consider these one element at a time.  The first element consists of a flat array:
 ```
 ['power', 4, 7, 3]
 ```
-This signifies that the variable <tt>power</tt> should randomly receive 3 + 1 = 4 different values which are spread evenly between a minimum value of 4 and a maximum value of 7.  Hence, <tt>power</tt> should be randomly chosen from the set (4, 5, 6, 7).
+This signifies that the variable <tt>power</tt> should randomly receive 3 + 1 = 4 different values which are spread evenly between a minimum value of 4 and a maximum value of 7.  Hence, <tt>power</tt> should be randomly chosen from the set {4, 5, 6, 7} (using notation from mathematics, not JavaScript).
 
-Next consider the second element in <tt>inputs</tt>, which consists of a two-dimensional array. This signifies that there are two or more variables must be chosen in a correlated manner.
+Next consider the second element in <tt>inputs</tt>, which consists of a two-dimensional array. This signifies that there are two or more variables, which must be chosen in a correlated manner.
 ```
-[['ordinal', 4, 5, 6, 7], ['prime', 7, 11, 13, 17]]]
+[['ordinal', 4, 5, 6, 7], ['prime', 7, 11, 13, 17]]
 ```
-This subarray contains two sub-subarrays each of length *N* + 1, where *N* is the number of different randomized values that these variables should assume.  The zeroth element of each sub-subarray is the name of the particular variable, and the remaining *N* elements (which themselves need *not* be numbers) are the values that the particular variable may assume.  Note that these randomizations occur in a correlated manner.  For instance, if <tt>ordinal</tt> equals 5, then <tt>prime</tt> equals 11.  (ie, the 5th prime number is 11.)
+This contains two sub-subarrays each of length *N* + 1, where *N* is the number of different randomized values that these variables should assume.  The zeroth element of each sub-subarray is the name of the particular variable, and the remaining *N* elements (which themselves need *not* be numbers) are the values that the particular variable may assume.  Note that these randomizations occur in a correlated manner.  For instance, if <tt>ordinal</tt> equals 5, then <tt>prime</tt> equals 11.  (ie, the 5th prime number is 11.)
 
-In this particular example there is exactly one instance of the first type of randomization and one instance of the second type of randomization, but there can be any combination of these two numbers.
+In this particular example there is exactly one instance of the first type of randomization and one instance of the second type of randomization, but there can be any combination of the different types of randomizations.
 
 3. <tt>answer_code</tt>:
 
-This is a string.  For a fill-in-the-blank question this simply corresponds to the answer.  For a numerical question, however, this string is a mathematical/algebraic/trigonometric expression which provides the answer.  The syntax used is fairly intuitive and powerful.  It probably includes the names of your variables (not enclosed with braces), parentheses, and operators such as +, -, *, /, and ^ (for exponentiation).
+This is a string.  For a fill-in-the-blank question this simply corresponds to the answer.  For a numerical question, however, this string is a mathematical/algebraic/trigonometric expression which provides the answer.  The syntax used is both intuitive and powerful.  It probably includes the names of your variables (not enclosed with braces), parentheses, and operators such as +, -, *, /, and/or ^ (for exponentiation).
 Click <a href="http://www.partow.net/programming/exprtk">
 www.partow.net/programming/exprtk</a> for more details.  For the second and third examples given at the top of this section, what follows are the respective strings for the <tt>answer_code</tt>:
 ```
@@ -228,12 +229,16 @@ www.partow.net/programming/exprtk</a> for more details.  For the second and thir
  "prime^power"
  ```
 
-# Joins tables
+# CRUD
 
 [return to "Contents"](#contents)
 
 [return to previous section ("Question editor")](#question-editor)
 
-[go to next section ("Duplication of resources")](#duplication-of-resources)
-
+The database has four joins tables: Enrollments (which joins Users and Courses), Appearances (joins Assignments and Questions), Deployments (Assignments and Courses), and Submissions (Deployments and Users).  The respective CRUD-functionalities for these four
 enrollments (users, courses), appearances (questions, assignments), deployments (courses, assignments, but can be multiple), submissions (deployments, users)
+
+Table | Du | C | R | U | D | Joins?
+------| ---- | --| - | - | - | -
+Users | N    | Y | Y | Y | Y | N
+Questions| Y | Y | Y | Y | Y | N
