@@ -283,7 +283,7 @@ const EditQuestion = ({ match }) => {
                         {!showInfo.answerCode ?
                             "answer code:"
                         :
-                            <a target="_blank" href="http://www.partow.net/programming/exprtk">
+                            <a target="_blank" rel="noopener noreferrer" href="http://www.partow.net/programming/exprtk">
                                 answer code:
                             </a>
                         }

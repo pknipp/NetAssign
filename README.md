@@ -80,7 +80,7 @@ const Welcome = props => {
   );
 }
 ```
-Different versions of the <tt>NavBar</tt> then guide the unregistered user to sign-up as the appropriate either <tt>instructor</tt> or <tt>student</tt>:
+Different versions of the <tt>NavBar</tt> then guide the unregistered user to sign-up in the appropriate <tt>userType</tt>: <tt>instructor</tt> or <tt>student</tt>:
 ```
 const i = userTypes.indexOf(userType);
 const yesUserType = (
@@ -106,7 +106,7 @@ return (
     </div>
 )
 ```
-After logging in or signing up, the user is then provided access to non-<tt>Auth</tt> routes.  From this point onward in the user experience, three different mechanisms prevent students from accessing resoures to which they are not authorized, the first two in the front-end and the third one in the back.
+After logging in or signing up, the user is then provided access to non-<tt>Auth</tt> routes.  From this point onward in the user experience, three different mechanisms prevent students from accessing resoures to which they are not authorized, the first two in the front-end and the third one in the back.  All of these hinge on the value of the <tt>is_instructor</tt> column in the Users table of the database.
 
 (1) <tt>Route</tt> wrappers:
 ```
