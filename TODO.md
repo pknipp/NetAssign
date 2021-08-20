@@ -1,4 +1,5 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/net_assign#)
+.
 tighten code (make uniform the useEffects) and insert comments
 are back-end routes suitably REST-ful?
 Are there any inputs for which one needs to input numbers starting w/decimal or "-"?
