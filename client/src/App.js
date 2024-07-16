@@ -83,6 +83,7 @@ const App = () => {
                             creator:
                             <a href="https://pknipp.github.io/" target="_blank" rel="noopener noreferrer">Peter Knipp</a>
                         </span>
+                        <br/>Github <a href="https://github.com/pknipp/NetAssign" target="_blank" rel="noopener noreferrer">repo</a>
                     </div>
                 </BrowserRouter>
             }

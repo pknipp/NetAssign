@@ -1,5 +1,9 @@
 [schema](https://drawsql.app/appacademy-2/diagrams/net_assign#)
 .
+Allow collaboration between instructors by making modifications to the Questions, Assignments, and Courses tables as follows:
+- remove instructor_id
+- replace this by 3 joins tables (or 1, if I'm clever), each called something like QuestionCollaborations.
+- How would rows in the latter table be added (by invitation?) or deleted (all but 1?)?
 tighten code (make uniform the useEffects) and insert comments
 are back-end routes suitably REST-ful?
 Are there any inputs for which one needs to input numbers starting w/decimal or "-"?
