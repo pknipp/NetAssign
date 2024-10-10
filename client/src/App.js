@@ -79,11 +79,16 @@ const App = () => {
                             <Route exact path="/deployments/:didAndAidAndCid" component={EditDeployment} />
                         </Switch>
                         <br/>
-                        <span>
-                            creator:
-                            <a href="https://pknipp.github.io/" target="_blank" rel="noopener noreferrer">Peter Knipp</a>
-                        </span>
-                        <br/>Github <a href="https://github.com/pknipp/NetAssign" target="_blank" rel="noopener noreferrer">repo</a>
+                        <div>
+                            <span>
+                                creator:
+                                <a href="https://pknipp.github.io/" target="_blank" rel="noopener noreferrer">Peter Knipp</a>
+                            </span>
+                            <br/>
+                            <span>
+                                repo:  <a href="https://github.com/pknipp/NetAssign" target="_blank" rel="noopener noreferrer">github.com/pknipp/NetAssign</a>
+                            </span>
+                        </div>
                     </div>
                 </BrowserRouter>
             }
